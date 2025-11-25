@@ -7,6 +7,8 @@ use crate::db::{connection::DbPool, queries::get_random_searched_flashcard};
 #[derive(Template)]
 #[template(path = "search_results.html")]
 struct SearchResultsTemplate {
+    category: Option<String>,
+    subcategory: Option<String>,
     q_html: String,
     a_html: String,
     nb_results: i64,
@@ -54,6 +56,8 @@ pub async fn search_results(
                 .map_err(|e| format!("Failed to update searched_ids: {}", e))?;
 
             let template = SearchResultsTemplate {
+                category: card.category.clone(),
+                subcategory: card.subcategory.clone(),
                 q_html: card.question_html,
                 a_html: card.answer_html,
                 nb_results: count,
@@ -73,6 +77,8 @@ pub async fn search_results(
         .map_err(|e| format!("Failed to update searched_ids: {}", e))?;
 
     let template = SearchResultsTemplate {
+        category: card.category.clone(),
+        subcategory: card.subcategory.clone(),
         q_html: card.question_html,
         a_html: card.answer_html,
         nb_results: count,

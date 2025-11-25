@@ -11,6 +11,8 @@ use crate::session::SessionData;
 #[derive(Template)]
 #[template(path = "index.html")]
 struct IndexTemplate {
+    category: Option<String>,
+    subcategory: Option<String>,
     q_html: String,
     a_html: String,
     nb_cards: i64,
@@ -57,6 +59,8 @@ pub async fn index(
         .map_err(|e| format!("Session insert error: {}", e))?;
 
     let template = IndexTemplate {
+        category: card.category.clone(),
+        subcategory: card.subcategory.clone(),
         q_html: card.question_html,
         a_html: card.answer_html,
         nb_cards,

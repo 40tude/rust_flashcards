@@ -5,16 +5,30 @@ use super::connection::DbPool;
 use super::models::Flashcard;
 
 /// Insert a flashcard into the database
-pub fn insert_flashcard(pool: &DbPool, question_html: &str, answer_html: &str) -> Result<i64> {
+pub fn insert_flashcard(
+    pool: &DbPool,
+    category: Option<&str>,
+    subcategory: Option<&str>,
+    question_html: &str,
+    answer_html: &str,
+) -> Result<i64> {
     let conn = pool.get().context("Failed to get DB connection")?;
 
     conn.execute(
-        "INSERT INTO flashcards (question_html, answer_html) VALUES (?1, ?2)",
-        params![question_html, answer_html],
+        "INSERT INTO flashcards (category, subcategory, question_html, answer_html) VALUES (?1, ?2, ?3, ?4)",
+        params![category, subcategory, question_html, answer_html],
     )
     .context("Failed to insert flashcard")?;
 
     let id = conn.last_insert_rowid();
+
+    // Sync to FTS5
+    conn.execute(
+        "INSERT INTO flashcards_fts (id, category, subcategory, question_html, answer_html) VALUES (?1, ?2, ?3, ?4, ?5)",
+        params![id, category, subcategory, question_html, answer_html],
+    )
+    .context("Failed to insert into FTS5")?;
+
     Ok(id)
 }
 
@@ -37,8 +51,8 @@ pub fn populate_fts_table(pool: &DbPool) -> Result<()> {
     let conn = pool.get().context("Failed to get DB connection")?;
 
     conn.execute(
-        "INSERT INTO flashcards_fts (id, question_html, answer_html)
-         SELECT id, question_html, answer_html FROM flashcards",
+        "INSERT INTO flashcards_fts (id, category, subcategory, question_html, answer_html)
+         SELECT id, category, subcategory, question_html, answer_html FROM flashcards",
         [],
     )
     .context("Failed to populate FTS table")?;
@@ -65,11 +79,11 @@ pub fn get_random_flashcard(pool: &DbPool, exclude: &[i64]) -> Result<Option<Fla
     let conn = pool.get().context("Failed to get DB connection")?;
 
     let query = if exclude.is_empty() {
-        "SELECT id, question_html, answer_html FROM flashcards ORDER BY RANDOM() LIMIT 1"
+        "SELECT id, category, subcategory, question_html, answer_html FROM flashcards ORDER BY RANDOM() LIMIT 1"
             .to_string()
     } else {
         format!(
-            "SELECT id, question_html, answer_html FROM flashcards
+            "SELECT id, category, subcategory, question_html, answer_html FROM flashcards
              WHERE id NOT IN ({}) ORDER BY RANDOM() LIMIT 1",
             exclude
                 .iter()
@@ -86,8 +100,10 @@ pub fn get_random_flashcard(pool: &DbPool, exclude: &[i64]) -> Result<Option<Fla
             |row| {
                 Ok(Flashcard {
                     id: row.get(0)?,
-                    question_html: row.get(1)?,
-                    answer_html: row.get(2)?,
+                    category: row.get(1)?,
+                    subcategory: row.get(2)?,
+                    question_html: row.get(3)?,
+                    answer_html: row.get(4)?,
                 })
             },
         )
@@ -135,7 +151,7 @@ pub fn get_random_searched_flashcard(
     let card = conn
         .query_row(
             &format!(
-                "SELECT id, question_html, answer_html FROM flashcards_fts
+                "SELECT id, category, subcategory, question_html, answer_html FROM flashcards_fts
                  WHERE {} ORDER BY RANDOM() LIMIT 1",
                 where_clause
             ),
@@ -143,8 +159,10 @@ pub fn get_random_searched_flashcard(
             |row| {
                 Ok(Flashcard {
                     id: row.get(0)?,
-                    question_html: row.get(1)?,
-                    answer_html: row.get(2)?,
+                    category: row.get(1)?,
+                    subcategory: row.get(2)?,
+                    question_html: row.get(3)?,
+                    answer_html: row.get(4)?,
                 })
             },
         )

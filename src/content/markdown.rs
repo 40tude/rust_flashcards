@@ -63,6 +63,9 @@ fn process_markdown_file(pool: &DbPool, path: &Path) -> Result<usize> {
 
     let mut count = 0;
 
+    // Regex to extract CATEGORY - SUBCATEGORY - QUESTION
+    let category_regex = Regex::new(r"^\s*:\s*([^-]+?)\s-\s([^-]+?)\s-\s(.+)").unwrap();
+
     for part in parts.iter().skip(1) {
         // Each part should start with " : " followed by question text,
         // then contain "Answer  :" (with variable spaces) followed by answer text
@@ -70,16 +73,26 @@ fn process_markdown_file(pool: &DbPool, path: &Path) -> Result<usize> {
         // Find where Answer starts
         let answer_re = Regex::new(r"\nAnswer\s+:").unwrap();
         if let Some(answer_match) = answer_re.find(part) {
-            let question_md = part[..answer_match.start()].trim();
+            let question_part = part[..answer_match.start()].trim();
             let answer_md = part[answer_match.end()..].trim();
+
+            // Extract category, subcategory, and question
+            let (category, subcategory, question_md) = if let Some(caps) = category_regex.captures(question_part) {
+                (
+                    Some(caps.get(1).unwrap().as_str().trim().to_string()),
+                    Some(caps.get(2).unwrap().as_str().trim().to_string()),
+                    caps.get(3).unwrap().as_str().trim()
+                )
+            } else {
+                // Question non-conforme: catégorie = None
+                tracing::warn!("Non-compliant question format in {:?}: {}", path, question_part);
+                (None, None, question_part)
+            };
 
             // Skip empty Q&A pairs
             if question_md.is_empty() && answer_md.is_empty() {
                 continue;
             }
-
-            // Remove leading " : " from question if present
-            let question_md = question_md.strip_prefix(':').unwrap_or(question_md).trim();
 
             // Prepend headers to markdown BEFORE conversion
             let question_with_header = format!("### Question :\n{}", question_md);
@@ -89,8 +102,14 @@ fn process_markdown_file(pool: &DbPool, path: &Path) -> Result<usize> {
             let q_html = markdown_to_html(&question_with_header)?;
             let a_html = markdown_to_html(&answer_with_header)?;
 
-            // Insert into database
-            queries::insert_flashcard(pool, &q_html, &a_html)?;
+            // Insert into database with category and subcategory
+            queries::insert_flashcard(
+                pool,
+                category.as_deref(),
+                subcategory.as_deref(),
+                &q_html,
+                &a_html
+            )?;
             count += 1;
         }
     }

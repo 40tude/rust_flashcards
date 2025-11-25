@@ -57,8 +57,8 @@ fn process_image_file(pool: &DbPool, path: &Path, base_dir: &str) -> Result<()> 
         relative_path
     );
 
-    // Insert into database
-    queries::insert_flashcard(pool, &question_html, &answer_html)?;
+    // Insert into database - Images: category and subcategory = None
+    queries::insert_flashcard(pool, None, None, &question_html, &answer_html)?;
 
     Ok(())
 }

@@ -7,6 +7,8 @@ pub fn init_database(pool: &DbPool) -> anyhow::Result<()> {
     conn.execute(
         "CREATE TABLE IF NOT EXISTS flashcards (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
+            category TEXT,
+            subcategory TEXT,
             question_html TEXT NOT NULL,
             answer_html TEXT NOT NULL
         )",
@@ -18,7 +20,7 @@ pub fn init_database(pool: &DbPool) -> anyhow::Result<()> {
     // Create FTS5 virtual table for full-text search
     conn.execute(
         "CREATE VIRTUAL TABLE IF NOT EXISTS flashcards_fts
-         USING fts5(id UNINDEXED, question_html, answer_html)",
+         USING fts5(id UNINDEXED, category, subcategory, question_html, answer_html)",
         [],
     )?;
 
@@ -35,8 +37,8 @@ pub fn populate_fts_table(pool: &DbPool) -> anyhow::Result<()> {
 
     // Copy data from flashcards to flashcards_fts
     conn.execute(
-        "INSERT INTO flashcards_fts(id, question_html, answer_html)
-         SELECT id, question_html, answer_html FROM flashcards",
+        "INSERT INTO flashcards_fts(id, category, subcategory, question_html, answer_html)
+         SELECT id, category, subcategory, question_html, answer_html FROM flashcards",
         [],
     )?;
 
