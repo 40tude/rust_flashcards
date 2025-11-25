@@ -12,7 +12,9 @@
       "Bash(curl:*)",
       "Bash(Select-String -Pattern \"error\" -Context 2,2)",
       "Bash(cargo build:*)",
-      "Bash(Start-Sleep -Seconds 30)"
+      "Bash(Start-Sleep -Seconds 30)",
+      "Bash(Start-Sleep -Seconds 10)",
+      "Bash(Select-String -Pattern \"Search Flashcards\" -Context 0,0)"
     ],
     "deny": [],
     "ask": []
