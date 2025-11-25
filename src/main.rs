@@ -4,7 +4,7 @@ mod db;
 mod routes;
 mod session;
 
-use axum::{routing::get, Router};
+use axum::{routing::{get, post}, Router};
 use std::net::SocketAddr;
 use tower_http::services::ServeDir;
 use tower_sessions::{MemoryStore, SessionManagerLayer};
@@ -55,6 +55,8 @@ async fn main() -> anyhow::Result<()> {
         .route("/", get(routes::index))
         .route("/next", get(routes::next))
         .route("/reset_session", get(routes::reset_session))
+        .route("/search", get(routes::search_form).post(routes::search_submit))
+        .route("/search_results", get(routes::search_results))
         .nest_service("/static", ServeDir::new("static"))
         .layer(session_layer)
         .with_state(pool);

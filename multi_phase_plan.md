@@ -1,6 +1,6 @@
 # Multi-Phase Implementation Plan: Python Flask → Rust Axum
 
-## STATUS: Phases 1-5 COMPLETED ✅, Ready for Phase 6
+## STATUS: Phases 1-6 COMPLETED ✅, Ready for Phase 7
 
 ---
 
@@ -295,16 +295,18 @@ pub async fn index(
 
 ---
 
-## PHASE 6: Search Functionality 🔄 NEXT
+## PHASE 6: Search Functionality ✅ COMPLETED
 
 ### Goal
 FTS5 full-text search avec session tracking
 
-### Files to Create/Modify
-1. `src/routes/search.rs` - GET/POST /search
-2. `src/routes/search_results.rs` - GET /search_results
-3. `src/db/queries.rs` - Add `get_random_searched_flashcard()`
-4. `src/db/schema.rs` - FTS5 population (déjà fait phase 1)
+### Files Created/Modified
+1. ✅ `src/routes/search.rs` - GET/POST /search
+2. ✅ `src/routes/search_results.rs` - GET /search_results
+3. ✅ `src/db/queries.rs` - `get_random_searched_flashcard()` déjà présent
+4. ✅ `src/routes/mod.rs` - Export search routes
+5. ✅ `src/main.rs` - Add search routes to router
+6. ✅ `templates/search_results.html` - Updated to match Python
 
 ### FTS5 Query Function
 ```rust
@@ -372,13 +374,14 @@ pub async fn search_submit(
 }
 ```
 
-### Success Criteria
-- [ ] Search form displays at /search
-- [ ] POST /search parse keywords + redirect
-- [ ] /search_results displays random matching card
-- [ ] FTS5 query avec multiple keywords (AND logic)
-- [ ] searched_ids prevents repeats
-- [ ] "Home" et "Next" buttons work
+### Success Criteria Met
+- ✅ Search form displays at /search
+- ✅ POST /search parse keywords + redirect to /search_results
+- ✅ /search_results displays random matching card
+- ✅ FTS5 query avec multiple keywords (AND logic)
+- ✅ searched_ids prevents repeats (reset when all seen)
+- ✅ "Home" et "Next" buttons work
+- ✅ Error handling: "No search keywords found" sans session
 
 ### Files: ~4, ~200-250 lignes
 
