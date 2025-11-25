@@ -48,12 +48,12 @@ fn process_image_file(pool: &DbPool, path: &Path, base_dir: &str) -> Result<()> 
         .to_string_lossy()
         .replace('\\', "/");
 
-    // Question is empty (just the header)
-    let question_html = "###Question :\n".to_string();
+    // Question is empty (just the header as HTML)
+    let question_html = "<h3>Question :</h3>\n".to_string();
 
     // Answer contains the image with Bootstrap class
     let answer_html = format!(
-        "###Answer :\n<img src='/static/png/{}' class='img-fluid'>",
+        "<h3>Answer :</h3>\n<img src='/static/png/{}' class='img-fluid'>",
         relative_path
     );
 

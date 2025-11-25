@@ -81,13 +81,13 @@ fn process_markdown_file(pool: &DbPool, path: &Path) -> Result<usize> {
             // Remove leading " : " from question if present
             let question_md = question_md.strip_prefix(':').unwrap_or(question_md).trim();
 
-            // Convert markdown to HTML with syntax highlighting
-            let question_html = markdown_to_html(question_md)?;
-            let answer_html = markdown_to_html(answer_md)?;
+            // Prepend headers to markdown BEFORE conversion
+            let question_with_header = format!("### Question :\n{}", question_md);
+            let answer_with_header = format!("### Answer :\n{}", answer_md);
 
-            // Prepend headers
-            let q_html = format!("###Question :\n{}", question_html);
-            let a_html = format!("###Answer :\n{}", answer_html);
+            // Convert markdown to HTML with syntax highlighting
+            let q_html = markdown_to_html(&question_with_header)?;
+            let a_html = markdown_to_html(&answer_with_header)?;
 
             // Insert into database
             queries::insert_flashcard(pool, &q_html, &a_html)?;
