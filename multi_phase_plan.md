@@ -1,6 +1,6 @@
 # Multi-Phase Implementation Plan: Python Flask → Rust Axum
 
-## STATUS: Phases 1-7 COMPLETED ✅, Ready for Phase 8 (Heroku)
+## STATUS: Phases 1-8 COMPLETED ✅, Ready for Phase 9 (Cleanup)
 
 ---
 
@@ -404,22 +404,39 @@ pub async fn search_submit(
 
 ---
 
-## PHASE 8-9: Heroku, Cleanup
+## PHASE 8: Heroku Deployment ✅ COMPLETED
 
-### Phase 8: Heroku
+### Deployment Summary
+- ✅ App created: `rust-flashcards`
+- ✅ Buildpack set: `emk/rust`
+- ✅ Environment variable configured: `FLASHCARDS_SECRET_KEY`
+- ✅ Deployed to Heroku: `git push heroku main`
+- ✅ App URL: https://rust-flashcards-ae94334b8997.herokuapp.com/
+
+### Commands Executed
 ```bash
-heroku create rust-flashcards
-heroku buildpacks:set emk/rust
-heroku config:set FLASHCARDS_SECRET_KEY=$(openssl rand -hex 32)
+heroku create rust-flashcards --buildpack emk/rust
+git remote -v
+heroku config:set FLASHCARDS_SECRET_KEY=$(New-Guid)
 git push heroku main
 heroku logs --tail
 ```
 
-### Phase 9: Cleanup
-- Verify Rust app fully functional
+### Deployment Notes
+- Build time: ~2-5 min (Rust compilation)
+- Startup time: ~30s (loads 705 flashcards)
+- Static files bundled: ./static/md + ./static/png
+- DB rebuilt at each dyno restart (ephemeral filesystem)
+
+---
+
+## PHASE 9: Cleanup
+
+### Tasks
+- Verify Rust app fully functional (Heroku + local)
 - Delete `py-flashcards-2/` directory
 - Update CLAUDE.md (Rust-only project)
-- Final commit
+- Final commit + push to GitHub
 
 ---
 
