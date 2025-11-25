@@ -3,7 +3,13 @@
     "allow": [
       "Bash(mkdir:*)",
       "Bash(cargo check:*)",
-      "Bash(cargo run:*)"
+      "Bash(cargo run:*)",
+      "Bash(xcopy:*)",
+      "Bash(robocopy:*)",
+      "Bash(rm:*)",
+      "Bash(cat:*)",
+      "Bash(test:*)",
+      "Bash(curl:*)"
     ],
     "deny": [],
     "ask": []

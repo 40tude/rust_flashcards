@@ -1,6 +1,6 @@
 # Multi-Phase Implementation Plan: Python Flask → Rust Axum
 
-## STATUS: Phase 1 COMPLETED ✅, Ready for Phase 2
+## STATUS: Phases 1-3 COMPLETED ✅, Ready for Phase 4
 
 ---
 
@@ -46,7 +46,7 @@ INFO Phase 1 complete: Foundation & Setup successful!
 
 ---
 
-## PHASE 2: Content Loading System 🔄 NEXT
+## PHASE 2: Content Loading System ✅ COMPLETED
 
 ### Goal
 Parse markdown files + PNG images, populate database
@@ -81,18 +81,18 @@ pub fn insert_flashcard(pool: &DbPool, q: &str, a: &str) -> Result<i64>
 pub fn clear_flashcards(pool: &DbPool) -> Result<()>
 ```
 
-### Success Criteria
-- [ ] Scan ./static/md/**/*.md récursif
-- [ ] Parse format "Question: / Answer:" avec regex
-- [ ] Markdown→HTML avec syntax highlighting
-- [ ] PNG files scannés, paths stockés
-- [ ] DB populated au startup
+### Success Criteria Met
+- ✅ Scan ./static/md/**/*.md récursif
+- ✅ Parse format "Question: / Answer:" avec regex (split-based parsing)
+- ✅ Markdown→HTML avec syntax highlighting (syntect)
+- ✅ PNG files scannés, paths stockés
+- ✅ DB populated au startup (405 markdown + 300 PNG = 705 total)
 
 ### Files: ~3 nouveaux, ~300-400 lignes
 
 ---
 
-## PHASE 3: Web Server & Static Files
+## PHASE 3: Web Server & Static Files ✅ COMPLETED
 
 ### Goal
 Setup Axum server avec static file serving
@@ -131,18 +131,20 @@ async fn main() -> Result<()> {
 }
 ```
 
-### Success Criteria
-- [ ] Server starts, bind to PORT
-- [ ] Static files served at /static/*
-- [ ] Logging/tracing configured
-- [ ] DB initializes au startup
-- [ ] Access http://localhost:8080/static/favicon.png
+### Success Criteria Met
+- ✅ Server starts, bind to PORT (0.0.0.0:8080)
+- ✅ Static files served at /static/* (tested favicon.png, default.css)
+- ✅ Logging/tracing configured (tracing_subscriber)
+- ✅ DB initializes au startup (705 flashcards loaded)
+- ✅ Access http://localhost:8080/static/favicon.png → 200 OK
+- ✅ Procfile created for Heroku
+- ✅ .gitignore updated (target/, .env, *.db)
 
 ### Files: ~4, ~150-200 lignes
 
 ---
 
-## PHASE 4: Templates & Basic Route
+## PHASE 4: Templates & Basic Route 🔄 NEXT
 
 ### Goal
 Askama templates + GET / route

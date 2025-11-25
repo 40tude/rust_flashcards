@@ -1,7 +1,14 @@
 mod config;
+mod content;
 mod db;
+mod routes;
 
-fn main() -> anyhow::Result<()> {
+use axum::Router;
+use std::net::SocketAddr;
+use tower_http::services::ServeDir;
+
+#[tokio::main]
+async fn main() -> anyhow::Result<()> {
     // Load environment variables from .env
     dotenvy::dotenv().ok();
 
@@ -25,7 +32,27 @@ fn main() -> anyhow::Result<()> {
     // Initialize database schema
     db::init_database(&pool)?;
 
-    tracing::info!("Phase 1 complete: Foundation & Setup successful!");
+    // Load content from markdown and PNG files
+    tracing::info!("Loading content...");
+    content::load_markdown(&pool, "./static/md")?;
+    content::load_images(&pool, "./static/png")?;
+
+    // Populate FTS table
+    db::queries::populate_fts_table(&pool)?;
+
+    tracing::info!("Content loaded successfully. Starting web server...");
+
+    // Build Axum router
+    let app = Router::new()
+        .nest_service("/static", ServeDir::new("static"));
+
+    // Bind to address
+    let addr = SocketAddr::from(([0, 0, 0, 0], config.port));
+    tracing::info!("Server listening on http://{}", addr);
+
+    // Start server
+    let listener = tokio::net::TcpListener::bind(addr).await?;
+    axum::serve(listener, app).await?;
 
     Ok(())
 }
