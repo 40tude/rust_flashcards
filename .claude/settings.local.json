@@ -14,7 +14,17 @@
       "Bash(cargo build:*)",
       "Bash(Start-Sleep -Seconds 30)",
       "Bash(Start-Sleep -Seconds 10)",
-      "Bash(Select-String -Pattern \"Search Flashcards\" -Context 0,0)"
+      "Bash(Select-String -Pattern \"Search Flashcards\" -Context 0,0)",
+      "Bash(xargs:*)",
+      "Bash(sqlite3:*)",
+      "Bash(for i in {1..10})",
+      "Bash(do curl -s http://localhost:8080/)",
+      "Bash(break)",
+      "Bash(done)",
+      "Bash(for i in {1..5})",
+      "Bash(do curl -s -b reset_test.txt \"http://localhost:8080/search_results\")",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nPhase 7 completed - Testing\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
     ],
     "deny": [],
     "ask": []
