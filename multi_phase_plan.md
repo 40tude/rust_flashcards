@@ -1,6 +1,6 @@
 # Multi-Phase Implementation Plan: Python Flask → Rust Axum
 
-## STATUS: Phases 1-3 COMPLETED ✅, Ready for Phase 4
+## STATUS: Phases 1-4 COMPLETED ✅, Ready for Phase 5
 
 ---
 
@@ -144,7 +144,7 @@ async fn main() -> Result<()> {
 
 ---
 
-## PHASE 4: Templates & Basic Route 🔄 NEXT
+## PHASE 4: Templates & Basic Route ✅ COMPLETED
 
 ### Goal
 Askama templates + GET / route
@@ -201,18 +201,20 @@ pub fn get_random_flashcard(pool: &DbPool, exclude: &[i64]) -> Result<Option<Fla
 pub fn get_total_count(pool: &DbPool) -> Result<i64>
 ```
 
-### Success Criteria
-- [ ] Templates compile avec Askama
-- [ ] GET / affiche random flashcard
-- [ ] HTML renders avec Bootstrap + MathJax
-- [ ] Syntax highlighting CSS works
-- [ ] "Next" button redirect + montre new card
+### Success Criteria Met
+- ✅ Templates compile avec Askama
+- ✅ GET / affiche random flashcard (705 cards)
+- ✅ HTML renders avec Bootstrap + MathJax
+- ✅ Syntax highlighting CSS works (default.css loaded)
+- ✅ "Next" button redirect (303 → /) + shows new card
+- ✅ Templates: index.html, search.html, search_results.html
+- ✅ Routes: GET /, GET /next
 
 ### Files: ~5, ~250-300 lignes
 
 ---
 
-## PHASE 5: Session Management
+## PHASE 5: Session Management 🔄 NEXT
 
 ### Goal
 tower-sessions + seen_ids tracking

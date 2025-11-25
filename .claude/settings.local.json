@@ -9,7 +9,10 @@
       "Bash(rm:*)",
       "Bash(cat:*)",
       "Bash(test:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(Select-String -Pattern \"error\" -Context 2,2)",
+      "Bash(cargo build:*)",
+      "Bash(Start-Sleep -Seconds 30)"
     ],
     "deny": [],
     "ask": []

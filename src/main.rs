@@ -3,7 +3,7 @@ mod content;
 mod db;
 mod routes;
 
-use axum::Router;
+use axum::{routing::get, Router};
 use std::net::SocketAddr;
 use tower_http::services::ServeDir;
 
@@ -44,7 +44,10 @@ async fn main() -> anyhow::Result<()> {
 
     // Build Axum router
     let app = Router::new()
-        .nest_service("/static", ServeDir::new("static"));
+        .route("/", get(routes::index))
+        .route("/next", get(routes::next))
+        .nest_service("/static", ServeDir::new("static"))
+        .with_state(pool);
 
     // Bind to address
     let addr = SocketAddr::from(([0, 0, 0, 0], config.port));
