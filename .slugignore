@@ -1,0 +1,9 @@
+/.claude
+/md_buffer
+/target
+/.git
+.env
+.gitignore
+CLAUDE.md
+multi_phase_plan.md
+README.md
