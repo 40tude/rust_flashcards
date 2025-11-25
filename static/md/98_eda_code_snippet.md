@@ -1,14 +1,14 @@
 
 <!-- TODO : voir C:\Users\phili\OneDrive\Documents\Programmation\Formations_JEDHA\02_Data_Science_Fullstack_march_2024\12_assets\code-snippets2.ipynb -->
 
-<!-- 
+<!--
 <p align="center">
 <img src="../static/md/assets/img1.png" alt="attention" width="577"/>
 </p>
 
 $$ E = mc^2 $$
 
-#### Code snippet  
+#### Code snippet
 
 ```python
 # -----------------------------------------------------------------------------
@@ -23,17 +23,17 @@ def preprocessor(df):
 ```
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-<!-- 
-Question : EDA Code Snippet -  
-Answer  : 
+<!--
+Question : EDA Code Snippet - No subcategory - Template
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 
@@ -45,22 +45,22 @@ Answer  :
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
 Question : EDA Code Snippet - Replace missing values with 42 - fillna
-Answer  : 
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 import pandas as pd
 
 df = pd.DataFrame({
-  'A': [1, None, 3], 
+  'A': [1, None, 3],
   'B': [4, 5, 6]
 })
 print("Table avant : \n", df.head(), "\n")
@@ -70,26 +70,26 @@ print("Table après : \n", df.head(), "\n")
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : EDA Code Snippet - Remplacer les valeurs absentes par la médiane - fillna  
-Answer  : 
+Question : EDA Code Snippet - Remplacer les valeurs absentes par la médiane - fillna
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 import pandas as pd
 
 df = pd.DataFrame({
-  'A': [1, None, 4], 
+  'A': [1, None, 4],
   'B': [4, 5, 6]
 })
 print("Table avant : \n", df.head(), "\n")
-median = df["A"].median()  
+median = df["A"].median()
 df["A"].fillna(median, inplace=True)
 print("Table après : \n", df.head(), "\n")
 
@@ -100,23 +100,23 @@ print("Table après : \n", df.head(), "\n")
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : EDA Code Snippet - Remplacer les valeurs absentes par 42 - SimpleImputer 
-Answer  : 
+Question : EDA Code Snippet - Remplacer les valeurs absentes par 42 - SimpleImputer
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 import pandas as pd
 from sklearn.impute import SimpleImputer
 
 df = pd.DataFrame({
-  'A': [1, None, 3], 
+  'A': [1, None, 3],
   'B': [4, 5, 6]
 })
 
@@ -136,16 +136,16 @@ print("Dataframe   : \n", df, "\n")
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : EDA Code Snippet - Remplacer une valeur par une autre  
-Answer  : 
+Question : EDA Code Snippet - Remplacer une valeur par une autre - Une idée?
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 import pandas as pd
@@ -160,22 +160,22 @@ print("Table après : \n", df.head(), "\n")
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : EDA Code Snippet - Afficher les lignes dont le PIB est vide 
-Answer  : 
+Question : EDA Code Snippet - Afficher les lignes dont le PIB est vide - Une idée?
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 import pandas as pd
 
 df = pd.DataFrame({
-  'Pays': ["FR", "UK", "US"], 
+  'Pays': ["FR", "UK", "US"],
   'PIB': [44, None, 0]
 })
 print("Table : \n", df.head(), "\n")
@@ -186,22 +186,22 @@ print(df.loc[df['PIB'].isnull()])
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : EDA Code Snippet - Supprimer les lignes dont le PIB est vaut 42 
-Answer  : 
+Question : EDA Code Snippet - Supprimer les lignes dont le PIB est vaut 42 - Une idée?
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 import pandas as pd
 
 df = pd.DataFrame({
-  'Pays': ["FR", "UK", "US", "IT", "SP", "POR"], 
+  'Pays': ["FR", "UK", "US", "IT", "SP", "POR"],
   'PIB': [44, None, 42, 28, 42, 31]
 })
 
@@ -220,21 +220,21 @@ print(df)
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : EDA Code Snippet - Afficher les lignes d'une même catégorie  
-Answer  : 
+Question : EDA Code Snippet - Afficher les lignes d'une même catégorie - Une idée?
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 import pandas as pd
 df = pd.DataFrame({
-  'Pays': ["FR", "UK", "FR"], 
+  'Pays': ["FR", "UK", "FR"],
   'Valeurs': [44, 58, 33]
 })
 print(df.loc[df['Pays'] == 'FR'])
@@ -243,21 +243,21 @@ print(df.loc[df['Pays'] == 'FR'])
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : EDA Code Snippet - Afficher les catégories où le pourcentage de valeurs manquantes est non nul  
-Answer  : 
+Question : EDA Code Snippet - Afficher les catégories où le pourcentage de valeurs manquantes est non nul - Une idée?
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 import pandas as pd
 df = pd.DataFrame({
-  'Pays': ["FR", "UK", "US", "FR"], 
+  'Pays': ["FR", "UK", "US", "FR"],
   'Feature-1': [10, 58, None, 20],
   'Feature-2': [100, 580, 10, 2000],
   'Feature-3': [10, 58, None, None],
@@ -275,16 +275,16 @@ print(f"\nIl y a des valeurs manquantes dans les colonnes suivantes : \n{Bob.loc
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : EDA Code Snippet -  Créer des colonnes avec le contenu d'une colonne
-Answer  : 
+Question : EDA Code Snippet -  Créer des colonnes avec le contenu d'une colonne - Une idée?
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 import pandas as pd
@@ -299,16 +299,16 @@ print("Table après : \n", df.head(), "\n")
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : EDA Code Snippet - Calculer de nouvelles colonnes 
-Answer  : 
+Question : EDA Code Snippet - Calculer de nouvelles colonnes - Une idée?
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 import pandas as pd
@@ -329,28 +329,28 @@ print("Table après : \n", df.head(), "\n")
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : EDA Code Snippet - Créer une colonne qui contient des catégories - cut 
-Answer  : 
+Question : EDA Code Snippet - Créer une colonne qui contient des catégories - Connaissez-vous cut()?
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 import pandas as pd
 
 df = pd.DataFrame({
   'Id'        : ["Riri", "Fifi", "Loulou", "Avasarala", "Holden", "Naomi", "Razorback", "Apollo", "Soyouz"],
-  'Prix'      : [0, 25, 99, 80, 66, 13, 100, 56, 110] 
+  'Prix'      : [0, 25, 99, 80, 66, 13, 100, 56, 110]
 })
 print("Table avant :\n", df.head(10), "\n")
 
 # Les bornes des intervalles
-# (0-25, 25-50, 50-75, 75-100) 
+# (0-25, 25-50, 50-75, 75-100)
 intervalles = [0, 25, 50, 75, 100]
 
 # Les étiquettes de chaque catégorie
@@ -367,27 +367,27 @@ print("Table après :\n", df.head(10), "\n")
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : EDA Code Snippet - Difference entre apply et transform  
-Answer  : 
+Question : EDA Code Snippet - Difference entre apply et transform - Une idée?
+Answer  :
 
 ## `apply()`
 * `apply()` est plus générique que `transform()`
 * Utilisée pour appliquer une fonction sur des DataFrames entiers, des colonnes ou des lignes spécifiques
 * La fonction passée à `apply()` peut retourner un scalaire, une Serie ou un DataFrame
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 import pandas as pd
 
 df = pd.DataFrame({
-  'A': [1, 2, 3], 
+  'A': [1, 2, 3],
   'B': [4, 5, 6]
 })
 
@@ -400,7 +400,7 @@ df["sqrt(A)"] = df['A'].apply(lambda x: x **.5)     # fonction lambda
 df["Moyenne"] = df.apply(moyenne, axis=1)
 print("Table après : \n", df.head(), "\n")
 
-result = df['A'].apply(lambda x: x **2)                 
+result = df['A'].apply(lambda x: x **2)
 print("Serie A après\n", result, "\n")
 ```
 
@@ -409,13 +409,13 @@ print("Serie A après\n", result, "\n")
 * La fonction de transformation doit renvoyer une série de la même longueur que l'entrée, et elle est appliquée à chaque groupe de données.
 * Utile pour effectuer des opérations de groupe (par exemple, remplacer les valeurs manquantes par la moyenne du groupe).
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 import pandas as pd
 
 df = pd.DataFrame({
-  'Groupe': ['A', 'A', 'B', 'B', 'A', 'B'], 
+  'Groupe': ['A', 'A', 'B', 'B', 'A', 'B'],
   'Valeur': [None, 2, None, 4, 5, None]
 })
 print("Table avant : \n", df.head(), "\n")
@@ -430,16 +430,16 @@ print("Table après : \n", df.head(), "\n")
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : EDA Code Snippet - Extraire les nombres d'une chaîne et créer une colonne  
-Answer  : 
+Question : EDA Code Snippet - Extraire les nombres d'une chaîne et créer une colonne - Une idée?
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 import pandas as pd
@@ -447,7 +447,7 @@ import re                                    # regular expression
 
 df = pd.DataFrame({
   'Id'       : ["Riri", "Fifi", "Loulou"],
-  'Feature-0': ["Val1", "Val2", "Val3"], 
+  'Feature-0': ["Val1", "Val2", "Val3"],
   'Feature-1': ["Marcel11", "Robert2", "Antoine3"],
   'Feature-2': ["NE-555", "20-USA-48", "Russia"],
 })
@@ -471,29 +471,29 @@ print("Table après : \n", df.head(), "\n")
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : EDA Code Snippet - Extraire les valeurs d'une chaine, remplir une colonne avec leur moyenne 
-Answer  : 
+Question : EDA Code Snippet - Extraire les valeurs d'une chaîne, remplir une colonne avec leur moyenne - Une idée?
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 import pandas as pd
 
 def moy(x):
-  try : 
+  try :
     return np.mean([float(i) for i in x.split("~")])
-  except: 
+  except:
     return np.nan     # on peut aussi retrouner une valeur : 42...
 
 df = pd.DataFrame({
   'Id'       : ["Riri", "Fifi", "Loulou"],
-  'Feature-0': ["11~13", "10~20~30", "50~100"], 
+  'Feature-0': ["11~13", "10~20~30", "50~100"],
   'Feature-1': ["18~20", "10~20", "50**100"],
 })
 print("Avant : \n", df.head(), "\n")
@@ -508,18 +508,18 @@ print("Après : \n", df.head())
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : EDA Code Snippet - Transform
-Answer  : 
+Question : EDA Code Snippet - Transform - Un exemple à proposer?
+Answer  :
 
-* S'applique à un groupe  
+* S'applique à un groupe
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 import pandas as pd
@@ -544,20 +544,20 @@ print("Après : \n", df.head(), "\n")
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : EDA Code Snippet - groupby, remplacer valeurs manquantes par moyenne de la catégorie V1  
-Answer  : 
+Question : EDA Code Snippet - groupby, remplacer valeurs manquantes par moyenne de la catégorie V1 - Une idée?
+Answer  :
 
 * Marche pas dans tous les cas
 * Il faut que chaque catégorie ait une moyenne à calculer
 * Si une catégorie n'a aucune moyenne à calculer rien n'est fait
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 data = {
@@ -579,18 +579,18 @@ print("Après : \n", df.head(), "\n")
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : EDA Code Snippet - groupby, remplacer valeurs manquantes par moyenne de la catégorie V2  
-Answer  : 
+Question : EDA Code Snippet - groupby, remplacer valeurs manquantes par moyenne de la catégorie V2 - Une idée?
+Answer  :
 
 * Met 0 si la moyenne n'a pas pu être calculée
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 data = {
@@ -611,25 +611,25 @@ print("Après : \n", df.head(), "\n")
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : EDA Code Snippet - Supprimer une colonne  
-Answer  : 
+Question : EDA Code Snippet - Supprimer une colonne - Une idée?
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 
 import pandas as pd
 df = pd.DataFrame({
   'Id'      : ["Riri", "Fifi", "Loulou"],
-  'Feature0': [1, 2, 3], 
-  'Feature1': [10, 20, 30], 
-  'Feature2': [100, 200, 300], 
+  'Feature0': [1, 2, 3],
+  'Feature1': [10, 20, 30],
+  'Feature2': [100, 200, 300],
 })
 print("Table avant : \n", df.head(), "\n")
 df.drop("Feature1", inplace=True, axis=1)
@@ -641,22 +641,22 @@ print("Table après : \n", df.head(), "\n")
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : EDA Code Snippet - Supprimer des colonnes en fonction d'un motif dans le titre 
-Answer  : 
+Question : EDA Code Snippet - Supprimer des colonnes en fonction d'un motif dans le titre - Une idée?
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 import pandas as pd
 df = pd.DataFrame({
   'Id'      : ["Riri", "Fifi", "Loulou"],
-  'Feature0': [1, 2, 3], 
+  'Feature0': [1, 2, 3],
   'Feature1': [4, 5, 6],
   'Feature2': [7, 8, 9],
   'Feature3': [1, 2, 3],
@@ -675,16 +675,16 @@ print("Table après : \n", df.head(1), "\n")
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : EDA Code Snippet - Merger 2 fichiers csv ou dataframe  
-Answer  : 
+Question : EDA Code Snippet - Merger 2 fichiers csv ou dataframe - Une idée?
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 
@@ -716,16 +716,16 @@ print(resultat_merge)
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : EDA Code Snippet - Sauver un Dataframe  
-Answer  : 
+Question : EDA Code Snippet - Sauver un Dataframe - Une idée?
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 df.to_csv("mon-fichier.csv", index=False)
@@ -734,27 +734,27 @@ df.to_csv("mon-fichier.csv", index=False)
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : EDA Code Snippet - Merge avancé de 2 Dataframes 
-Answer  : 
+Question : EDA Code Snippet - Merge avancé de 2 Dataframes - Une idée?
+Answer  :
 
 * La seconde table contient des Types dont on veut calculer la moyennes des features
 * Voir le contenu de la Table 3
 * Une des features de la Table 1 est le type
-* On veut étendre la Table 1, avec pour chaque ligne, en fonction du type, les moyennes calculées avec la Table 2 
+* On veut étendre la Table 1, avec pour chaque ligne, en fonction du type, les moyennes calculées avec la Table 2
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 
 df2 = pd.DataFrame({
   'Id'        : ["Riri", "Fifi", "Loulou", "Avasarala", "Holden", "Naomi", "Razorback", "Apollo", "Soyouz"],
-  'Type'      : ["Type1", "Type2", "Type3", "Type1", "Type2", "Type3", "Type1", "Type2", "Type3"], 
+  'Type'      : ["Type1", "Type2", "Type3", "Type1", "Type2", "Type3", "Type1", "Type2", "Type3"],
   'Feature-1' : [0, 1, 2, 3, 4, 5, 6, 7, 8],
   'Value'     : [10, 20, 30, 11, 21, 31, 12, 22, 32],
 })
@@ -769,7 +769,7 @@ print("Table 3 : Depuis Table 2, les moyennes de Value et Feature-1 par Type\n",
 
 df1 = pd.DataFrame({
   'Id'        : ["Riri", "Avasarala", "Apollo", "Soyouz"],
-  'Colonne-00': ["BB", "SF", "Space", "Space"], 
+  'Colonne-00': ["BB", "SF", "Space", "Space"],
   'Colonne-01': [3.14, 42, 2.718, 1.618],
   'Colonne-02': ["Type1", "Type2", "Type2", "Type1"],
 })
@@ -786,16 +786,16 @@ print("Merge de Table 1 et Table 3 sur le Type :\n", df4.head(10), "\n")
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : EDA Code Snippet - Classe pour valider les saisies 
-Answer  : 
+Question : EDA Code Snippet - Classe pour valider les saisies - Une idée?
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 class UserInput:
@@ -827,16 +827,16 @@ print (deposit)
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : EDA Code Snippet - Ajouter une ligne à un DataFrame - concat 
-Answer  : 
+Question : EDA Code Snippet - Ajouter une ligne à un DataFrame - Savez-vous utiliser concat()?
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 

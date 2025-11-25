@@ -1,4 +1,4 @@
-<!-- 
+<!--
 08 10 2024
 DONE : Les quizz de la section Python ont été vu
 
@@ -7,7 +7,7 @@ DONE : Les quizz de la section Python ont été vu
 
 
 
-<!-- 
+<!--
 <p align="center">
 <img src="../static/md/assets/img1.png" alt="attention" width="577"/>
 </p>
@@ -17,7 +17,7 @@ $$ E = mc^2 $$
 
 
 
-#### Code snippet  
+#### Code snippet
 
 ```python
 # -----------------------------------------------------------------------------
@@ -32,10 +32,10 @@ def preprocessor(df):
 ```
 
 
-Question : 
-Answer   : 
+Question : Python - No subcategory - Template
+Answer   :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 # TODO : add sample code
@@ -45,24 +45,24 @@ Answer   :
 
 
 
-<!-- 
+<!--
 ############################################################
 ## Questions issues des quizz
-############################################################ 
+############################################################
 -->
 
-Question : PYTHON - Data types - Give 2 examples of mutable data collection?
-Answer  : 
+Question : Python - Data types - Give 2 examples of mutable data collection?
+Answer  :
 
 * List
 * Dictionary
 
 
 
-Question : PYTHON - Data types - How do you add a single element to the end of a list? How can you remove an item from a list using its value?
-Answer  : 
+Question : Python - Data types - How do you add a single element to the end of a list? How can you remove an item from a list using its value?
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 append()
@@ -70,7 +70,7 @@ delete()
 
 ```
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 list_villes=["Aix en Provence", "Paris", "Ghisonaccia"]
@@ -84,10 +84,10 @@ for ville in list_villes:
 
 
 
-Question : PYTHON - Data types - What is the syntax for creating a slice of a list that includes elements from index 2 to index 5 (excluding index 5)?
-Answer  : 
+Question : Python - Data types - What is the syntax for creating a slice of a list that includes elements from index 2 to index 5 (excluding index 5)?
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 list[2:5]
@@ -97,12 +97,12 @@ list[2:5]
 
 
 
-Question : PYTHON - Data types - How can you access the value associated with a specific key in a dictionary?
-Answer  : 
+Question : Python - Data types - How can you access the value associated with a specific key in a dictionary?
+Answer  :
 
 Use brackets or .get(). Pay attention when the key does'nt exist yet.
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 you = {'name': 'Zoubida', 'age': 42}
@@ -114,10 +114,10 @@ print(f"Age        : {you['age']}")
 
 
 
-Question : PYTHON - Data types - How do you add a new key-value pair to a dictionary?
-Answer  : 
+Question : Python - Data types - How do you add a new key-value pair to a dictionary?
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 dico["bob"] = 42
@@ -126,10 +126,10 @@ dico["bob"] = 42
 
 
 
-Question : PYTHON - Data types - How can you iterate over both keys and values in a dictionary?
-Answer  : 
+Question : Python - Data types - How can you iterate over both keys and values in a dictionary?
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 person = {
@@ -143,12 +143,12 @@ person.items()
 
 
 
-Question : PYTHON - Functions - How can you add a default argument to a function?
-Answer  : 
+Question : Python - Functions - How can you add a default argument to a function?
+Answer  :
 
 By assigning a value to the parameter (param="bob") in the function declaration.
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 def volume(length=1, width=1, depth=1):
@@ -163,26 +163,26 @@ volume(width=4)
 
 
 
-Question : PYTHON - Functions - What does the acronym DRY stand for in programming?
-Answer   : 
+Question : Python - Functions - What does the acronym DRY stand for in programming?
+Answer   :
 
 Don't repeat yourself
 
 
 
-Question : PYTHON - Functions - What is the purpose of giving an alias to exceptions?
-Answer  : 
+Question : Python - Functions - What is the purpose of giving an alias to exceptions?
+Answer  :
 
 To customize the error message displayed to the user.
 
 
 
-Question : PYTHON - Functions - How can you create your own exception in Python?
-Answer  : 
+Question : Python - Functions - How can you create your own exception in Python?
+Answer  :
 
 By using the ``raise`` statement with a specific error message.
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 def find_seat(self, n):
@@ -193,14 +193,14 @@ def find_seat(self, n):
 
 
 
-Question : PYTHON - Classes - Which method is used to initialize the attributes of a class in Python?
-Answer  : 
+Question : Python - Classes - Which method is used to initialize the attributes of a class in Python?
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 class Employee():
- 
+
   # Initializing
   def __init__(self, a_name):
     print('Employee created.')
@@ -215,40 +215,40 @@ class Employee():
 
 
 
-Question : PYTHON - Classes - What does the ``self`` keyword represent in Python classes?
-Answer  : 
+Question : Python - Classes - What does the ``self`` keyword represent in Python classes?
+Answer  :
 
 It refers to the instance of the class.
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 class MyImputer():
-  
+
   def __init__(self, mylist:list[int]):
     tmp_list = []
     for i in range(len(mylist)):
       if (mylist[i] != "None"):
         tmp_list.append(mylist[i])
-    
+
     avg = sum(tmp_list)/len(tmp_list)
-    
+
     self.list = mylist.copy()
     for i in range(len(self.list)):
       if (self.list[i] == "None"):
         self.list[i] = avg
 
   def display(self):
-    print(self.list)  
+    print(self.list)
 ```
 
 
-Question : PYTHON - Classes - What does the ``ValueError`` exception indicate?
-Answer  : 
+Question : Python - Classes - What does the ``ValueError`` exception indicate?
+Answer  :
 
-It is raised when a method is called with incorrect arguments. 
+It is raised when a method is called with incorrect arguments.
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 class MyCustomImputer(BaseEstimator, TransformerMixin):
@@ -269,36 +269,36 @@ class MyCustomImputer(BaseEstimator, TransformerMixin):
 
     def transform(self, X):
         return np.where(np.isnan(X), self.fill_value, X)
-```        
+```
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : PYTHON - Différence entre **arguments** et **paramètres**
+Question : Python - Functions - Différence entre **arguments** et **paramètres**
 Answer  :
 
-* Les **paramètres** d'une fonction sont les noms listés dans la définition de la fonction. 
+* Les **paramètres** d'une fonction sont les noms listés dans la définition de la fonction.
 * Les **arguments** d'une fonction sont les valeurs passées à la fonction.
 
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : PYTHON - Pourquoi voudriez-vous implémenter la méthode ``__call__()`` dans la classe d'un de vos modèles?
-Answer  : 
+Question : Python - Functions - Pourquoi voudriez-vous implémenter la méthode ``__call__()`` dans la classe d'un de vos modèles?
+Answer  :
 
-If the model class has a ``__call__()`` method then we can call it as a function. 
- 
-#### Code snippet 
+If the model class has a ``__call__()`` method then we can call it as a function.
+
+#### Code snippet
 
 ```python
 print("model output:", my_model(data))
@@ -314,13 +314,13 @@ print("model output:", my_model(data))
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
-Question : PYTHON - Pouvez-vous nommer certaines des exceptions les plus courantes ?
-Answer  : 
+Question : Python - Exceptions - Pouvez-vous nommer certaines des exceptions les plus courantes ?
+Answer  :
 
 
 | **Exception**              | **Description**                                                                            |
@@ -352,7 +352,7 @@ Answer  :
 | `ValueError`               | Levée lorsqu'une opération reçoit un argument de type correct mais de valeur inappropriée.  |
 | `ZeroDivisionError`        | Levée lorsqu'une division ou un modulo est effectué avec un diviseur égal à zéro.           |
 
-<!-- 
+<!--
 | `IndentationError`         | Sous-classe de `SyntaxError`, levée lorsqu'un problème d'indentation est rencontré.         |
 | `ImportError`              | Levée lorsqu'une tentative d'importation échoue.                                            |
 | `BaseException`            | Classe de base pour toutes les exceptions en Python.                                        |
@@ -390,15 +390,15 @@ Answer  :
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
-Question : PYTHON - Pouvez-vous nommer certaines des exceptions les plus courantes ?
-Answer  : 
+Question : Python - Exception - Pouvez-vous nommer certaines des exceptions les plus courantes ?
+Answer  :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 from pathlib import Path
@@ -424,7 +424,7 @@ lire_fichier('chemin/inexistant.txt')
 ```
 
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 from pathlib import Path
@@ -448,13 +448,13 @@ ecrire_dans_fichier('fichier_output.txt', 'Zoubida for ever.')
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
-Question : PYTHON - Est-ce que les paramètres sont passés par valeur ou par référence ?
-Answer  : 
+Question : Python - Functions - Est-ce que les paramètres sont passés par valeur ou par référence ?
+Answer  :
 
 * Les paramètres des fonctions sont passés par **référence** pour les objets **mutables** (listes, dictionnaires, objets définis par l'utilisateur)
 * Ils sont passés par **valeur** pour les objets **immuables** (comme les entiers, chaînes de caractères, tuples).
@@ -464,7 +464,7 @@ Cela signifie que si on passe un objet :
 * **mutable** à une fonction (une liste, ...), et que la fonction modifie cet objet, cette modification affectera l'objet d'origine en dehors de la fonction.
 * **immuable** (un entier, une chaîne de caractères, ...), une modification au sein de la fonction ne changera pas l'objet d'origine. Si il est modifié, Python créera une nouvelle instance de cet objet.
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 def modifier_liste(l):

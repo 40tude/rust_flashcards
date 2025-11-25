@@ -1,11 +1,11 @@
-<!-- 
+<!--
 <p align="center">
 <img src="../static/md/assets/img1.png" alt="attention" width="577"/>
 </p>
 
 $$ E = mc^2 $$
 
-#### Code snippet  
+#### Code snippet
 
 ```python
 # -----------------------------------------------------------------------------
@@ -20,10 +20,10 @@ def preprocessor(df):
 ```
 
 
-Question : 
-Answer   : 
+Question : Data Structures - No subcategory - Template
+Answer   :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 # TODO : add sample code
@@ -33,20 +33,20 @@ Answer   :
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : Data Structures - What is an **ArrayList**, what are the use cases, can you implement an ArrayList from scratch in Python? 
+Question : Data Structures - ArrayList - What is an **ArrayList**, what are the use cases, can you implement an ArrayList from scratch in Python?
 
-Answer   : 
+Answer   :
 
-* An **ArrayList** is a dynamic array-based data structure that allows elements to be stored in **contiguous memory locations**, with the capacity to automatically resize as elements are added or removed. 
+* An **ArrayList** is a dynamic array-based data structure that allows elements to be stored in **contiguous memory locations**, with the capacity to automatically resize as elements are added or removed.
 * Unlike fixed-size arrays, an ArrayList can grow and shrink dynamically, which makes it useful for scenarios where the number of elements is not known in advance. Python's built-in list already functions like an ArrayList.
 * Like fixed-size arrays, an ArrayList offers index based addressing (``bob = MyArrayList[42]``)
-* Unlike **Linked Lists**, an ArrayList uses a contiguous memory area making copy(), paste(), read(), write()... more efficient. 
+* Unlike **Linked Lists**, an ArrayList uses a contiguous memory area making copy(), paste(), read(), write()... more efficient.
 
 #### Key Features
 1. Dynamic Sizing: It can grow or shrink in size as needed.
@@ -62,7 +62,7 @@ Answer   :
 
 
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 class ArrayList:
@@ -83,7 +83,7 @@ class ArrayList:
         """Adds a new element to the end of the list."""
         if self.size == self.capacity:
             # Read this : https://stackoverflow.com/questions/5232198/how-does-the-capacity-of-stdvector-grow-automatically-what-is-the-rate
-            self.__resize(2 * self.capacity)  
+            self.__resize(2 * self.capacity)
         self.data[self.size] = element
         self.size += 1
 
@@ -127,25 +127,25 @@ print("ArrayList after removing element at index 1:", arr_list)
 ```
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : Data Structures - Can you show me how to implement a **Linked List** in Python ?
-Answer   : 
+Question : Data Structures - Linked List - Can you show me how to implement a **Linked List** in Python ?
+Answer   :
 
-* A **Linked List** is a data structure where elements (nodes) are stored in a linear sequence, but each element points to the next one in the list. 
-* Each node consists of two parts: 
-    1. the data 
-    1. a reference (or pointer) to the next node. 
+* A **Linked List** is a data structure where elements (nodes) are stored in a linear sequence, but each element points to the next one in the list.
+* Each node consists of two parts:
+    1. the data
+    1. a reference (or pointer) to the next node.
 * Fast to insert at the head
 * Slow to insert at the tail
 
 Here's how to implement a basic singly linked list in Python
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 class Node:
@@ -227,21 +227,21 @@ llist.print_list()  # Output: 5 -> 10 -> 30 -> None
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : Data Structures - Can you show me how to implement a **HashTable** in Python ?
+Question : Data Structures - HashTable - Can you show me how to implement a **HashTable** in Python ?
 
-Answer   : 
+Answer   :
 
-* A **HashTable** (also known as a hash map or dictionary) is a data structure that stores key-value pairs. 
-* It allows for fast access, insertion, and deletion of elements by using a hash function to convert keys into indices, where the values are stored in an underlying array. 
+* A **HashTable** (also known as a hash map or dictionary) is a data structure that stores key-value pairs.
+* It allows for fast access, insertion, and deletion of elements by using a hash function to convert keys into indices, where the values are stored in an underlying array.
 * The key feature of a hashtable is its ability to perform these operations in constant time, **O(1)** on average, although collisions can make the worst-case time complexity **O(n)**.
 
-#### Key Components 
+#### Key Components
 1. **Hash Function:** A function that takes a key and returns an index (array position). A good hash function should distribute keys uniformly across the array.
 1. **Collision Handling:** When two keys hash to the same index, a collision occurs. Common methods to handle collisions are:
     * Chaining: Use linked lists at each array index to store multiple key-value pairs.
@@ -254,7 +254,7 @@ Answer   :
 * Symbol Table: In compilers and interpreters to store variable names and their associated information.
 * Counting Frequency: Counting occurrences of elements in datasets.
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 class HashTable:
@@ -307,11 +307,11 @@ class HashTable:
     def __init__(self, size=10):
         self.size = size
         self.table = [[] for _ in range(self.size)]  # Create an array of empty lists
-    
+
     def hash_function(self, key):
         """Generate a hash for a given key."""
         return hash(key) % self.size
-    
+
     def insert(self, key, value):
         """Insert or update a key-value pair in the hashtable."""
         hash_index = self.hash_function(key)
@@ -322,7 +322,7 @@ class HashTable:
                 return
         # If the key doesn't exist, append the new key-value pair
         self.table[hash_index].append((key, value))
-    
+
     def get(self, key):
         """Retrieve the value associated with a given key."""
         hash_index = self.hash_function(key)
@@ -330,7 +330,7 @@ class HashTable:
             if element[0] == key:
                 return element[1]
         raise KeyError(f"Key {key} not found.")
-    
+
     def remove(self, key):
         """Remove a key-value pair from the hashtable."""
         hash_index = self.hash_function(key)
@@ -364,15 +364,15 @@ ht.display()
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : Data Structures - What is a **Stack**, what are the use cases, can you implement a Stack in Python?
+Question : Data Structures - Stack - What is a **Stack**, what are the use cases, can you implement a Stack in Python?
 
-Answer   : 
+Answer   :
 
 * A **Stack** is a linear data structure that follows the **Last In First Out (LIFO)** principle
 * The last element inserted is the first one to be removed
@@ -390,7 +390,7 @@ Answer   :
 1. ``peek()``: Returns the "value" of the element at the top of the stack without removing it.
 1. ``isEmpty()``: Checks if the stack is empty.
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 class Stack:
@@ -437,15 +437,15 @@ print(stack.is_empty())  # Output: False
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : Data Structures - What is a **Queue**, what are the use cases, can you implement a Queue in Python?
+Question : Data Structures - Queue - What is a **Queue**, what are the use cases, can you implement a Queue in Python?
 
-Answer   : 
+Answer   :
 
 * A **Queue** is a linear data structure that follows the **First In First Out (FIFO)** principle
 * The first element inserted is the first one to be removed.
@@ -466,7 +466,7 @@ Answer   :
 
 
 
-#### Code snippet 
+#### Code snippet
 
 Queue implementation using `collections.deque` (more efficient than using a list):
 
@@ -517,20 +517,20 @@ print(queue.is_empty())  # Output: False
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : Data Structures - What is a **binary search**? What are the use cases? Can you show how to implement it in Python?
+Question : Data Structures - Binary Search - What is a **binary search**? What are the use cases? Can you show how to implement it in Python?
 
-Answer   : 
+Answer   :
 
-* Binary search is an efficient algorithm for finding an item from a **sorted** list of items. 
-* It works by repeatedly dividing the search interval in half. 
+* Binary search is an efficient algorithm for finding an item from a **sorted** list of items.
+* It works by repeatedly dividing the search interval in half.
 * If the value of the search key is less than the item in the middle of the interval, the search continues on the left half
-* otherwise, it continues on the right half. 
+* otherwise, it continues on the right half.
 * This method eliminates half of the remaining elements each time, resulting in a time complexity of **O($\log_2(n)$)**.
 
 #### Use Cases of Binary Search
@@ -548,15 +548,15 @@ Answer   :
 3. Repeat the process until the target is found or the search interval is empty.
 
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 def binary_search(arr, target):
     left, right = 0, len(arr) - 1
-    
+
     while left <= right:
         mid = left + (right - left) // 2  # Avoids overflow compared to (left + right) // 2
-        
+
         # Check if target is present at mid
         if arr[mid] == target:
             return mid  # Target found, return index
@@ -564,7 +564,7 @@ def binary_search(arr, target):
             left = mid + 1  # Target is in the right half
         else:
             right = mid - 1  # Target is in the left half
-    
+
     return -1  # Target not found
 
 # Usage
@@ -602,17 +602,17 @@ else:
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : Data Structures - What is a **Binary Search Tree**? What are the use cases? Can you show how to implement it in Python?
+Question : Data Structures - Binary Search Tree - What is a **Binary Search Tree**? What are the use cases? Can you show how to implement it in Python?
 
-Answer   : 
+Answer   :
 
-A **Binary Search Tree (BST)** is a data structure that stores elements (typically numbers) in a hierarchical manner. 
+A **Binary Search Tree (BST)** is a data structure that stores elements (typically numbers) in a hierarchical manner.
 
 
 #### Use Cases
@@ -643,7 +643,7 @@ Each node in a BST contains the following:
 
 
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 class Node:
@@ -696,7 +696,7 @@ class BinarySearchTree:
         nodes = []
         if current_node is not None:
             nodes += self._inorder_traversal(current_node.left)     # Visit left subtree first
-            nodes.append(current_node.value)                        # Then visit node 
+            nodes.append(current_node.value)                        # Then visit node
             nodes += self._inorder_traversal(current_node.right)    # Then right subtree
         return nodes
 
@@ -720,13 +720,13 @@ One can extend this implementation by adding functions for ``deletion()``, ``bal
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : Data Structures - If a BST class already has an ``inorder_traversal()`` method coded that way, how would you code ``preorder_traversal()`` and ``postorder_traversal()`` method?
+Question : Data Structures - Binary Search Tree - If a BST class already has an ``inorder_traversal()`` method coded that way, how would you code ``preorder_traversal()`` and ``postorder_traversal()`` method?
 
 
 ```python
@@ -744,7 +744,7 @@ def _inorder_traversal(self, current_node):
         return nodes
 ```
 
-Answer   : 
+Answer   :
 
 **Inorder Traversal** : Visit the left subtree, then the root, then the right subtree. The order is:
 
@@ -766,7 +766,7 @@ Answer   :
 1. Visit the node.
 
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 # Preorder Traversal
@@ -827,20 +827,20 @@ print("Postorder Traversal:", bst.postorder_traversal()) # Outputs: [3, 7, 5, 20
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : Data Structures - In the context of BST how do you explain **DFS**, can you show how to implement it in Python ? 
+Question : Data Structures - Binary Search Tree - In the context of BST how do you explain **DFS**, can you show how to implement it in Python ?
 
-Answer   : 
+Answer   :
 
-In a **Binary Search Tree (BST)**, both **Depth First Search (DFS)** and **Breadth First Search (BFS)** are common traversal techniques used to explore or search through the tree's nodes. 
+In a **Binary Search Tree (BST)**, both **Depth First Search (DFS)** and **Breadth First Search (BFS)** are common traversal techniques used to explore or search through the tree's nodes.
 
 #### Depth First Search (DFS)
-* DFS explores as far as possible along each branch before backtracking. 
+* DFS explores as far as possible along each branch before backtracking.
 * It can be implemented in three different ways depending on the order in which you visit nodes:
     * **Pre-order** (visit the current node, then left subtree, then right subtree)
     * **In-order** (visit left subtree, then current node, then right subtree)
@@ -850,7 +850,7 @@ In a **Binary Search Tree (BST)**, both **Depth First Search (DFS)** and **Bread
 
 
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 class Node:
@@ -891,22 +891,22 @@ dfs_inorder(root)  # Output: 20 30 40 50 60 70 80
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : Data Structures - In the context of BST how do you explain **BFS**, can you show how to implement it in Python ? 
+Question : Data Structures - Binary Search Tree - In the context of BST how do you explain **BFS**, can you show how to implement it in Python ?
 
-Answer   : 
+Answer   :
 
-In a **Binary Search Tree (BST)**, both **Depth First Search (DFS)** and **Breadth First Search (BFS)** are common traversal techniques used to explore or search through the tree's nodes. 
+In a **Binary Search Tree (BST)**, both **Depth First Search (DFS)** and **Breadth First Search (BFS)** are common traversal techniques used to explore or search through the tree's nodes.
 
 
 #### Breadth First Search (BFS)
-* BFS explores the tree level by level, starting from the root. 
-* It visits all nodes at the present depth before moving on to nodes at the next depth level. 
+* BFS explores the tree level by level, starting from the root.
+* It visits all nodes at the present depth before moving on to nodes at the next depth level.
 * This can be implemented using a queue
 * Use BFS when you want to explore nodes closer to the root first, and then gradually move outward to deeper nodes
 
@@ -914,13 +914,13 @@ In a **Binary Search Tree (BST)**, both **Depth First Search (DFS)** and **Bread
 * Web crawling : It starts from a root webpage and explores all the links (nodes) level by level, ensuring that all the pages linked to the current page are visited before moving on to the next depth level.
 * Level Order Traversal of a Binary Tree : Printing nodes level by level in a tree.
 Converting a binary tree into a human-readable format by level.
-* Shortest Path in an Unweighted Graph or Grid : indeed BFS explores all nodes at the current depth (level) before moving to nodes at the next depth. This ensures that when BFS visits a node, it has found the shortest path to that node. 
+* Shortest Path in an Unweighted Graph or Grid : indeed BFS explores all nodes at the current depth (level) before moving to nodes at the next depth. This ensures that when BFS visits a node, it has found the shortest path to that node.
     * In social networks, to determine the shortest path (or degrees of separation) between two people
     * Finding the shortest path in a maze where movement costs are uniform
 
 
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 from collections import deque
@@ -928,16 +928,16 @@ from collections import deque
 def bfs(root):
     if root is None:
         return
-    
+
     # Initialize a queue for BFS
     queue = deque([root])
-    
+
     while queue:
         # Dequeue a node from the front of the queue
         node = queue.popleft()
         # Visit the node
         print(node.val, end=' ')
-        
+
         # Enqueue the left child if it exists
         if node.left:
             queue.append(node.left)
@@ -966,26 +966,26 @@ bfs(root)  # Output: 50 30 70 20 40 60 80
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : Data Structures - Show how to implement a **recursive binary search** in Python?
-Answer   : 
+Question : Data Structures - Binary Search - Show how to implement a **recursive binary search** in Python?
+Answer   :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 def binary_search_recursive(arr, target, left, right):
     # Base case: if the search space is invalid
     if left > right:
         return -1  # Target not found
-    
-    # Avoid overflow compared to (left + right) // 2 
+
+    # Avoid overflow compared to (left + right) // 2
     # (// is integer division)
-    mid = left + (right - left) // 2  
+    mid = left + (right - left) // 2
 
     # Check if the target is present at mid
     if arr[mid] == target:
@@ -1016,18 +1016,18 @@ else:
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : Data Structures - La **récursivité**... ça vous parle ?
-Answer   : 
+Question : Data Structures - Recursive - La **récursivité**... ça vous parle ?
+Answer   :
 
-* Cela consiste à appeler une fonction depuis la fonction elle-même. 
+* Cela consiste à appeler une fonction depuis la fonction elle-même.
 * Utile dans les problèmes qui peuvent être divisés en sous-problèmes à **plus petite échelle**
-* **ATTENTION**. Pour intérressante quelle soit d'un point de vue intellectuel ou esthétique, une implémentation récursive n'est pas toujours la plus efficace 
+* **ATTENTION**. Pour intérressante quelle soit d'un point de vue intellectuel ou esthétique, une implémentation récursive n'est pas toujours la plus efficace
 
 #### Quand utiliser la récursivité ?
 * Il existe une condition d'arrêt claire (un cas de base) qui met fin à la récursion.
@@ -1038,12 +1038,12 @@ Answer   :
 
 1. **Identifier** la condition d'arrêt
     * C'est la première chose à coder dans la fonction récursive
-    * Evite une récursion infinie. 
+    * Evite une récursion infinie.
     * C’est l’étape qui détermine quand la fonction doit arrêter de s'appeler.
     * Souvent un cas simple ou trivial du problème initial
 
 2. **Décomposer** le problème
-    * Diviser le problème en problème à **plus petite échelle**, similaires à l'original. 
+    * Diviser le problème en problème à **plus petite échelle**, similaires à l'original.
     * La fonction s'appelle avec des arguments plus simples ou plus réduits.
 
 3. **Combiner** les résultats
@@ -1056,7 +1056,7 @@ Answer   :
 * Cas de base  : `n = 0`, la factorielle de 0 est 1
 * Cas récursif : `factorielle(n) = n * factorielle(n - 1)`
 
-###### Code snippet 
+###### Code snippet
 
 ```python
 def factorielle(n):
@@ -1072,7 +1072,7 @@ def factorielle(n):
 * Cas de base  : Si la liste est vide, la somme est 0.
 * Cas récursif : La somme d’une liste c'est la valeur du premier élément plus la somme des éléments restants
 
-###### Code snippet 
+###### Code snippet
 
 ```python
 def somme(liste):
@@ -1097,7 +1097,7 @@ On a donc
 * Cas récursif : `F(n) = F(n-1) + F(n-2)`.
 
 
-###### Code snippet 
+###### Code snippet
 
 ```python
 def fibonacci(n):
@@ -1119,14 +1119,14 @@ def fibonacci(n):
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : Data Structures - What is **P vs NP** ? What can you say about it ? 
-Answer   : 
+Question : Data Structures - Efficiency - What is **P vs NP** ? What can you say about it ?
+Answer   :
 
 #### What is P?
 
@@ -1136,11 +1136,11 @@ For example, consider a simple sorting algorithm like **merge sort**, which has 
 
 ##### Note
 
-* In the specific case of merge sort the $\log()$ is $\log_2()$ but with other problems this might **not** be the case. 
-* Here $\log()$ should be understood as a "generic" version of $\log()$. 
+* In the specific case of merge sort the $\log()$ is $\log_2()$ but with other problems this might **not** be the case.
+* Here $\log()$ should be understood as a "generic" version of $\log()$.
 
 
-##### Code snippet 
+##### Code snippet
 
 ```python
 arr = [5, 2, 9, 1, 5, 6]
@@ -1158,7 +1158,7 @@ Another classic NP problem is the **Traveling Salesman Problem (TSP)**. Given a 
 
 However, if someone gives you a potential solution (a specific route), you can quickly check if it's valid and what the total distance is.
 
-##### Code snippet 
+##### Code snippet
 
 ```python
 # Given a possible solution to TSP
@@ -1187,7 +1187,7 @@ On the other hand, if **P ≠ NP**, it means that some problems are inherently h
 Finding the shortest path in a graph using **Dijkstra’s algorithm** is a P problem because we can solve it efficiently.
 
 
-##### Code snippet 
+##### Code snippet
 
 ```python
 import heapq
@@ -1196,16 +1196,16 @@ def dijkstra(graph, start):
     queue = [(0, start)]
     distances = {node: float('inf') for node in graph}
     distances[start] = 0
-    
+
     while queue:
         current_distance, current_node = heapq.heappop(queue)
-        
+
         for neighbor, weight in graph[current_node]:
             distance = current_distance + weight
             if distance < distances[neighbor]:
                 distances[neighbor] = distance
                 heapq.heappush(queue, (distance, neighbor))
-    
+
     return distances
 
 graph = {
@@ -1221,7 +1221,7 @@ print(dijkstra(graph, 'A'))  # P problem: can be solved efficiently
 #### Example of an NP Problem (Hard to Solve)
 Let’s simulate the **Traveling Salesman Problem** (TSP), which is NP-hard. Here, we’re trying all possible permutations of routes (which is very inefficient).
 
-##### Code snippet 
+##### Code snippet
 
 ```python
 import itertools
@@ -1243,13 +1243,13 @@ def calculate_route_distance(route):
 def tsp(cities):
     shortest_route = None
     min_distance = float('inf')
-    
+
     for perm in itertools.permutations(cities):
         route_distance = calculate_route_distance(perm)
         if route_distance < min_distance:
             min_distance = route_distance
             shortest_route = perm
-    
+
     return shortest_route, min_distance
 
 print(tsp(cities))  # NP problem: inefficient solution for large input
@@ -1258,23 +1258,23 @@ print(tsp(cities))  # NP problem: inefficient solution for large input
 #### Summary
 * **P** : Problems that can be solved efficiently (like sorting or finding the shortest path) in Python.
 * **NP** : Problems where finding a solution is hard, but verifying it is easy (like TSP).
-* The question of whether **P = NP** is still open. 
+* The question of whether **P = NP** is still open.
 
 
 
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : Data Structures - What is a **Trie** data structure, what are the use cases, can you implement an Trie from scratch in Python? 
+Question : Data Structures - Trie - What is a **Trie** data structure, what are the use cases, can you implement an Trie from scratch in Python?
 
 
-Answer   : 
+Answer   :
 
 A **Trie** (prefix tree) is a specialized tree data structure used to store a dynamic set or associative array where the keys are usually strings. It allows for fast retrieval of words or prefixes, making it useful for tasks like autocomplete and spell checking.
 
@@ -1305,7 +1305,7 @@ Source : [Wikipedia](https://en.wikipedia.org/wiki/Trie)
 
 
 
-##### Code snippet 
+##### Code snippet
 
 ```python
 class TrieNode:
@@ -1392,82 +1392,82 @@ print(trie.starts_with("cat")) # False (no word starts with this prefix)
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : Data Structures - How would you reverse a linked list ? 
+Question : Data Structures - Linked List - How would you reverse a linked list ?
 
-Answer : 
+Answer :
 
-##### Code snippet 
+##### Code snippet
 
 ```python
 
-class Node: 
-    def __init__(self, data): 
-        self.data = data 
+class Node:
+    def __init__(self, data):
+        self.data = data
         self.next = None
-  
-class LinkedList: 
-    def __init__(self): 
+
+class LinkedList:
+    def __init__(self):
         self.head = None
-  
-    def prepend(self, new_data): 
-        new_node = Node(new_data) 
-        new_node.next = self.head 
-        self.head = new_node 
-    
+
+    def prepend(self, new_data):
+        new_node = Node(new_data)
+        new_node.next = self.head
+        self.head = new_node
+
     # 3 pointers : prev, current, next
     # Move to the "right" the 3 pointers
-    #       current.next = previous 
+    #       current.next = previous
     #       previous = current
     #       current = current.next (but we need to make a copy of current.next in next pointer first)
-    def reverse(self): 
+    def reverse(self):
         prev = None
-        current = self.head 
-        while(current is not None): 
+        current = self.head
+        while(current is not None):
             next = current.next     # make a copy to prepare step 3
             current.next = prev     # step 1
             prev = current          # step 2
             current = next          # step 3
-        self.head = prev 
-  
+        self.head = prev
+
     def print_list(self):
         current = self.head
-        while current:  
+        while current:
             print(current.data, end=" -> ")
             current = current.next
-        print("None")  
+        print("None")
 
-llist = LinkedList() 
-llist.prepend(10) 
-llist.prepend(20) 
-llist.prepend(30) 
-llist.prepend(42) 
-  
-llist.print_list() 
-llist.reverse() 
+llist = LinkedList()
+llist.prepend(10)
+llist.prepend(20)
+llist.prepend(30)
+llist.prepend(42)
+
+llist.print_list()
+llist.reverse()
 llist.print_list()
 ```
 
-* Time Complexity : O(n) 
-* Space Complexity : O(n) (next is created in each loop) 
+* Time Complexity : O(n)
+* Space Complexity : O(n) (next is created in each loop)
 
 
 
 
-<!-- 
+<!--
 ############################################################
-## 
-############################################################ 
+##
+############################################################
 -->
 
-Question : Data Structures - What is a **Merge Sort** algorithm, what are the use cases and can you implement a Merge Sort from scratch in Python? 
+Question : Data Structures - Sort - What is a **Merge Sort** algorithm, what are the use cases and can you implement a Merge Sort from scratch in Python?
 
-Answer   : 
+Answer   :
 
 This is a **divide-and-conquer algorithm** that recursively divides an input array into two halves, sorts each half, and then merges the two sorted halves back together. It's an efficient, stable, and comparison-based sorting algorithm with a time complexity of \( O(n \log n) \).
 

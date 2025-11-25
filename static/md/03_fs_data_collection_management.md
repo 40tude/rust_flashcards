@@ -1,11 +1,11 @@
-<!-- 
+<!--
 <p align="center">
 <img src="../static/md/assets/img1.png" alt="attention" width="577"/>
 </p>
 
 $$ E = mc^2 $$
 
-#### Code snippet  
+#### Code snippet
 
 ```python
 # -----------------------------------------------------------------------------
@@ -20,10 +20,10 @@ def preprocessor(df):
 ```
 
 
-Question : 
-Answer   : 
+Question : Data Collection - No subcategory - Template
+Answer   :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 # TODO : add sample code
@@ -33,47 +33,47 @@ Answer   :
 
 
 
-<!-- 
+<!--
 ############################################################
 ## Questions issues des quizz
-############################################################ 
+############################################################
 -->
 
 <!-- https://app.jedha.co/path/full-stack-full-time -->
 
 Question : Data Collection - HTTP - What is the purpose of the HTTP protocol?
-Answer  : 
+Answer  :
 
 To transfer data and instructions over the Internet
 
 
 
-Question : Data Collection - HTTP - What does an HTTP request consist of? 
-Answer  : 
+Question : Data Collection - HTTP - What does an HTTP request consist of?
+Answer  :
 
 Method, URL, and protocol version
 
 
 
 Question : Data Collection - HTTP - url et route ?
-Answer  : 
+Answer  :
 
-Dans https://api.github.com/zen 
+Dans https://api.github.com/zen
 
 * L'**url** c'est https://api.github.com
-* La **route** c'est zen  
+* La **route** c'est zen
 
 
 
 Question : Data Collection - HTTP - Which HTTP method is used to request a resource at a specified URL?
-Answer  : 
+Answer  :
 
 ``GET``
 
 
 
 Question : Data Collection - HTTP - What does an HTTP response contain?
-Answer  : 
+Answer  :
 
 * Status code
 * Headers
@@ -83,28 +83,28 @@ Answer  :
 
 
 Question : Data Collection - HTTP - What does a status code of 404 indicate?
-Answer  : 
+Answer  :
 
 Resource is no longer available at the requested location
 
 
 
 Question : Data Collection - HTTP - Which response header provides information about the type of content in the body of the response?
-Answer  : 
+Answer  :
 
 Content-Type
 
 
 
 Question : Data Collection - HTTP - Which status code indicates a client error?
-Answer  : 
+Answer  :
 
 ``401``
 
 
 
 Question : Data Collection - HTTP - What is the difference between a ``GET`` and a ``POST`` method for HTTP requests?
-Answer  : 
+Answer  :
 
 * The **POST** method lets you send data to the web server
 * While the **GET** method only gathers data from the web server without sending any
@@ -114,16 +114,16 @@ Answer  :
 <!-- https://app.jedha.co/course/http-and-apis-ft/02-apis-quiz -->
 
 Question : Data Collection - API - Which HTTP method is used to retrieve data from an API?
-Answer  : 
+Answer  :
 
 ``GET``
 
 
 
 Question : Data Collection - API - What does REST stand for in REST API?
-Answer  : 
+Answer  :
 
-**Representational State Transfer**. Décrit une architecture où : 
+**Representational State Transfer**. Décrit une architecture où :
 
 * les interactions avec des ressources web passent par des échanges de représentations de ces ressources. On ne manipule pas les ressources mais leur repésentation.
 * l'état de l'application (les données) est transféré à chaque requête de manière stateless (pas de session en mémoire d'une requête à une autre)
@@ -131,7 +131,7 @@ Answer  :
 
 
 Question : Data Collection - API - Which Python library can be used to interact with APIs?
-Answer  : 
+Answer  :
 
 ``requests``
 
@@ -140,11 +140,11 @@ Answer  :
 
 
 Question : Data Collection - API - How can you add parameters to a ``GET`` request?
-Answer  : 
+Answer  :
 
 Use the params parameter
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 my_params = {
@@ -152,20 +152,20 @@ my_params = {
   "countrycodes" : "fr",
   "format":"json",
 }
-response = requests.get(url, params=my_params) 
+response = requests.get(url, params=my_params)
 ```
 
 
 
 Question : Data Collection - API - Which HTTP method is used to send data to an API?
-Answer  : 
+Answer  :
 
 ``POST``
 
 
 
 Question : Data Collection - API - How can you access the content of a response as plain text in requests library?
-Answer  : 
+Answer  :
 
 ``response.text``
 
@@ -173,7 +173,7 @@ Answer  :
 
 
 Question : Data Collection - API - How can you retrieve binary content, such as an image, from an API response?
-Answer  : 
+Answer  :
 
 ``response.content``
 
@@ -197,7 +197,7 @@ Answer  :
 
 
 <!-- https://app.jedha.co/course/web-scraping-ft/01-html-css-quiz -->
-<!-- 
+<!--
 What is the purpose of web scraping?
 Which elements are used to create headings in HTML?
 How can you separate different sections of a website in HTML?
@@ -210,34 +210,34 @@ How can you view the source code of a webpage in Google Chrome?
 -->
 
 Question : Data Collection - HTML-CSS - Which CSS selector is used to select an element by its class?
-Answer  : 
+Answer  :
 
 ``.class``
 
 
 
 <!-- https://app.jedha.co/course/web-scraping-ft/02-scrapy-basics-quiz -->
-<!-- 
+<!--
 -->
 
 Question : Data Collection - SCRAPY - What is Scrapy used for?
-Answer  : 
+Answer  :
 
 Parsing HTML pages, Scraping websites automatically, Running multiple crawlers simultaneously
 
 
 
 Question : Data Collection - SCRAPY - What does the parse() method in a Scrapy spider do?
-Answer  : 
+Answer  :
 
 It defines the callback function for processing the response
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 def parse(self, response):
     hotel = response.xpath(
-    "/html/body/div[4]/div/div[2]/div/div[2]/div[2]/div/div/div[1]/div/div[1]/div/h3/a/div[1]/text()" 
+    "/html/body/div[4]/div/div[2]/div/div[2]/div[2]/div/div/div[1]/div/div[1]/div/h3/a/div[1]/text()"
     ).get()
     # TODO : convertir utf8 en texte ou supporter utf8
 
@@ -255,18 +255,18 @@ def parse(self, response):
 
 
 Question : Data Collection - SCRAPY - How can you avoid being banned from websites when using Scrapy?
-Answer  : 
+Answer  :
 
 1. Use a different IP address for each request
 1. Slow down the crawling speed
 1. Randomize the order of requests
 
 Question : Data Collection - SCRAPY - Which setting is used to specify the user agent in Scrapy?
-Answer  : 
+Answer  :
 
 ``USER_AGENT``
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 process = CrawlerProcess(
@@ -283,11 +283,11 @@ process = CrawlerProcess(
 
 
 Question : Data Collection - SCRAPY - What does the ``LOG_LEVEL`` setting control in Scrapy?
-Answer  : 
+Answer  :
 
 The level of logs displayed
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 process = CrawlerProcess(
@@ -302,7 +302,7 @@ process = CrawlerProcess(
 ```
 
 Question : Data Collection - SCRAPY - What is the purpose of the ``CrawlerProcess`` in Scrapy?
-Answer  : 
+Answer  :
 
 1. It runs the spider and saves the results
 1. It sets up the user agent for scraping
@@ -311,11 +311,11 @@ Answer  :
 
 
 Question : Data Collection - SCRAPY - How can you save the results of a Scrapy spider in a JSON file?
-Answer  : 
+Answer  :
 
 Specify the output file using the ``FEEDS`` setting
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 process = CrawlerProcess(
@@ -336,27 +336,27 @@ process = CrawlerProcess(
 <!-- https://app.jedha.co/course/web-scraping-ft/03-scrapy-advanced-quiz -->
 
 Question : Data Collection - SCRAPY - What are callbacks used for in Scrapy?
-Answer  : 
+Answer  :
 
 To perform tasks that are independent of the code itself
 
 
 
-Question : Data Collection - SCRAPY - How can you navigate the web and follow links using Scrapy? 
-Answer  : 
+Question : Data Collection - SCRAPY - How can you navigate the web and follow links using Scrapy?
+Answer  :
 
 By using the `.follow()` method and providing the XPath of the link
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 class ArticleSpider(scrapy.Spider):
     name = "article_spider"
-    start_urls = ['https://example-blog.com']  
+    start_urls = ['https://example-blog.com']
 
     def parse(self, response):
         article_links = response.css('a.article-link::attr(href)').getall()
-        
+
         for link in article_links:
             yield response.follow(link, callback=self.parse_article)
 
@@ -375,11 +375,11 @@ class ArticleSpider(scrapy.Spider):
 
 
 Question : Data Collection - SCRAPY - How can you authenticate on a website using Scrapy?
-Answer  : 
+Answer  :
 
 By using the ``.from_response()`` method and sending a ``POST`` request with the login data.
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 # Parse function for login
@@ -396,14 +396,14 @@ def parse(self, response):
 
 
 Question : Data Collection - SCRAPY - What is the purpose of Scrapy projects?
-Answer  : 
+Answer  :
 
 To configure the scraping process and manage settings.
 
 
 
 Question : Data Collection - SCRAPY - How can you enable AutoThrottle in Scrapy?
-Answer  : 
+Answer  :
 
 By uncommenting the appropriate lines in the settings.py file.
 
@@ -428,14 +428,14 @@ AUTOTHROTTLE_DEBUG = False
 
 
 Question : Data Collection - SCRAPY - What is the purpose of the Scrapy ``AutoThrottle`` extension?
-Answer  : 
+Answer  :
 
 To automatically adjust Scrapy to the optimum crawling speed and avoid exceeding requests limitations.
 
 
 
 Question : Data Collection - SCRAPY - How can you rotate user agents in Scrapy?
-Answer  : 
+Answer  :
 
 By installing the ``scrapy-user-agents`` library and configuring the ``settings.py`` file.
 
@@ -444,13 +444,13 @@ By installing the ``scrapy-user-agents`` library and configuring the ``settings.
 
 
 Question : Data Collection - SCRAPY - What is the purpose of rotating IP addresses in Scrapy?
-Answer  : 
+Answer  :
 
 To bypass website bans and avoid detection.
 
 
 Question : Data Collection - SCRAPY - How can you specify a list of rotating proxies in Scrapy?
-Answer  : 
+Answer  :
 
 By installing the ``scrapy-rotating-proxies`` library and configuring the ``settings.py`` file.
 
@@ -458,14 +458,14 @@ By installing the ``scrapy-rotating-proxies`` library and configuring the ``sett
 
 
 Question : Data Collection - SCRAPY - Which command is used to start a Scrapy spider contained in a project?
-Answer  : 
+Answer  :
 
 ```bash
 scrapy crawl spider_name
 ```
 
 Question : Data Collection - SCRAPY - Which Scrapy commands allows you to start a new Scrapy project?
-Answer  : 
+Answer  :
 
 ```bash
 scrapy startproject
@@ -473,20 +473,20 @@ scrapy startproject
 
 
 Question : Data Collection - SCRAPY - What is the purpose of the ``.follow()`` method in Scrapy?
-Answer  : 
+Answer  :
 
 To navigate to the next page in a pagination sequence.
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 class ArticleSpider(scrapy.Spider):
     name = "article_spider"
-    start_urls = ['https://example-blog.com']  
+    start_urls = ['https://example-blog.com']
 
     def parse(self, response):
         article_links = response.css('a.article-link::attr(href)').getall()
-        
+
         for link in article_links:
             yield response.follow(link, callback=self.parse_article)
 
@@ -572,7 +572,7 @@ Question : Data Collection - ETL - When would a company greatly benefit from imp
 Answer  : When it has multiple data sources
 
 Question : Data Collection - ETL - What is the primary purpose of a transactional database and a data warehouse, respectively?
-Answer  : 
+Answer  :
 * A **transactional database** is primarily used for day-to-day operational tasks
 * A **data warehouse** is primarily used for historical data analysis
 
@@ -604,7 +604,7 @@ Answer  : Unknown or missing values
 Question : Data Collection - SQL reminder - Which SQL command is used to create tables?
 Answer   : `CREATE TABLE`
 
-#### Code snippet 
+#### Code snippet
 
 ```sql
 CREATE TABLE IF NOT EXISTS flashcards (
@@ -618,7 +618,7 @@ CREATE TABLE IF NOT EXISTS flashcards (
 Question : Data Collection - SQL reminder - Which SQL command is used to insert values into a table?
 Answer  : `INSERT INTO`
 
-#### Code snippet 
+#### Code snippet
 
 ```sql
 INSERT INTO Customers (CustomerName, ContactName, Address, City, PostalCode, Country)
@@ -630,7 +630,7 @@ VALUES ('Cardinal', 'Tom B. Erichsen', 'Skagen 21', 'Stavanger', '4006', 'Norway
 Question : Data Collection - SQL reminder - Which SQL command is used to select specific columns from a table?
 Answer  : `SELECT`
 
-#### Code snippet 
+#### Code snippet
 
 ```sql
 SELECT id, question_html, answer_html FROM flashcards ORDER BY RANDOM() LIMIT 1;
@@ -641,7 +641,7 @@ SELECT id, question_html, answer_html FROM flashcards ORDER BY RANDOM() LIMIT 1;
 Question : Data Collection - SQL reminder - Which SQL command is used to join two tables?
 Answer  : `INNER JOIN`
 
-#### Code snippet 
+#### Code snippet
 
 ```sql
 SELECT ProductID, ProductName, CategoryName
@@ -652,19 +652,19 @@ INNER JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 
 
 
-Question : SQL-ALCHEMY - What is SQLAlchemy?
+Question : Data Collection - SQL-ALCHEMY - What is SQLAlchemy?
 Answer  : Python library for manipulating databases
 
-Question : SQL-ALCHEMY - Which layer of SQLAlchemy allows you to communicate with databases and create flexible models?
+Question : Data Collection - SQL-ALCHEMY - Which layer of SQLAlchemy allows you to communicate with databases and create flexible models?
 Answer  : ORM
 
-Question : SQL-ALCHEMY - What is the purpose of the ``__repr__`` method in SQLAlchemy? 
+Question : Data Collection - SQL-ALCHEMY - What is the purpose of the ``__repr__`` method in SQLAlchemy?
 Answer  : It formats the output of an object
 
-Question : SQL-ALCHEMY - How do you persist values in a database using SQLAlchemy?
+Question : Data Collection - SQL-ALCHEMY - How do you persist values in a database using SQLAlchemy?
 Answer  : By calling the ``commit()`` method
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 session = Session()
@@ -675,7 +675,7 @@ session.commit()
 ```
 
 
-Question : SQL-ALCHEMY - How can you query data from a database using SQLAlchemy?
+Question : Data Collection - SQL-ALCHEMY - How can you query data from a database using SQLAlchemy?
 Answer  : By using the ``query()`` function
 
 ```python
