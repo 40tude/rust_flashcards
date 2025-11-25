@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <title>Search</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="mt-5">Search</h1>
+        <form method="POST" action="/search">
+            <div class="form-group">
+                <label for="keywords">Enter one more space separated keywords :</label>
+                <input type="text" class="form-control" id="keywords" name="keywords" placeholder="Mots-clés">
+            </div>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">Home</a>
+            <!-- <a href="/" class="btn btn-secondary">Home</a> -->
+
+            <button type="submit" class="btn btn-primary">OK</button>
+        </form>
+    </div>
+</body>
+
+</html>

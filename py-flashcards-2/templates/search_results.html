@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <title>Résultats de la Recherche</title>
+
+
+    <!-- css for Pygments color syntax (Python source code in the HTML page) -->
+    <!-- Other css available here : https://github.com/dataframing/pygments-css/tree/main/styles  -->
+    <!-- Get the file then make sure to change ".highlight" into ".codehilite" -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/default.css') }}">
+
+    <!-- MathJax -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"
+        async></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            }
+        });
+    </script>
+
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="mt-5">Cards in search</h1>
+        <p><small>{{ nb_cards }} cards in search results</small></p>
+        <div class="mt-3">
+            <!-- Contenu Markdown converti en HTML -->
+            {{ Q_html | safe }}
+        </div>
+
+        <div class="mt-3">
+            <!-- Contenu Markdown converti en HTML -->
+            {{ A_html | safe }}
+        </div>
+
+        <div class="mt-3">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">Home</a>
+            <a href="{{ url_for('search_results') }}" class="btn btn-primary" autofocus>Next</a>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,9 @@
+/.git
+/.venv
+/md_buffer
+.env
+.gitignore
+mypy.ini
+pyproject.toml
+README.md
+uv.lock
