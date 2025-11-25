@@ -1,6 +1,6 @@
 # Multi-Phase Implementation Plan: Python Flask → Rust Axum
 
-## STATUS: Phases 1-4 COMPLETED ✅, Ready for Phase 5
+## STATUS: Phases 1-5 COMPLETED ✅, Ready for Phase 6
 
 ---
 
@@ -214,7 +214,7 @@ pub fn get_total_count(pool: &DbPool) -> Result<i64>
 
 ---
 
-## PHASE 5: Session Management 🔄 NEXT
+## PHASE 5: Session Management ✅ COMPLETED
 
 ### Goal
 tower-sessions + seen_ids tracking
@@ -282,18 +282,20 @@ pub async fn index(
 }
 ```
 
-### Success Criteria
-- [ ] Session persists across requests
-- [ ] seen_ids prevents repeats
-- [ ] Quand all cards seen, list resets
-- [ ] nb_cards cached in session
-- [ ] /reset_session clears session
+### Success Criteria Met
+- ✅ Session persists across requests (cookie: flashcards_session)
+- ✅ seen_ids prevents repeats (exclusion in get_random_flashcard)
+- ✅ Quand all cards seen, list resets (auto-clear when len >= nb_cards)
+- ✅ nb_cards cached in session
+- ✅ /reset_session clears session (session.flush())
+- ✅ SessionData struct (seen_ids, searched_ids, keywords, nb_cards)
+- ✅ MemoryStore + SessionManagerLayer configured
 
 ### Files: ~4, ~150-200 lignes
 
 ---
 
-## PHASE 6: Search Functionality
+## PHASE 6: Search Functionality 🔄 NEXT
 
 ### Goal
 FTS5 full-text search avec session tracking

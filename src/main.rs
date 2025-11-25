@@ -2,10 +2,12 @@ mod config;
 mod content;
 mod db;
 mod routes;
+mod session;
 
 use axum::{routing::get, Router};
 use std::net::SocketAddr;
 use tower_http::services::ServeDir;
+use tower_sessions::{MemoryStore, SessionManagerLayer};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -42,11 +44,19 @@ async fn main() -> anyhow::Result<()> {
 
     tracing::info!("Content loaded successfully. Starting web server...");
 
+    // Setup session store
+    let session_store = MemoryStore::default();
+    let session_layer = SessionManagerLayer::new(session_store)
+        .with_secure(false)
+        .with_name("flashcards_session");
+
     // Build Axum router
     let app = Router::new()
         .route("/", get(routes::index))
         .route("/next", get(routes::next))
+        .route("/reset_session", get(routes::reset_session))
         .nest_service("/static", ServeDir::new("static"))
+        .layer(session_layer)
         .with_state(pool);
 
     // Bind to address
