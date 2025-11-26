@@ -101,6 +101,7 @@ http://localhost:8080/
 https://rust-flashcards-ae94334b8997.herokuapp.com/
 powershell -Command "Stop-Process -Name rust-flashcards -Force"
 
+heroku run bash -a rust-flashcards
 
 ```
 
