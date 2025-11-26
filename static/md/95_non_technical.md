@@ -1,6 +1,6 @@
 <!--
 <p align="center">
-<img src="../static/md/assets/img.png" alt="attention" width="577"/>
+<img src="../static/md/assets/img.png" alt="attention" width="433"/>
 </p>
 
 $$ E = mc^2 $$
@@ -302,10 +302,10 @@ Question : Non-technical - Book - Did you ever read ?
 Answer  :
 
 <p align="center">
-<img src="../static/md/book_covers/black_swan.png" alt="dummy" width="577"/>
+<img src="../static/md/book_covers/black_swan.webp" alt="dummy" width="433"/>
 </p>
 
-* To get one of the best explanation (FR) about the power law [watch this video](https://youtu.be/MrsjMiL9W9o?si=qaIUySUA72djVVdA).
+* To get one of the best explanation (FR) about the power law [watch this video](https://youtu.be/MrsjMiL9W9o).
 * Power laws are much more common than we might think. For example, the Pareto principle (80% of results with 20% of investment) is a power law ($\alpha = $1.16) and Pareto is everywhere (or almost everywhere).
 
 
@@ -320,7 +320,7 @@ Answer  :
 * Versions exist in US/FR...
 
 <p align="center">
-<img src="../static/md/book_covers/deep_learning_keras_tensorflow.png" alt="dummy" width="577"/>
+<img src="../static/md/book_covers/deep_learning_keras_tensorflow.webp" alt="dummy" width="433"/>
 </p>
 
 
@@ -335,7 +335,7 @@ Answer  :
 * Versions exist in US/FR...
 
 <p align="center">
-<img src="../static/md/book_covers/hands_on_machine_learning.png" alt="dummy" width="577"/>
+<img src="../static/md/book_covers/hands_on_machine_learning.webp" alt="dummy" width="433"/>
 </p>
 
 
@@ -350,7 +350,7 @@ Answer  :
 * Versions exist in US/FR...
 
 <p align="center">
-<img src="../static/md/book_covers/nexus.png" alt="dummy" width="577"/>
+<img src="../static/md/book_covers/nexus.webp" alt="dummy" width="433"/>
 </p>
 
 
@@ -365,7 +365,7 @@ Answer  :
 * Versions exist in US/FR...
 
 <p align="center">
-<img src="../static/md/book_covers/superintellignece.png" alt="dummy" width="577"/>
+<img src="../static/md/book_covers/superintellignece.webp" alt="dummy" width="433"/>
 </p>
 
 
@@ -378,7 +378,7 @@ Question : Non-technical - Book - Did you ever read ?
 Answer  :
 
 <p align="center">
-<img src="../static/md/book_covers/the_coming_wave.png" alt="dummy" width="577"/>
+<img src="../static/md/book_covers/the_coming_wave.webp" alt="dummy" width="433"/>
 </p>
 
 
@@ -391,24 +391,9 @@ Question : Non-technical - Book - Did you ever read ?
 Answer  :
 
 <p align="center">
-<img src="../static/md/book_covers/the_signal_and_the_noise.png" alt="dummy" width="577"/>
+<img src="../static/md/book_covers/the_signal_and_the_noise.webp" alt="dummy" width="433"/>
 </p>
 
-
-
-<!--
-############################################################
-##
-############################################################
--->
-Question : Non-technical - Book - Did you ever read ?
-Answer  :
-
-* Versions exist in US/FR...
-
-<p align="center">
-<img src="../static/md/book_covers/hundred_page.png" alt="dummy" width="577"/>
-</p>
 
 
 <!--
@@ -422,7 +407,22 @@ Answer  :
 * Versions exist in US/FR...
 
 <p align="center">
-<img src="../static/md/book_covers/la_vie_30.png" alt="dummy" width="577"/>
+<img src="../static/md/book_covers/hundred_page.webp" alt="dummy" width="433"/>
+</p>
+
+
+<!--
+############################################################
+##
+############################################################
+-->
+Question : Non-technical - Book - Did you ever read ?
+Answer  :
+
+* Versions exist in US/FR...
+
+<p align="center">
+<img src="../static/md/book_covers/la_vie_30.webp" alt="dummy" width="433"/>
 </p>
 
 
@@ -436,5 +436,5 @@ Question : Non-technical - Book - Did you ever read ?
 Answer  :
 
 <p align="center">
-<img src="../static/md/book_covers/naked_statistics.png" alt="dummy" width="577"/>
+<img src="../static/md/book_covers/naked_statistics.webp" alt="dummy" width="433"/>
 </p>

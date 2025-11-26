@@ -1,11 +1,9 @@
 /.claude
-/md_buffer
 /target
 /.git
+/assets
+/flashcards_staging
 .env
 .gitignore
 CLAUDE.md
-check_categories.ps1
-multi_phase_plan.md
-multi_phase_plan_2.md
 README.md

@@ -1,215 +1,121 @@
 # CLAUDE.md
 
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## Important Notes
+
+- When modifying Rust code, always use the `ms-rust` skill first (mandatory)
 - In all interactions and commit messages, be extremely concise and sacrifice grammar for the sake of concision.
 - All documents, plan, comments is source code, commit messages... must be written in English US. In case of doubt, ask for confirmation before to write anything in an other language.
-- The development is done in a Windows 11 and Powershell context. Use the appropriate commands and NOT the Linux commands.
 
 
 
-## Repository Overview
+## Project Overview
 
-Rust web application built with Axum framework. Displays machine learning Q&A flashcards loaded from markdown files and PNG images, with full-text search capabilities (SQLite FTS5).
+This is a Rust-based flashcard web application translated from Python. It serves flashcards written in markdown with support for images, math formulas, code syntax highlighting, and full-text search. The app uses Axum web framework, SQLite with FTS5 for search, and deploys to Heroku.
 
-**Production deployment:** https://rust-flashcards-ae94334b8997.herokuapp.com/
-
-## Rust Application
-
-### Development Commands
+## Build and Run Commands
 
 ```bash
-# Run locally
-cargo run
-# Opens at http://localhost:8080
+# Build the project
+cargo build
 
-# Build release
+# Run locally (http://localhost:8080/)
+cargo run
+
+# Build for production (Heroku deployment)
 cargo build --release
 
-# Type checking
-cargo check
-
-# Linting
-cargo clippy
-
-# Format code
-cargo fmt
-
-# Run tests
-cargo test
+# Stop the running process (Windows PowerShell)
+powershell -Command "Stop-Process -Name rust-flashcards -Force"
 ```
 
-### Environment Setup
+## Deployment
 
-Create a `.env` file in project root with:
-```
-FLASHCARDS_SECRET_KEY=<your-secret>
-PORT=8080
-DATABASE_URL=./flashcards.db
-RUST_LOG=info
-```
+- **Heroku deployment:** `git push heroku main`
+- **Production URL:** https://rust-flashcards-ae94334b8997.herokuapp.com/
+- **Procfile:** Runs `./target/release/rust-flashcards`
+- The `.slugignore` file controls which files are excluded from Heroku deployment
 
-The database (`flashcards.db`) auto-creates on first run by:
-1. Parsing all markdown files under `./static/md/`
-2. Creating SQLite tables with FTS5 virtual table for search
-3. Loading PNG image paths from `./static/png/`
+## Architecture Overview
 
-### Architecture
+### Application Startup Flow (src/main.rs)
+1. Load environment variables from `.env` (PORT, DATABASE_URL)
+2. Create SQLite connection pool (r2d2)
+3. Initialize database schema (flashcards + flashcards_fts tables)
+4. Load content from `./static/md` (markdown) and `./static/png` (images)
+5. Populate FTS5 search table
+6. Start Axum web server with session middleware
 
-**Application Entry Point:**
-- `src/main.rs`: Axum server setup with routing
-- Loads content at startup (~30s for 705 cards)
+### Module Structure
 
-**Database Design:**
-```
-flashcards (id, question_html, answer_html)
-flashcards_fts (FTS5 virtual table for full-text search)
-```
+**db/** - Database layer
+- `connection.rs`: r2d2 connection pool setup
+- `schema.rs`: Table initialization (flashcards + FTS5 virtual table)
+- `models.rs`: `Flashcard` struct with category/subcategory support
+- `queries.rs`: Database operations including FTS5 search
 
-Content stored as HTML (converted from markdown during database creation).
+**content/** - Content loading and processing
+- `markdown.rs`: Scans `./static/md`, parses markdown with pulldown-cmark, extracts category/subcategory from YAML frontmatter, applies syntax highlighting with syntect
+- `images.rs`: Scans `./static/png` for image-only flashcards
 
-**Content Loading:**
-- Markdown files: `./static/md/**/*.md` (recursive search)
-- PNG flashcards: `./static/png/**/*.png` (recursive search)
-- Both support subdirectory organization
+**routes/** - Web handlers (Axum)
+- `index.rs`: Landing page with category/subcategory selection
+- `next.rs`: Display next random flashcard (avoids recently seen via session)
+- `search.rs`: Search form and submission handler
+- `search_results.rs`: Display FTS5 search results
+- `debug.rs`: Session reset utility
 
-**Markdown Format:**
-```markdown
-Question : What is PCA?
-
-Answer : Principal Component Analysis is...
-```
-- Case-sensitive keywords: `Question :` and `Answer :`
-- Colon and space required after keywords
-- HTML comments allowed: `<!-- ... -->`
-
-**Image References in Markdown:**
-Paths must be relative to template root:
-```html
-<img src="../static/md/subdirectory/assets/image.png" alt="description" width="577"/>
-```
-
-**Session Management:**
-- tower-sessions with MemoryStore
-- Cookie name: `flashcards_session`
+**session/** - Session management
+- Uses tower-sessions with in-memory store
 - Tracks: `seen_ids`, `searched_ids`, `keywords`, `nb_cards`
 
-**Routes:**
-- `/` - Random flashcard from full set
-- `/next` - Redirect to next random card
-- `/search` - Search form (GET/POST keywords)
-- `/search_results` - Random card from search results
-- `/reset_session` - Debug route to clear session
+### Database Schema
 
-**Session State:**
-- `seen_ids`: List of card IDs already shown (prevents repeats)
-- `searched_ids`: List of card IDs shown in current search
-- `keywords`: Current search terms (space-separated, AND logic)
-- `nb_cards`: Total card count (cached per session)
+**flashcards table:**
+- `id` (PRIMARY KEY)
+- `category` (TEXT, nullable) - Extracted from markdown frontmatter
+- `subcategory` (TEXT, nullable) - Extracted from markdown frontmatter
+- `question_html` (TEXT) - Rendered HTML
+- `answer_html` (TEXT) - Rendered HTML
 
-**Reset Logic:**
-When `seen_ids.len() >= nb_cards`, list automatically clears.
+**flashcards_fts table (FTS5):**
+- Virtual table mirroring flashcards for full-text search
+- Populated after content loading via `populate_fts_table()`
 
-### Project Structure
+### Markdown File Format
 
+Cards are extracted from markdown using regex pattern:
 ```
-rust-flashcards/
-├── Cargo.toml                  # Dependencies, edition 2021
-├── .env                        # Environment variables
-├── Procfile                    # Heroku: web: ./target/release/rust-flashcards
-├── src/
-│   ├── main.rs                 # Axum server, routing, startup
-│   ├── config.rs               # Load env vars
-│   ├── db/
-│   │   ├── mod.rs              # Module exports
-│   │   ├── models.rs           # Flashcard struct
-│   │   ├── schema.rs           # CREATE TABLE statements
-│   │   ├── connection.rs       # r2d2 pool
-│   │   └── queries.rs          # DB operations (insert, get_random, search)
-│   ├── content/
-│   │   ├── mod.rs              # Module exports
-│   │   ├── markdown.rs         # Parse markdown with pulldown-cmark + syntect
-│   │   └── images.rs           # Scan PNG with walkdir
-│   ├── routes/
-│   │   ├── mod.rs              # Route exports
-│   │   ├── index.rs            # GET / handler
-│   │   ├── next.rs             # GET /next redirect
-│   │   ├── search.rs           # GET/POST /search
-│   │   ├── search_results.rs   # GET /search_results
-│   │   └── debug.rs            # GET /reset_session
-│   └── session/
-│       └── mod.rs              # SessionData struct
-├── templates/
-│   ├── index.html              # Main flashcard template (Askama)
-│   ├── search.html             # Search form
-│   └── search_results.html     # Search results display
-└── static/                     # Copied from py-flashcards-2/
-    ├── css/default.css         # Syntax highlighting CSS
-    ├── favicon.png
-    ├── md/**/*.md              # Markdown flashcards
-    └── png/**/*.png            # PNG flashcards
+### Q
+[question content]
+
+### A
+[answer content]
 ```
 
-### Dependencies
+Category/subcategory are parsed from YAML frontmatter or filename patterns like `01_category_subcategory.md`.
 
-```toml
-axum = "0.7"                    # Web framework
-tokio = { version = "1", features = ["full"] }
-tower-http = { version = "0.5", features = ["fs", "trace"] }
-rusqlite = { version = "0.31", features = ["bundled"] }
-r2d2 = "0.8"
-r2d2_sqlite = "0.24"
-tower-sessions = "0.12"         # Session management
-askama = { version = "0.12", features = ["with-axum"] }
-pulldown-cmark = "0.11"         # Markdown parsing
-syntect = "5.2"                 # Syntax highlighting
-walkdir = "2"
-regex = "1"
-dotenvy = "0.15"
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
-anyhow = "1"
-tracing = "0.1"
-tracing-subscriber = { version = "0.3", features = ["env-filter"] }
-rand = "0.8"
-```
+### Key Dependencies
 
-### Markdown Extensions
+- **axum 0.7**: Web framework
+- **rusqlite 0.31**: SQLite with FTS5 support
+- **tower-sessions 0.12**: Session management
+- **askama 0.12**: HTML templating
+- **pulldown-cmark 0.11**: Markdown parsing
+- **syntect 5.2**: Syntax highlighting for code blocks
 
-- Python `extra` → pulldown-cmark: `ENABLE_TABLES | ENABLE_STRIKETHROUGH | ENABLE_FOOTNOTES`
-- Python `codehilite` → syntect: theme "InspiredGitHub"
-- Python `sane_lists` → pulldown-cmark default
+## Development Context
 
-### Heroku Deployment
+- **Platform:** Windows 11, PowerShell, VSCode
+- The project was translated from a Python version using Claude Code
+- Multi-phase development plan documents are in `assets/` directory
+- Content files: `./static/md/*.md` and `./static/png/*.png`
+- Templates: `./templates/*.html` (Askama templates)
 
-```bash
-# Create app
-heroku create rust-flashcards --buildpack emk/rust
 
-# Set environment variable
-heroku config:set FLASHCARDS_SECRET_KEY=$(New-Guid)
 
-# Deploy
-git push heroku main
-
-# Open app
-heroku open
-
-# Monitor logs
-heroku logs --tail
-```
-
-**Deployment Notes:**
-- Build time: ~2-5 min (Rust compilation)
-- Startup time: ~30s (loads 705 flashcards)
-- Static files bundled: ./static/md + ./static/png
-- DB rebuilt at each dyno restart (ephemeral filesystem OK)
-
-### Known Issues
-
-- Search engine sensitive to special characters (hyphens, parentheses won't match FTS5 query)
-- No automated test suite yet (integration tests planned)
-
-## Project Context
-
-This repository was created for certification/educational purposes focused on machine learning flashcard study. Originally built in Python/Flask, fully rewritten in Rust/Axum for production deployment on Heroku.
-
-**Migration completed:** All Python code removed. Rust implementation has full feature parity.
+## Notes
+- The FTS table must be repopulated after content changes via `db::queries::populate_fts_table()`
+- Session data is in-memory only (resets on server restart)
+- Category/subcategory extraction uses regex: `(?i)category:\s*([^\n\r]+)` and `(?i)subcategory:\s*([^\n\r]+)`
