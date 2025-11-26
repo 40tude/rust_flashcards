@@ -209,7 +209,7 @@ What is the recommended way to add extensive CSS styling to a website?
 How can you view the source code of a webpage in Google Chrome?
 -->
 
-Question : Data Collection - HTML-CSS - Which CSS selector is used to select an element by its class?
+Question : Data Collection - HTML CSS - Which CSS selector is used to select an element by its class?
 Answer  :
 
 ``.class``
@@ -652,16 +652,16 @@ INNER JOIN Categories ON Products.CategoryID = Categories.CategoryID;
 
 
 
-Question : Data Collection - SQL-ALCHEMY - What is SQLAlchemy?
+Question : Data Collection - SQLAlchemy - What is SQLAlchemy?
 Answer  : Python library for manipulating databases
 
-Question : Data Collection - SQL-ALCHEMY - Which layer of SQLAlchemy allows you to communicate with databases and create flexible models?
+Question : Data Collection - SQLAlchemy - Which layer of SQLAlchemy allows you to communicate with databases and create flexible models?
 Answer  : ORM
 
-Question : Data Collection - SQL-ALCHEMY - What is the purpose of the ``__repr__`` method in SQLAlchemy?
+Question : Data Collection - SQLAlchemy - What is the purpose of the ``__repr__`` method in SQLAlchemy?
 Answer  : It formats the output of an object
 
-Question : Data Collection - SQL-ALCHEMY - How do you persist values in a database using SQLAlchemy?
+Question : Data Collection - SQLAlchemy - How do you persist values in a database using SQLAlchemy?
 Answer  : By calling the ``commit()`` method
 
 #### Code snippet
@@ -675,7 +675,7 @@ session.commit()
 ```
 
 
-Question : Data Collection - SQL-ALCHEMY - How can you query data from a database using SQLAlchemy?
+Question : Data Collection - SQLAlchemy - How can you query data from a database using SQLAlchemy?
 Answer  : By using the ``query()`` function
 
 ```python

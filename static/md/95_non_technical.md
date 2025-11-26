@@ -46,7 +46,7 @@ Answer  :
 ############################################################
 -->
 
-Question : Non-technical - Job interview - Sans entrer trop dans les détails de votre vie privée, donnez moi un exemple de situation où vous avez été particulièrement fier de vous et expliquez-moi pourqoi.
+Question : Non-technical - Job interview - Sans entrer dans les détails de votre vie privée, donnez moi un exemple de situation où vous avez été particulièrement fier de vous et expliquez-moi pourquoi.
 Answer  :
 
  * blablabla
@@ -59,7 +59,7 @@ Answer  :
 ############################################################
 -->
 
-Question : Non-technical - Job interview - Sans entrer trop dans les détails de votre vie privée, donnez moi un exemple de situation où vous n'avez pas été fier de ce que vous aviez fait et expliquez-moi pourqoi.
+Question : Non-technical - Job interview - Sans entrer trop dans les détails de votre vie privée, donnez moi un exemple de situation où vous n'avez pas été fier de ce que vous aviez fait et expliquez-moi pourquoi.
 Answer  :
 
  * blablabla

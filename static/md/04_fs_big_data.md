@@ -139,7 +139,15 @@ filtered_df_spark = df_spark.filter(df_spark.Age > 30)
 filtered_df_spark.show()
 ```
 
-Questions : Big Data - Introduction to Spark - Que pouvez-vous dire à propos de l'optimisation des DataFrames Spark?
+
+
+
+<!--
+############################################################
+##
+############################################################
+-->
+Question : Big Data - Introduction to Spark - Que pouvez-vous dire à propos de l'optimisation des DataFrames Spark?
 Answer   :
 	• Ils bénéficient d'un optimiseur de requêtes avancé appelé Catalyst, qui génère un plan d'exécution optimisé pour les transformations et les actions appliquées.
 	• Utilisent également le moteur Tungsten, qui optimise l'utilisation de la mémoire et du CPU.
