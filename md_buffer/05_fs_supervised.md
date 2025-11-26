@@ -1,11 +1,11 @@
-<!-- 
+<!--
 <p align="center">
-<img src="../static/md/assets/img1.png" alt="attention" width="577"/>
+<img src="../static/md/assets/img.png" alt="attention" width="577"/>
 </p>
 
 $$ E = mc^2 $$
 
-#### Code snippet  
+#### Code snippet
 
 ```python
 # -----------------------------------------------------------------------------
@@ -20,10 +20,10 @@ def preprocessor(df):
 ```
 
 
-Question : 
-Answer   : 
+Question :
+Answer   :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 # TODO : add sample code
@@ -33,10 +33,10 @@ Answer   :
 
 
 
-<!-- 
+<!--
 ############################################################
 ## Questions issues des quizz
-############################################################ 
+############################################################
 -->
 
 
@@ -113,15 +113,15 @@ Question : LIN-REG - What does SST (Sum of Square Total) represent in multiple l
 Answer  : The total amount of information contained in the target variable
 
 Question : LIN-REG - How is $R^{2}$ calculated in multiple linear regression?
-Answer  : $$R^{2} = 1-\frac{SSR}{SST}$$ 
+Answer  : $$R^{2} = 1-\frac{SSR}{SST}$$
 
-Question : LIN-REG - Which model selection method starts with a model using all explanatory variables and eliminates one variable at a time based on p-values? 
+Question : LIN-REG - Which model selection method starts with a model using all explanatory variables and eliminates one variable at a time based on p-values?
 Answer  : Backward elimination
 
 Question : LIN-REG - What is the main advantage of the stepwise model selection algorithm?
 Answer  : It is computationally efficient for large numbers of explanatory variables.
 
-Question : LIN-REG - True or False? R2 increases with each additional explanatory variable. 
+Question : LIN-REG - True or False? R2 increases with each additional explanatory variable.
 Answer  : True
 
 Question : LIN-REG - How does SSE (Sum of Square Explained) relate to the target variable in multiple linear regression?
@@ -202,19 +202,19 @@ Answer  : Accuracy
 Question : LOG-REG - What is the purpose of a confusion matrix in evaluating a classification model?
 Answer  : To analyze the number of true positives, true negatives, false positives, and false negatives.
 
-Question : LOG-REG - What does the ROC curve represent? 
+Question : LOG-REG - What does the ROC curve represent?
 Answer  : The performance of the model in detecting positive observations across all possible thresholds.
-Cette courbe montre le compromis entre le True Positive Rate (Recall, TP/(TP+FN), ligne du bas de la matrice de confusion, proportion de vrais positifs détectés par rapport à tous les positifs réels, taux élevé préférable) en ordonnée et le False Positive Rate (FP/(FP+TN, ligne haut de la matrice de confusion, proportion de faux positifs par rapport à tous les négatifs réels, se sont de fausses alarmes, taux bas préférable) en abscisse pour différents seuils de décision. 
-Le seuil passe de 1 à 0 quand on va de la gauche vers la droite. 
+Cette courbe montre le compromis entre le True Positive Rate (Recall, TP/(TP+FN), ligne du bas de la matrice de confusion, proportion de vrais positifs détectés par rapport à tous les positifs réels, taux élevé préférable) en ordonnée et le False Positive Rate (FP/(FP+TN, ligne haut de la matrice de confusion, proportion de faux positifs par rapport à tous les négatifs réels, se sont de fausses alarmes, taux bas préférable) en abscisse pour différents seuils de décision.
+Le seuil passe de 1 à 0 quand on va de la gauche vers la droite.
 Seuil = 1 => On classe tout en 0. Pas de vrais positif détecté (TPR=0)          aucun faux négatif (FPR=0) car tout est classé négatif
 Seuil = 0 => On classe tout en 1. Tous les vrais positifs sont détectés (TPR=1) mais tous les négatifs réel sont mal classés en 1 (FPR=1)
 Quand on passe le seuil de 1 à 0 (de gche à dte), le TPR (y) augmente ainsi que le FPR (x)
 
 Question : LOG-REG - What does the AUC (Area Under the Curve) measure?
-Answer  : C'est un indicateur global, une métrique unique qui résume la performance du modèle sur l'ensemble des seuils possibles. 
+Answer  : C'est un indicateur global, une métrique unique qui résume la performance du modèle sur l'ensemble des seuils possibles.
 Un AUC plus élevé indique que le modèle a une bonne capacité à différencier les classes positives et négatives
-Comme indicateur global l'AUC est utile pour comparer plusieurs modèles de classification sur un même jeu de données. 
-Un AUC de 0.5 indique que le modèle n'est pas meilleur qu'un tirage au sort aléatoire. 
+Comme indicateur global l'AUC est utile pour comparer plusieurs modèles de classification sur un même jeu de données.
+Un AUC de 0.5 indique que le modèle n'est pas meilleur qu'un tirage au sort aléatoire.
 Un AUC de 1.0 indique une séparation parfaite entre les classes 0 et 1.
 
 Question : Pourquoi la Courbe ROC est nécessaire en plus de l'AUC
@@ -223,7 +223,7 @@ Answer  : 3 points
 2 - Choix du seuil : La courbe ROC permet de choisir un seuil en fonction des priorités (maximiser TPR, minimiser FPR, etc.). Crucial quand le coût d'une erreur est important (médecine, où les faux négatifs sont plus coûteux que les faux positifs).
 3 - Interprétation du modèle : la courbe ROC permet d'identifier les points où le modèle a un comportement instable ou des performances contre-intuitives
 
-Question : LOG-REG - What is the purpose of the GINI coefficient? 
+Question : LOG-REG - What is the purpose of the GINI coefficient?
 Answer  : To quantify the inequalities in a population.
 
 Question : LOG-REG - What should be done with models having an AUC of less than 0.5?
@@ -253,7 +253,7 @@ Answer  : Minimum samples per leaf and maximum depth
 Question : DEC-TREE - What is one advantage of using dummy variables for qualitative variables in decision trees?
 Answer  : Enhanced variable selection capability
 
-Question : DEC-TREE - How does the hierarchical structure of decision trees affect error propagation? 
+Question : DEC-TREE - How does the hierarchical structure of decision trees affect error propagation?
 Answer  : Errors are propagated to all child nodes
 
 Question : DEC-TREE - What is a characteristic of the result of a decision tree in regression?
@@ -359,7 +359,7 @@ Answer  : In classification problems with qualitative target variables.
 Question : VOTING-STACKING - What is the mathematical representation of the voting classifier's prediction?
 Answer  : argmax (S1 * (y_hat1 = m) + S2 * (y_hat2 = m) S3 * (y_hat3 = m))
 
-Question : VOTING-STACKING - In ensemble learning, when is averaging used? 
+Question : VOTING-STACKING - In ensemble learning, when is averaging used?
 Answer  : In regression problems with quantitative target variables.
 
 Question : VOTING-STACKING - What is the mathematical representation of the averaging prediction?
@@ -383,7 +383,7 @@ Answer  : Independent and Identically Distributed
 Question : MODEL-EVAL - What is the evaluation metric commonly used for classification problems?
 Answer  : Accuracy
 
-Question : MODEL-EVAL - What does the bias of a model represent? 
+Question : MODEL-EVAL - What does the bias of a model represent?
 Answer  : The deviation of the model's prediction from the true mean of the target variable
 
 Question : MODEL-EVAL - How do we call the validation method consisting in splitting the data between a training and test set?
@@ -422,7 +422,7 @@ Answer  : Single moving average
 Question : TIME-SERIES - What is the main drawback of moving averages in time series analysis?
 Answer  : Moving averages are always lagged compared to the actual time series
 
-Question : TIME-SERIES - What does exponential smoothing assign exponentially decreasing weights to? 
+Question : TIME-SERIES - What does exponential smoothing assign exponentially decreasing weights to?
 Answer  : Older observations
 
 Question : TIME-SERIES - What is the purpose of the triple exponential smoothing method?

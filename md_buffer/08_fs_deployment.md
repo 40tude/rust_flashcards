@@ -1,11 +1,11 @@
-<!-- 
+<!--
 <p align="center">
-<img src="../static/md/assets/img1.png" alt="attention" width="577"/>
+<img src="../static/md/assets/img.png" alt="attention" width="577"/>
 </p>
 
 $$ E = mc^2 $$
 
-#### Code snippet  
+#### Code snippet
 
 ```python
 # -----------------------------------------------------------------------------
@@ -20,10 +20,10 @@ def preprocessor(df):
 ```
 
 
-Question : 
-Answer   : 
+Question :
+Answer   :
 
-#### Code snippet 
+#### Code snippet
 
 ```python
 # TODO : add sample code
@@ -33,8 +33,8 @@ Answer   :
 
 
 
-<!-- 
+<!--
 ############################################################
 ## Questions issues des quizz
-############################################################ 
+############################################################
 -->

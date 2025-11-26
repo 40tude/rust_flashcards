@@ -25,12 +25,7 @@ pub fn load_markdown(pool: &DbPool, md_dir: &str) -> Result<()> {
         .follow_links(true)
         .into_iter()
         .filter_map(|e| e.ok())
-        .filter(|e| {
-            e.path()
-                .extension()
-                .map(|ext| ext == "md")
-                .unwrap_or(false)
-        })
+        .filter(|e| e.path().extension().map(|ext| ext == "md").unwrap_or(false))
     {
         let path = entry.path();
         tracing::debug!("Processing markdown file: {:?}", path);
@@ -51,8 +46,7 @@ pub fn load_markdown(pool: &DbPool, md_dir: &str) -> Result<()> {
 }
 
 fn process_markdown_file(pool: &DbPool, path: &Path) -> Result<usize> {
-    let content = fs::read_to_string(path)
-        .with_context(|| format!("Failed to read file: {:?}", path))?;
+    let content = fs::read_to_string(path).with_context(|| format!("Failed to read file: {:?}", path))?;
 
     // Strip HTML comments (with DOTALL for multiline comments)
     let comment_regex = Regex::new(r"(?s)<!--.*?-->").unwrap();
@@ -82,7 +76,7 @@ fn process_markdown_file(pool: &DbPool, path: &Path) -> Result<usize> {
                 (
                     Some(caps.get(1).unwrap().as_str().trim().to_string()),
                     Some(caps.get(2).unwrap().as_str().trim().to_string()),
-                    caps.get(3).unwrap().as_str().trim()
+                    caps.get(3).unwrap().as_str().trim(),
                 )
             } else {
                 // Question non-conforme: catégorie = None
@@ -104,13 +98,7 @@ fn process_markdown_file(pool: &DbPool, path: &Path) -> Result<usize> {
             let a_html = markdown_to_html(&answer_with_header)?;
 
             // Insert into database with category and subcategory
-            queries::insert_flashcard(
-                pool,
-                category.as_deref(),
-                subcategory.as_deref(),
-                &q_html,
-                &a_html
-            )?;
+            queries::insert_flashcard(pool, category.as_deref(), subcategory.as_deref(), &q_html, &a_html)?;
             count += 1;
         }
     }
@@ -140,9 +128,7 @@ fn markdown_to_html(markdown: &str) -> Result<String> {
 
     for event in parser {
         match event {
-            pulldown_cmark::Event::Start(pulldown_cmark::Tag::CodeBlock(
-                pulldown_cmark::CodeBlockKind::Fenced(lang),
-            )) => {
+            pulldown_cmark::Event::Start(pulldown_cmark::Tag::CodeBlock(pulldown_cmark::CodeBlockKind::Fenced(lang))) => {
                 in_code_block = true;
                 code_block_lang = lang.to_string();
                 code_block_content.clear();
@@ -178,9 +164,7 @@ fn markdown_to_html(markdown: &str) -> Result<String> {
 }
 
 fn highlight_code(code: &str, lang: &str, ss: &SyntaxSet, theme: &syntect::highlighting::Theme) -> String {
-    let syntax = ss
-        .find_syntax_by_token(lang)
-        .unwrap_or_else(|| ss.find_syntax_plain_text());
+    let syntax = ss.find_syntax_by_token(lang).unwrap_or_else(|| ss.find_syntax_plain_text());
 
     let mut highlighter = HighlightLines::new(syntax, theme);
     let mut html = String::from("<pre><code>");

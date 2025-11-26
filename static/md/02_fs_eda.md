@@ -1,6 +1,6 @@
 <!--
 <p align="center">
-<img src="../static/md/assets/img1.png" alt="attention" width="577"/>
+<img src="../static/md/assets/img.png" alt="attention" width="577"/>
 </p>
 
 $$ E = mc^2 $$

@@ -1,6 +1,6 @@
 <!--
 <p align="center">
-<img src="../static/md/assets/img1.png" alt="attention" width="577"/>
+<img src="../static/md/assets/img.png" alt="attention" width="577"/>
 </p>
 
 $$ E = mc^2 $$
@@ -45,7 +45,6 @@ Answer  :
 ##
 ############################################################
 -->
-
 Question : Non-technical - Job interview - Sans entrer dans les détails de votre vie privée, donnez moi un exemple de situation où vous avez été particulièrement fier de vous et expliquez-moi pourquoi.
 Answer  :
 
@@ -58,7 +57,6 @@ Answer  :
 ##
 ############################################################
 -->
-
 Question : Non-technical - Job interview - Sans entrer trop dans les détails de votre vie privée, donnez moi un exemple de situation où vous n'avez pas été fier de ce que vous aviez fait et expliquez-moi pourquoi.
 Answer  :
 
@@ -71,7 +69,6 @@ Answer  :
 ##
 ############################################################
 -->
-
 Question : Non-technical - Job interview - Quel est le dernier livre **non-technique** que vous avez lu ? Ca date de quand ? Expliquez moi de quoi il s'agissait et pourquoi vous avez commencé à le lire.
 Answer  :
 
@@ -83,7 +80,6 @@ Answer  :
 ##
 ############################################################
 -->
-
 Question : Non-technical - Job interview - Quel est le dernier livre **technique** que vous avez lu ? Ca date de quand ? Expliquez moi de quoi il s'agissait et pourquoi vous avez commencé à le lire
 Answer  :
 
@@ -95,7 +91,6 @@ Answer  :
 ##
 ############################################################
 -->
-
 Question : Non-technical - Job interview - Qu'est ce qui vous motive le matin ?
 Answer  :
 
@@ -108,7 +103,6 @@ Answer  :
 ##
 ############################################################
 -->
-
 Question : Non-technical - Job interview - C'est open bar... Vous n'avez aucune contrainte de salaire, de géographie et quelque soit la boîte vous serez retenu. Dans ces conditions, à part nous, vous choisissez d'aller travailler chez qui, pour faire quoi et pour quel salaire annuel?
 Answer  :
 
@@ -121,8 +115,8 @@ Answer  :
 ##
 ############################################################
 -->
-
 Question : Non-technical - Job interview - Quel est votre salaire demandé ?
+Answer  :
 
 #### Note :
 1. Le premier qui donne un chiffre à perdu (effet d'ancrage)
@@ -143,7 +137,6 @@ Question : Non-technical - Job interview - Quel est votre salaire demandé ?
 ##
 ############################################################
 -->
-
 Question : Non-technical - Job interview - Pourquoi avez-vous quitté votre dernier poste ?
 Answer  :
 
@@ -158,30 +151,35 @@ Answer  :
 ##
 ############################################################
 -->
-
 Question : Non-technical - Job interview - Vous voyez-vous dans quel rôle dans cinq ans ?
-
 Answer  :
+
 * Je me vois évoluer vers un rôle de leadership dans le domaine du machine learning, où je pourrais diriger des projets innovants et mentoriser des équipes pour créer des solutions technologiques avancées.
+
+
+
+
+
 
 <!--
 ############################################################
 ##
 ############################################################
 -->
-
 Question : Non-technical - Job interview - Pourquoi devrions-nous vous embaucher ?
 Answer  :
 
 * Je combine une solide expérience en machine learning avec une capacité à comprendre les besoins du business et à proposer des solutions pratiques.
 * De plus, mon engagement à rester à la pointe des avancées technologiques me permet de toujours apporter des idées fraîches.
 
+
+
+
 <!--
 ############################################################
 ##
 ############################################################
 -->
-
 Question : Non-technical - Job interview - Pouvez-vous me donner un exemple d'un défi que vous avez surmonté au travail ?
 Answer  :
 
@@ -197,8 +195,8 @@ Answer  :
 ##
 ############################################################
 -->
-
 Question : Non-technical - Job interview - Comment restez-vous à jour avec les nouvelles technologies ?
+Answer  :
 
 #### Note
 * Faut être precis et concret. Faut illustrer avec des dates, des durées, des projets
@@ -212,9 +210,7 @@ Question : Non-technical - Job interview - Comment restez-vous à jour avec les 
 ##
 ############################################################
 -->
-
 Question : Non-technical - Job interview - Pouvez-vous travailler sous pression ?
-
 Answer  :
 
 * Il faudrait être plus precis sur votre définition de "pression" afin de s'assurer qu'on parle de la même chose
@@ -236,7 +232,6 @@ Answer  :
 ##
 ############################################################
 -->
-
 Question : Non-technical - Job interview - Parlez-moi de vous ?
 Answer  :
 
@@ -253,7 +248,6 @@ Answer  :
 ##
 ############################################################
 -->
-
 Question : Non-technical - Job interview - Quelles sont vos forces et vos faiblesses ?
 Answer  :
 
@@ -271,7 +265,6 @@ Answer  :
 ##
 ############################################################
 -->
-
 Question : Non-technical - Job interview - Comment gérez-vous les critiques ?
 Answer  :
 
@@ -305,7 +298,6 @@ Answer  :
 ##
 ############################################################
 -->
-
 Question : Non-technical - Book - Did you ever read ?
 Answer  :
 
@@ -322,7 +314,6 @@ Answer  :
 ##
 ############################################################
 -->
-
 Question : Non-technical - Book - Did you ever read ?
 Answer  :
 
@@ -338,7 +329,6 @@ Answer  :
 ##
 ############################################################
 -->
-
 Question : Non-technical - Book - Did you ever read ?
 Answer  :
 
@@ -354,7 +344,6 @@ Answer  :
 ##
 ############################################################
 -->
-
 Question : Non-technical - Book - Did you ever read ?
 Answer  :
 
@@ -370,7 +359,6 @@ Answer  :
 ##
 ############################################################
 -->
-
 Question : Non-technical - Book - Did you ever read ?
 Answer  :
 
@@ -386,7 +374,6 @@ Answer  :
 ##
 ############################################################
 -->
-
 Question : Non-technical - Book - Did you ever read ?
 Answer  :
 
@@ -400,7 +387,6 @@ Answer  :
 ##
 ############################################################
 -->
-
 Question : Non-technical - Book - Did you ever read ?
 Answer  :
 
@@ -415,7 +401,6 @@ Answer  :
 ##
 ############################################################
 -->
-
 Question : Non-technical - Book - Did you ever read ?
 Answer  :
 
@@ -431,7 +416,6 @@ Answer  :
 ##
 ############################################################
 -->
-
 Question : Non-technical - Book - Did you ever read ?
 Answer  :
 

@@ -24,7 +24,11 @@
       "Bash(for i in {1..5})",
       "Bash(do curl -s -b reset_test.txt \"http://localhost:8080/search_results\")",
       "Bash(git add:*)",
-      "Bash(git commit -m \"$(cat <<''EOF''\nPhase 7 completed - Testing\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")"
+      "Bash(git commit -m \"$(cat <<''EOF''\nPhase 7 completed - Testing\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(Out-Null)",
+      "Bash(Select-String -Pattern \"Cards in search|text-muted\" -Context 1,1)",
+      "Bash(do curl -s -b search_test2.txt http://localhost:8080/search_results)",
+      "Bash(git push:*)"
     ],
     "deny": [],
     "ask": []
