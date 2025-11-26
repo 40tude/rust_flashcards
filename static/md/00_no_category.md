@@ -1039,7 +1039,7 @@ Question : No category - No subcategory - Vous avez un réseau de neurones. Vous
 
 Answer  :
 
-* Le modèle va avoir tendance à overfitté car on a toutes les chance de rajouter des dimensions non pertinentes qui complexifie la modélisation et empêche un bonne généralisation.
+* Le modèle va avoir tendance à overfitter car on a toutes les chances de rajouter des dimensions non pertinentes qui complexifie la modélisation et empêche un bonne généralisation.
 * On peut penser au cas contraire. Le modèle overfit. Je peux simplifier le réseau de neurones ou bien faire de la PCA et ne retenir que les features les plus pertientes (garder 20% des features qui expliquent 80% des prédictions)
 
 

@@ -1,6 +1,10 @@
 # CLAUDE.md
 
 - In all interactions and commit messages, be extremely concise and sacrifice grammar for the sake of concision.
+- All documents, plan, comments is source code, commit messages... must be written in English US. In case of doubt, ask for confirmation before to write anything in an other language.
+- The development is done in a Windows 11 and Powershell context. Use the appropriate commands and NOT the Linux commands.
+
+
 
 ## Repository Overview
 
@@ -181,7 +185,7 @@ rand = "0.8"
 heroku create rust-flashcards --buildpack emk/rust
 
 # Set environment variable
-heroku config:set FLASHCARDS_SECRET_KEY=$(openssl rand -hex 32)
+heroku config:set FLASHCARDS_SECRET_KEY=$(New-Guid)
 
 # Deploy
 git push heroku main
