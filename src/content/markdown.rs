@@ -64,7 +64,8 @@ fn process_markdown_file(pool: &DbPool, path: &Path) -> Result<usize> {
     let mut count = 0;
 
     // Regex to extract CATEGORY - SUBCATEGORY - QUESTION
-    let category_regex = Regex::new(r"^\s*:\s*([^-]+?)\s-\s([^-]+?)\s-\s(.+)").unwrap();
+    // Use lookahead to match " - " (space-dash-space) to allow hyphens in category names
+    let category_regex = Regex::new(r"^\s*:\s*(.+?)\s-\s(.+?)\s-\s(.+)").unwrap();
 
     for part in parts.iter().skip(1) {
         // Each part should start with " : " followed by question text,
