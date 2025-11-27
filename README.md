@@ -16,7 +16,7 @@
 It went so well that I decided to go forward and today, the master plan include 4 major steps.
 * [✅] **Step 1:** Translation and deployment at iso configuration
 * [✅] **Step 2:** Refactor the database so that it includes categories and subcategories (see Step 4)
-* [Not yet done] **Step 3:** Refactor the Q&A cards so that they include a Reveal/Hide button
+* [✅] **Step 3:** Refactor the Q&A cards so that they include a Reveal/Hide button
 * [Not yet] **Step 4:** Refactor the landing page so that the user can select to review only certain categories, subcategories or flash cards with certain keyword (this is already working but this is not great)
 
 
@@ -76,9 +76,35 @@ I installed and use [`ccusage`](https://ccusage.com/) (see `npx ccusage@latest`)
 * Step 1. Make sure all Cards with Q&A use the right template. It was easier and faster that way. Read more in `assets\multi_phase_plan_2.md`
 
 
+### For Step 3 - Implement Show answer
+
+* Yesterday night I read more about `Claude.md`
+* I made an important cleanup in directories, files etc.
+* I also `/init` to start Step 3 and 4 with a clean setup
+* Then I tuned the `Claude.md` (make sure it use the ms-rust skill, write in English US...)
+* I did nothing!
+    * I start in Planning Mode
+    * Then I switch to Execution Mode
+    * I make sure the plan is saved in `assets/` directory
+* Read more about Step 3 in `assets\hide_reveal_answer_plan.md`
+* In addition *we* fix a bug (double insertion in FTS table)
+* Claude wrote the commit message and pushed on origin
+
+### For Step 4 - New landing page
+* Commit
+* Plan Mode first
+* I realized that it was rebuilding the database on each start so I change the behavior
+* I provided a drawing of what I want to see and explain the behavior
+* Double check few point : `/search` now removed, `landing page == index.html` etc.
+* Switch to Execution Mode
+* Save the plan : see `assets\landing_page_plan.md`
+* I let him do the job, write code etc.
+
+
 
 
 ## Notes
+* I'm totally stressed with the time window. I use `/status` and `npx ccusage@latest` all the time
 * Claude Code loves Linux
 * **TODO:** Find a way to let it know it is in a Win/Powershell context
 

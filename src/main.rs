@@ -34,13 +34,16 @@ async fn main() -> anyhow::Result<()> {
     // Initialize database schema
     db::init_database(&pool)?;
 
-    // Load content from markdown and PNG files
-    tracing::info!("Loading content...");
-    content::load_markdown(&pool, "./static/md")?;
-    content::load_images(&pool, "./static/png")?;
-
-    // Populate FTS table
-    db::queries::populate_fts_table(&pool)?;
+    // Load content only if database is empty (fast startup optimization)
+    if db::queries::is_database_empty(&pool)? {
+        tracing::info!("No database in place, create it");
+        content::load_markdown(&pool, "./static/md")?;
+        content::load_images(&pool, "./static/png")?;
+        db::queries::populate_fts_table(&pool)?;
+    } else {
+        let count = db::queries::get_total_count(&pool)?;
+        tracing::info!("Database in place no need to create it - {} cards loaded", count);
+    }
 
     tracing::info!("Content loaded successfully. Starting web server...");
 
@@ -52,11 +55,10 @@ async fn main() -> anyhow::Result<()> {
 
     // Build Axum router
     let app = Router::new()
-        .route("/", get(routes::index))
-        .route("/next", get(routes::next))
+        .route("/", get(routes::landing))
+        .route("/apply_filters", post(routes::apply_filters))
+        .route("/practice", get(routes::practice))
         .route("/reset_session", get(routes::reset_session))
-        .route("/search", get(routes::search_form).post(routes::search_submit))
-        .route("/search_results", get(routes::search_results))
         .nest_service("/static", ServeDir::new("static"))
         .layer(session_layer)
         .with_state(pool);

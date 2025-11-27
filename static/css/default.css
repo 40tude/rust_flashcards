@@ -397,3 +397,17 @@ span.linenos.special {
 }
 
 /* Literal.Number.Integer.Long */
+
+/* Scrollable list for filter form */
+.scrollable-list {
+    max-height: 250px;
+    overflow-y: auto;
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 0.75rem;
+    background-color: #f8f9fa;
+}
+
+.scrollable-list .form-check {
+    margin-bottom: 0.5rem;
+}

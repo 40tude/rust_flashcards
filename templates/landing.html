@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <title>Flashcards - Practice Setup</title>
+    <link rel='shortcut icon' href="/static/favicon.png" />
+    <link rel="stylesheet" href="/static/css/default.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Data Science Flashcards</h1>
+        <p class="text-muted">
+            {% if let Some(fc) = filtered_count %}
+                {{ fc }} matching cards
+            {% else %}
+                {{ total_count }} total cards
+            {% endif %}
+        </p>
+
+        {% if let Some(err) = error_message %}
+        <div class="alert alert-danger">{{ err }}</div>
+        {% endif %}
+
+        <form method="post" action="/apply_filters" id="filter-form" class="mt-4">
+            <!-- Keywords -->
+            <div class="form-group">
+                <label for="keywords-input"><strong>Keywords (space separated):</strong></label>
+                <input type="text"
+                       name="keywords"
+                       id="keywords-input"
+                       class="form-control"
+                       value="{{ filter_keywords }}"
+                       placeholder="Enter keywords..."
+                       autofocus>
+            </div>
+
+            <!-- Categories -->
+            <div class="form-group">
+                <div class="form-check">
+                    <input type="checkbox"
+                           name="all_categories"
+                           id="all-categories-cb"
+                           class="form-check-input"
+                           {% if all_categories_checked %}checked{% endif %}>
+                    <label class="form-check-label" for="all-categories-cb">
+                        <strong>All categories</strong>
+                    </label>
+                </div>
+                <div id="category-list"
+                     class="scrollable-list mt-2"
+                     style="{% if all_categories_checked %}display:none{% endif %}">
+                    {% for cat in categories %}
+                    <div class="form-check">
+                        <input type="checkbox"
+                               name="categories"
+                               value="{{ cat.name }}"
+                               class="form-check-input category-cb"
+                               {% if cat.selected %}checked{% endif %}>
+                        <label class="form-check-label">{{ cat.name }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Subcategories -->
+            <div class="form-group">
+                <div class="form-check">
+                    <input type="checkbox"
+                           name="all_subcategories"
+                           id="all-subcategories-cb"
+                           class="form-check-input"
+                           {% if all_subcategories_checked %}checked{% endif %}
+                           {% if subcategories_disabled %}disabled{% endif %}>
+                    <label class="form-check-label" for="all-subcategories-cb">
+                        <strong>All subcategories</strong>
+                    </label>
+                </div>
+                <div id="subcategory-list"
+                     class="scrollable-list mt-2"
+                     style="{% if all_subcategories_checked || subcategories_disabled %}display:none{% endif %}">
+                    {% for subcat in subcategories %}
+                    <div class="form-check">
+                        <input type="checkbox"
+                               name="subcategories"
+                               value="{{ subcat.name }}"
+                               class="form-check-input"
+                               {% if subcat.selected %}checked{% endif %}>
+                        <label class="form-check-label">{{ subcat.name }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Images -->
+            <div class="form-check">
+                <input type="checkbox"
+                       name="all_images"
+                       id="all-images-cb"
+                       class="form-check-input"
+                       {% if filter_include_images %}checked{% endif %}>
+                <label class="form-check-label" for="all-images-cb">
+                    <strong>All images</strong> (include image-only cards)
+                </label>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary btn-lg">Practice</button>
+            </div>
+        </form>
+    </div>
+    <script src="/static/js/filters.js"></script>
+</body>
+</html>

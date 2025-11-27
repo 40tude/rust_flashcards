@@ -164,3 +164,220 @@ pub fn get_random_searched_flashcard(
 
     Ok((card, count))
 }
+
+/// Checks if the database is empty.
+///
+/// # Errors
+/// Returns error if database query fails.
+pub fn is_database_empty(pool: &DbPool) -> Result<bool> {
+    let count = get_total_count(pool)?;
+    Ok(count == 0)
+}
+
+/// Retrieves distinct categories from database.
+///
+/// Returns sorted list of unique non-null categories.
+///
+/// # Errors
+/// Returns error if database query fails.
+pub fn get_distinct_categories(pool: &DbPool) -> Result<Vec<String>> {
+    let conn = pool.get().context("Failed to get DB connection")?;
+
+    let mut stmt = conn
+        .prepare("SELECT DISTINCT category FROM flashcards WHERE category IS NOT NULL ORDER BY category")
+        .context("Failed to prepare category query")?;
+
+    let categories = stmt
+        .query_map([], |row| row.get::<_, String>(0))
+        .context("Failed to query categories")?
+        .collect::<std::result::Result<Vec<_>, _>>()
+        .context("Failed to collect categories")?;
+
+    Ok(categories)
+}
+
+/// Retrieves distinct subcategories, optionally filtered by categories.
+///
+/// If `categories` is None, returns all subcategories. If Some, returns only
+/// subcategories belonging to specified categories.
+///
+/// # Errors
+/// Returns error if database query fails.
+pub fn get_distinct_subcategories(
+    pool: &DbPool,
+    categories: Option<&[String]>,
+) -> Result<Vec<String>> {
+    let conn = pool.get().context("Failed to get DB connection")?;
+
+    let (query, params): (String, Vec<String>) = if let Some(cats) = categories {
+        let placeholders = cats.iter().map(|_| "?").collect::<Vec<_>>().join(",");
+        let query = format!(
+            "SELECT DISTINCT subcategory FROM flashcards WHERE subcategory IS NOT NULL AND category IN ({}) ORDER BY subcategory",
+            placeholders
+        );
+        (query, cats.to_vec())
+    } else {
+        (
+            "SELECT DISTINCT subcategory FROM flashcards WHERE subcategory IS NOT NULL ORDER BY subcategory".to_string(),
+            Vec::new(),
+        )
+    };
+
+    let mut stmt = conn
+        .prepare(&query)
+        .context("Failed to prepare subcategory query")?;
+
+    let subcategories = stmt
+        .query_map(rusqlite::params_from_iter(params.iter()), |row| {
+            row.get::<_, String>(0)
+        })
+        .context("Failed to query subcategories")?
+        .collect::<std::result::Result<Vec<_>, _>>()
+        .context("Failed to collect subcategories")?;
+
+    Ok(subcategories)
+}
+
+/// Counts flashcards matching filter criteria.
+///
+/// # Errors
+/// Returns error if database query fails.
+pub fn count_filtered_flashcards(
+    pool: &DbPool,
+    filters: &super::models::FilterCriteria,
+) -> Result<i64> {
+    let conn = pool.get().context("Failed to get DB connection")?;
+
+    let mut query_parts = vec!["SELECT COUNT(*) FROM flashcards WHERE 1=1".to_string()];
+    let mut params: Vec<Box<dyn rusqlite::ToSql>> = Vec::new();
+
+    // Keywords filter (FTS5 subquery)
+    if !filters.keywords.is_empty() {
+        let match_query = filters.keywords.join(" AND ");
+        query_parts.push("AND id IN (SELECT id FROM flashcards_fts WHERE flashcards_fts MATCH ?)".to_string());
+        params.push(Box::new(match_query));
+    }
+
+    // Category filter
+    if let Some(ref cats) = filters.categories {
+        if !cats.is_empty() {
+            let placeholders = cats.iter().map(|_| "?").collect::<Vec<_>>().join(",");
+            query_parts.push(format!("AND category IN ({})", placeholders));
+            for cat in cats {
+                params.push(Box::new(cat.clone()));
+            }
+        }
+    }
+
+    // Subcategory filter
+    if let Some(ref subcats) = filters.subcategories {
+        if !subcats.is_empty() {
+            let placeholders = subcats.iter().map(|_| "?").collect::<Vec<_>>().join(",");
+            query_parts.push(format!("AND subcategory IN ({})", placeholders));
+            for subcat in subcats {
+                params.push(Box::new(subcat.clone()));
+            }
+        }
+    }
+
+    // Image filter
+    if !filters.include_images {
+        query_parts.push("AND question_html != '<h3>Question :</h3>'".to_string());
+    }
+
+    let query = query_parts.join(" ");
+
+    let count: i64 = conn
+        .query_row(
+            &query,
+            rusqlite::params_from_iter(params.iter().map(|p| p.as_ref())),
+            |row| row.get(0),
+        )
+        .context("Failed to count filtered flashcards")?;
+
+    Ok(count)
+}
+
+/// Retrieves random flashcard matching filter criteria, excluding specified IDs.
+///
+/// Combines all filter criteria (keywords, categories, subcategories, images) with
+/// AND logic. Returns None if no matching cards found.
+///
+/// # Errors
+/// Returns error if database query fails.
+pub fn get_filtered_random_flashcard(
+    pool: &DbPool,
+    exclude: &[i64],
+    filters: &super::models::FilterCriteria,
+) -> Result<Option<Flashcard>> {
+    let conn = pool.get().context("Failed to get DB connection")?;
+
+    let mut query_parts = vec!["SELECT id, category, subcategory, question_html, answer_html FROM flashcards WHERE 1=1".to_string()];
+    let mut params: Vec<Box<dyn rusqlite::ToSql>> = Vec::new();
+
+    // Keywords filter (FTS5 subquery)
+    if !filters.keywords.is_empty() {
+        let match_query = filters.keywords.join(" AND ");
+        query_parts.push("AND id IN (SELECT id FROM flashcards_fts WHERE flashcards_fts MATCH ?)".to_string());
+        params.push(Box::new(match_query));
+    }
+
+    // Category filter
+    if let Some(ref cats) = filters.categories {
+        if !cats.is_empty() {
+            let placeholders = cats.iter().map(|_| "?").collect::<Vec<_>>().join(",");
+            query_parts.push(format!("AND category IN ({})", placeholders));
+            for cat in cats {
+                params.push(Box::new(cat.clone()));
+            }
+        }
+    }
+
+    // Subcategory filter
+    if let Some(ref subcats) = filters.subcategories {
+        if !subcats.is_empty() {
+            let placeholders = subcats.iter().map(|_| "?").collect::<Vec<_>>().join(",");
+            query_parts.push(format!("AND subcategory IN ({})", placeholders));
+            for subcat in subcats {
+                params.push(Box::new(subcat.clone()));
+            }
+        }
+    }
+
+    // Image filter
+    if !filters.include_images {
+        query_parts.push("AND question_html != '<h3>Question :</h3>'".to_string());
+    }
+
+    // Exclude seen cards
+    if !exclude.is_empty() {
+        let placeholders = exclude.iter().map(|_| "?").collect::<Vec<_>>().join(",");
+        query_parts.push(format!("AND id NOT IN ({})", placeholders));
+        for id in exclude {
+            params.push(Box::new(*id));
+        }
+    }
+
+    query_parts.push("ORDER BY RANDOM() LIMIT 1".to_string());
+
+    let query = query_parts.join(" ");
+
+    let card = conn
+        .query_row(
+            &query,
+            rusqlite::params_from_iter(params.iter().map(|p| p.as_ref())),
+            |row| {
+                Ok(Flashcard {
+                    id: row.get(0)?,
+                    category: row.get(1)?,
+                    subcategory: row.get(2)?,
+                    question_html: row.get(3)?,
+                    answer_html: row.get(4)?,
+                })
+            },
+        )
+        .optional()
+        .context("Failed to query filtered flashcard")?;
+
+    Ok(card)
+}
