@@ -398,6 +398,12 @@ span.linenos.special {
 
 /* Literal.Number.Integer.Long */
 
+/* Responsive images */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
 /* Scrollable list for filter form */
 .scrollable-list {
     max-height: 250px;

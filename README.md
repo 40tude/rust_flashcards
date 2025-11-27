@@ -107,6 +107,39 @@ I installed and use [`ccusage`](https://ccusage.com/) (see `npx ccusage@latest`)
     * This one was touchy and took some time
 
 
+## Issue rendering picture on cell phone
+The problem stems from the interaction between:
+
+1. Viewport meta tag (practice.html:5):
+    - `<meta name="viewport" content="width=device-width, initial-scale=1.0">`
+2. Galaxy Note 20 resolution: 3088x1440 pixels (very high density)
+3. Images with width="433" in the markdown
+
+What happens:
+
+- Your Galaxy Note 20 has a physical resolution of 3088x1440, but a Device Pixel Ratio (DPR) of probably 3.5x (yes, verified)
+  - The effective CSS width is ~440px (1440/3.5 ≈ 411px or 3088/3.5 ≈ 882px in landscape)
+  - The viewport causes the page to use the entire width of the virtual screen
+- Bootstrap .container has responsive max-width, but on mobile it takes up ~100% of the width (minus margins)
+  - Images that are 577px physically with width="433" CSS overflow because 433px CSS > container width on some mobile devices
+
+Possible solutions:
+
+Option 1 - Responsive CSS for images (recommended):
+Add to default.css:
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+  Option 2 - Limit image width in container:
+.container img {
+      max-width: 100%;
+      height: auto;
+  }
+
+Option 3 - Use Bootstrap classes in markdown:
+<img src="..." class="img-fluid" width="433"/>
 
 
 ## Notes
