@@ -196,8 +196,10 @@ pub fn get_distinct_categories(pool: &DbPool) -> Result<Vec<String>> {
     Ok(categories)
 }
 
-/// Retrieves distinct subcategories, optionally filtered by categories.
+/// Retrieves distinct subcategories with their parent categories.
 ///
+/// Returns tuples of (subcategory_name, parent_category_name) to enable
+/// client-side filtering of subcategories based on selected categories.
 /// If `categories` is None, returns all subcategories. If Some, returns only
 /// subcategories belonging to specified categories.
 ///
@@ -206,19 +208,19 @@ pub fn get_distinct_categories(pool: &DbPool) -> Result<Vec<String>> {
 pub fn get_distinct_subcategories(
     pool: &DbPool,
     categories: Option<&[String]>,
-) -> Result<Vec<String>> {
+) -> Result<Vec<(String, String)>> {
     let conn = pool.get().context("Failed to get DB connection")?;
 
     let (query, params): (String, Vec<String>) = if let Some(cats) = categories {
         let placeholders = cats.iter().map(|_| "?").collect::<Vec<_>>().join(",");
         let query = format!(
-            "SELECT DISTINCT subcategory FROM flashcards WHERE subcategory IS NOT NULL AND category IN ({}) ORDER BY subcategory",
+            "SELECT DISTINCT subcategory, category FROM flashcards WHERE subcategory IS NOT NULL AND category IN ({}) ORDER BY subcategory",
             placeholders
         );
         (query, cats.to_vec())
     } else {
         (
-            "SELECT DISTINCT subcategory FROM flashcards WHERE subcategory IS NOT NULL ORDER BY subcategory".to_string(),
+            "SELECT DISTINCT subcategory, category FROM flashcards WHERE subcategory IS NOT NULL ORDER BY subcategory".to_string(),
             Vec::new(),
         )
     };
@@ -229,7 +231,7 @@ pub fn get_distinct_subcategories(
 
     let subcategories = stmt
         .query_map(rusqlite::params_from_iter(params.iter()), |row| {
-            row.get::<_, String>(0)
+            Ok((row.get::<_, String>(0)?, row.get::<_, String>(1)?))
         })
         .context("Failed to query subcategories")?
         .collect::<std::result::Result<Vec<_>, _>>()

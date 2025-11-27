@@ -26,12 +26,20 @@ struct CategoryItem {
     selected: bool,
 }
 
+/// Subcategory with parent category and selection state.
+#[derive(Clone)]
+struct SubcategoryItem {
+    name: String,
+    category: String,
+    selected: bool,
+}
+
 /// Template for landing page filter form.
 #[derive(Template)]
 #[template(path = "landing.html")]
 struct LandingTemplate {
     categories: Vec<CategoryItem>,
-    subcategories: Vec<CategoryItem>,
+    subcategories: Vec<SubcategoryItem>,
     total_count: i64,
     filtered_count: Option<i64>,
     filter_keywords: String,
@@ -42,36 +50,16 @@ struct LandingTemplate {
     error_message: Option<String>,
 }
 
-/// Helper to deserialize single value or array into Vec.
-fn deserialize_string_or_vec<'de, D>(deserializer: D) -> Result<Vec<String>, D::Error>
-where
-    D: serde::Deserializer<'de>,
-{
-    use serde::de::{Error, Deserialize};
-
-    #[derive(Deserialize)]
-    #[serde(untagged)]
-    enum StringOrVec {
-        String(String),
-        Vec(Vec<String>),
-    }
-
-    match StringOrVec::deserialize(deserializer)? {
-        StringOrVec::String(s) => Ok(vec![s]),
-        StringOrVec::Vec(v) => Ok(v),
-    }
-}
-
 /// Form data from filter submission.
-#[derive(Deserialize)]
+///
+/// Note: This struct is manually populated from raw form data in `apply_filters`
+/// to avoid serde_urlencoded deserialization issues with repeated field names.
+#[derive(Debug)]
 pub struct FilterForm {
-    #[serde(default)]
     pub keywords: String,
     pub all_categories: Option<String>,
-    #[serde(default, deserialize_with = "deserialize_string_or_vec")]
     pub categories: Vec<String>,
     pub all_subcategories: Option<String>,
-    #[serde(default, deserialize_with = "deserialize_string_or_vec")]
     pub subcategories: Vec<String>,
     pub all_images: Option<String>,
 }
@@ -128,18 +116,19 @@ pub async fn landing(
             .map_err(|e| format!("Failed to get subcategories: {}", e))?
     };
 
-    // Build subcategory items with selection state
+    // Build subcategory items with selection state and parent category
     let all_subcategories_checked = session_data.filter_subcategories.is_none();
     let subcategories_disabled = session_data.filter_categories.is_none();
-    let subcategories: Vec<CategoryItem> = all_subcategories_list
+    let subcategories: Vec<SubcategoryItem> = all_subcategories_list
         .into_iter()
-        .map(|name| CategoryItem {
+        .map(|(name, category)| SubcategoryItem {
             selected: session_data
                 .filter_subcategories
                 .as_ref()
                 .map(|subcats| subcats.contains(&name))
                 .unwrap_or(false),
             name,
+            category,
         })
         .collect();
 
@@ -190,8 +179,40 @@ pub async fn landing(
 /// Returns error if session operation fails.
 pub async fn apply_filters(
     session: Session,
-    Form(form): Form<FilterForm>,
+    body: String,
 ) -> Result<impl IntoResponse, String> {
+    // Manual parsing of form data to handle repeated field names (categories[], subcategories[])
+    // Standard serde_urlencoded has issues with untagged enums and repeated fields
+    let mut form = FilterForm {
+        keywords: String::new(),
+        all_categories: None,
+        categories: Vec::new(),
+        all_subcategories: None,
+        subcategories: Vec::new(),
+        all_images: None,
+    };
+
+    // Simple URL decoder: replaces '+' with space (sufficient for our form data)
+    let url_decode = |s: &str| s.replace('+', " ");
+
+    // Parse form body: split on '&' for pairs, then '=' for key/value
+    // Multiple values with same key are collected into Vec
+    for pair in body.split('&') {
+        if let Some((key, value)) = pair.split_once('=') {
+            let key = url_decode(key);
+            let value = url_decode(value);
+
+            match key.as_str() {
+                "keywords" => form.keywords = value,
+                "all_categories" => form.all_categories = Some(value),
+                "categories" => form.categories.push(value), // Collect multiple values
+                "all_subcategories" => form.all_subcategories = Some(value),
+                "subcategories" => form.subcategories.push(value), // Collect multiple values
+                "all_images" => form.all_images = Some(value),
+                _ => {} // Ignore unknown fields
+            }
+        }
+    }
     let mut session_data: SessionData = session
         .get("data")
         .await
@@ -205,22 +226,35 @@ pub async fn apply_filters(
         .map(String::from)
         .collect();
 
-    // Parse categories
+    // Parse categories: None means "all categories"
     session_data.filter_categories = if form.all_categories.is_some() {
-        None // All categories
+        None // "All categories" checkbox was checked
     } else if form.categories.is_empty() {
-        None // No categories selected, treat as all
+        None // No individual categories selected, treat as all
     } else {
-        Some(form.categories)
+        Some(form.categories) // Specific categories selected
     };
 
-    // Parse subcategories
+    // Parse subcategories with server-side validation
     session_data.filter_subcategories = if form.all_subcategories.is_some() {
-        None // All subcategories
+        None // "All subcategories" checkbox was checked
     } else if form.subcategories.is_empty() {
-        None // No subcategories selected, treat as all
+        // Validation: if specific categories selected but NO subcategories, this is an error
+        // User must select at least one subcategory when categories are filtered
+        if session_data.filter_categories.is_some() {
+            session_data.error_message = Some(
+                "Please select at least one subcategory for the selected categories".to_string(),
+            );
+            session
+                .insert("data", &session_data)
+                .await
+                .map_err(|e| format!("Session insert error: {}", e))?;
+            return Ok(Redirect::to("/")); // Redirect back to form with error
+        } else {
+            None // No categories filtered, empty subcats is OK (means all)
+        }
     } else {
-        Some(form.subcategories)
+        Some(form.subcategories) // Specific subcategories selected
     };
 
     // Parse images

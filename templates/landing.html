@@ -82,10 +82,13 @@
                      style="{% if all_subcategories_checked || subcategories_disabled %}display:none{% endif %}">
                     {% for subcat in subcategories %}
                     <div class="form-check">
+                        <!-- data-category enables JS dynamic filtering by parent category -->
+                        <!-- subcategory-cb class used for JS selection -->
                         <input type="checkbox"
                                name="subcategories"
                                value="{{ subcat.name }}"
-                               class="form-check-input"
+                               class="form-check-input subcategory-cb"
+                               data-category="{{ subcat.category }}"
                                {% if subcat.selected %}checked{% endif %}>
                         <label class="form-check-label">{{ subcat.name }}</label>
                     </div>

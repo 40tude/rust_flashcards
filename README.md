@@ -17,7 +17,7 @@ It went so well that I decided to go forward and today, the master plan include 
 * [✅] **Step 1:** Translation and deployment at iso configuration
 * [✅] **Step 2:** Refactor the database so that it includes categories and subcategories (see Step 4)
 * [✅] **Step 3:** Refactor the Q&A cards so that they include a Reveal/Hide button
-* [Not yet] **Step 4:** Refactor the landing page so that the user can select to review only certain categories, subcategories or flash cards with certain keyword (this is already working but this is not great)
+* [✅] **Step 4:** Refactor the landing page so that the user can select to review only certain categories, subcategories or flash cards with certain keyword (this is already working but this is not great)
 
 
 
@@ -101,6 +101,9 @@ I installed and use [`ccusage`](https://ccusage.com/) (see `npx ccusage@latest`)
 * I let Claude do the job, write code etc.
 * One or 2 bugs
 * Let Claude create a commit and push on origin
+* Added feature : Tab support in the card so that we can use keyboard only
+* Added feature : make sure md and png if missing the app quit and leave an explicit message
+* Fixed : Issues with logic of category/subcategory check boxes
 
 
 
