@@ -22,11 +22,18 @@
             </p>
         </div>
         {% endif %}
+        {% if !is_png_only %}
         <div class="mt-3">{{ q_html|safe }}</div>
-        <div class="mt-3">{{ a_html|safe }}</div>
+        {% endif %}
+        <div id="answer-content" class="mt-3">{{ a_html|safe }}</div>
         <div class="mt-3">
-            <a href="/next" class="btn btn-primary" autofocus>Next</a>
+            <a href="/next"
+               id="action-btn"
+               class="btn btn-primary"
+               data-png-only="{{ is_png_only }}"
+               autofocus>{% if is_png_only %}Next{% else %}Show Answer{% endif %}</a>
         </div>
     </div>
+    <script src="/static/js/flashcard.js"></script>
 </body>
 </html>

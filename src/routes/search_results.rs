@@ -4,6 +4,14 @@ use tower_sessions::Session;
 
 use crate::db::{connection::DbPool, queries::get_random_searched_flashcard};
 
+/// Determines if a flashcard is PNG-only (no question content).
+///
+/// PNG-only cards have minimal question HTML from image loading.
+/// These cards should display answer immediately without hide/reveal logic.
+fn is_png_only_card(question_html: &str) -> bool {
+    question_html.trim() == "<h3>Question :</h3>"
+}
+
 #[derive(Template)]
 #[template(path = "search_results.html")]
 struct SearchResultsTemplate {
@@ -12,6 +20,7 @@ struct SearchResultsTemplate {
     q_html: String,
     a_html: String,
     nb_results: i64,
+    is_png_only: bool,
 }
 
 /// GET /search_results - Display random card from search results
@@ -58,9 +67,10 @@ pub async fn search_results(
             let template = SearchResultsTemplate {
                 category: card.category.clone(),
                 subcategory: card.subcategory.clone(),
-                q_html: card.question_html,
+                q_html: card.question_html.clone(),
                 a_html: card.answer_html,
                 nb_results: count,
+                is_png_only: is_png_only_card(&card.question_html),
             };
             return Ok(Html(template.render().unwrap()));
         } else {
@@ -79,9 +89,10 @@ pub async fn search_results(
     let template = SearchResultsTemplate {
         category: card.category.clone(),
         subcategory: card.subcategory.clone(),
-        q_html: card.question_html,
+        q_html: card.question_html.clone(),
         a_html: card.answer_html,
         nb_results: count,
+        is_png_only: is_png_only_card(&card.question_html),
     };
 
     Ok(Html(template.render().unwrap()))
