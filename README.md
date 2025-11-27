@@ -93,13 +93,14 @@ I installed and use [`ccusage`](https://ccusage.com/) (see `npx ccusage@latest`)
 ### For Step 4 - New landing page
 * Commit
 * Plan Mode first
-* I realized that it was rebuilding the database on each start so I change the behavior
+* I realized that the app was rebuilding the database on each start so I check and ask to change the behavior
 * I provided a drawing of what I want to see and explain the behavior
 * Double check few point : `/search` now removed, `landing page == index.html` etc.
 * Switch to Execution Mode
 * Save the plan : see `assets\landing_page_plan.md`
-* I let him do the job, write code etc.
-
+* I let Claude do the job, write code etc.
+* One or 2 bugs
+* Let Claude create a commit and push on origin
 
 
 
