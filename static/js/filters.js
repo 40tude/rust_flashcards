@@ -5,6 +5,7 @@
     const categoryCbs = document.querySelectorAll('.category-cb');
     const allSubcatCb = document.getElementById('all-subcategories-cb');
     const subcatList = document.getElementById('subcategory-list');
+    const subcatCbs = document.querySelectorAll('#subcategory-list input[type="checkbox"]');
     const form = document.getElementById('filter-form');
     const keywordsInput = document.getElementById('keywords-input');
 
@@ -19,6 +20,7 @@
             subcatList.style.display = 'none';
         } else {
             catList.style.display = 'block';
+            categoryCbs.forEach(cb => cb.checked = true);
             allSubcatCb.disabled = false;
         }
     });
@@ -44,6 +46,7 @@
             subcatList.style.display = 'none';
         } else {
             subcatList.style.display = 'block';
+            subcatCbs.forEach(cb => cb.checked = true);
         }
     });
 

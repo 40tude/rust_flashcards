@@ -9,15 +9,14 @@ Answer  :
 Blablabla...
 
 * `static\md\pour_test.md`
-* `static\md\pour_test.md`
 
 
-Question : 2 POUR TEST
+<!-- Question : 2 POUR TEST
 Answer  : static\md\pour_test.md
 
 * static\md\pour_test.md
 * static\md\pour_test.md
-* **mot-clé**
+* **mot-clé** -->
 
 <!--
 Faut se dire que la page web s'exécute à partir de
