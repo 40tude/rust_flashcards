@@ -103,7 +103,9 @@ I installed and use [`ccusage`](https://ccusage.com/) (see `npx ccusage@latest`)
 * Let Claude create a commit and push on origin
 * Added feature : Tab support in the card so that we can use keyboard only
 * Added feature : make sure md and png if missing the app quit and leave an explicit message
-* Fixed : Issues with logic of category/subcategory check boxes
+* Fixed : Issues with the logic of category/subcategory check boxes
+    * This one was touchy and took some time
+
 
 
 
