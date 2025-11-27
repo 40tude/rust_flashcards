@@ -105,9 +105,10 @@ I installed and use [`ccusage`](https://ccusage.com/) (see `npx ccusage@latest`)
 * Added feature : make sure md and png if missing the app quit and leave an explicit message
 * Fixed : Issues with the logic of category/subcategory check boxes
     * This one was touchy and took some time
+* Fixed issue rendering pictures on cell phone
+* Now support img in png and webp format and only these 2
 
-
-## Issue rendering picture on cell phone
+More information about images
 The problem stems from the interaction between:
 
 1. Viewport meta tag (practice.html:5):
@@ -132,7 +133,7 @@ img {
     height: auto;
 }
 
-  Option 2 - Limit image width in container:
+Option 2 - Limit image width in container:
 .container img {
       max-width: 100%;
       height: auto;
@@ -140,6 +141,19 @@ img {
 
 Option 3 - Use Bootstrap classes in markdown:
 <img src="..." class="img-fluid" width="433"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## Notes
@@ -154,6 +168,35 @@ Option 3 - Use Bootstrap classes in markdown:
 * Hide answers - Step 3
 * Landing page with search options - Step 4
 * Review math formula $ vs $$ - See `static\md\07_fs_deep_learning.md` for example.
+
+
+
+## About images
+
+Width in markdown (width attribute)
+* Recommendation: width="600"
+* Practical example: `<img src="../static/md/book_covers/deep_learning_keras_tensorflow.webp" alt="dummy" width="600"/>`
+
+Why:
+- Bootstrap .container on desktop: ~720px (tablet) to ~1140px (large screen)
+- On mobile: CSS max-width: 100% automatically limits
+- 600px CSS = good compromise between visibility and performance
+
+Actual image file size
+* Recommendation: 1200px width
+
+Why:
+- Device Pixel Ratio: Galaxy Note and others has DPR ~3.5x
+- Calculation: 600px CSS × 2 = 1200px physical (for Retina/HiDPI screens)
+- Format: WebP (already used, excellent)
+- Compression: 80-85% quality is sufficient for cover photos
+
+
+
+
+- With the added CSS (`max-width: 100%` see `static\css\default.css`), the width attribute becomes a suggestion in `.md` files
+- On Galaxy Note 20 (width ~411px CSS), the image will be reduced automatically
+- On desktop, it will display at 600px CSS (or less if the container is smaller)
 
 
 

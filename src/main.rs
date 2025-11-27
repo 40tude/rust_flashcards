@@ -40,28 +40,28 @@ async fn main() -> anyhow::Result<()> {
 
         // Validate content directories before attempting to load
         let md_status = content::validate_content_directory("./static/md");
-        let png_status = content::validate_content_directory("./static/png");
+        let img_status = content::validate_content_directory("./static/img");
 
         // Check if at least one directory is valid
-        let has_valid_content = matches!(md_status, content::ContentDirStatus::Valid) || matches!(png_status, content::ContentDirStatus::Valid);
+        let has_valid_content = matches!(md_status, content::ContentDirStatus::Valid) || matches!(img_status, content::ContentDirStatus::Valid);
 
         if !has_valid_content {
             // Both directories are invalid - exit with error
             eprintln!("\nERROR: Cannot start application - no content directories found\n");
             eprintln!("The application requires at least one of the following directories:");
             eprintln!("  - ./static/md/  (for markdown flashcards)");
-            eprintln!("  - ./static/png/ (for image-only flashcards)\n");
+            eprintln!("  - ./static/img/ (for image-only flashcards)\n");
             eprintln!("Current status:");
             eprintln!("  ./static/md  -> {:?}", md_status);
-            eprintln!("  ./static/png -> {:?}\n", png_status);
+            eprintln!("  ./static/img -> {:?}\n", img_status);
             eprintln!("Setup instructions:");
             eprintln!("  1. Create at least one directory:");
             eprintln!("     mkdir static/md");
             eprintln!("     OR");
-            eprintln!("     mkdir static/png\n");
+            eprintln!("     mkdir static/img\n");
             eprintln!("  2. Add content files:");
             eprintln!("     - For markdown: place .md files in static/md/");
-            eprintln!("     - For images: place .png files in static/png/\n");
+            eprintln!("     - For images: place .png or .webp files in static/img/\n");
             eprintln!("For more information, see the README.md file.");
             std::process::exit(1);
         }
@@ -74,10 +74,10 @@ async fn main() -> anyhow::Result<()> {
             tracing::warn!("Continuing with image-only flashcards");
         }
 
-        if matches!(png_status, content::ContentDirStatus::Valid) {
-            content::load_images(&pool, "./static/png")?;
+        if matches!(img_status, content::ContentDirStatus::Valid) {
+            content::load_images(&pool, "./static/img")?;
         } else {
-            tracing::warn!("Content directory unavailable: ./static/png (reason: {:?})", png_status);
+            tracing::warn!("Content directory unavailable: ./static/img (reason: {:?})", img_status);
             tracing::warn!("Continuing with markdown-only flashcards");
         }
 
