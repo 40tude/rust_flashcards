@@ -5,6 +5,8 @@ use super::connection::DbPool;
 use super::models::Flashcard;
 
 /// Insert a flashcard into the database
+///
+/// Note: FTS table sync happens via `populate_fts_table()` after all inserts complete.
 pub fn insert_flashcard(
     pool: &DbPool,
     category: Option<&str>,
@@ -20,16 +22,7 @@ pub fn insert_flashcard(
     )
     .context("Failed to insert flashcard")?;
 
-    let id = conn.last_insert_rowid();
-
-    // Sync to FTS5
-    conn.execute(
-        "INSERT INTO flashcards_fts (id, category, subcategory, question_html, answer_html) VALUES (?1, ?2, ?3, ?4, ?5)",
-        params![id, category, subcategory, question_html, answer_html],
-    )
-    .context("Failed to insert into FTS5")?;
-
-    Ok(id)
+    Ok(conn.last_insert_rowid())
 }
 
 /// Clear all flashcards from both tables
