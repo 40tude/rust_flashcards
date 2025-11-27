@@ -95,6 +95,10 @@ I installed and use [`ccusage`](https://ccusage.com/) (see `npx ccusage@latest`)
 
 ## This is for me
 
+Release:
+* Win = 4.2 MB
+* Linux = 5.2 MB (by default debug info were not stripped)
+
 ```
 git push heroku main
 http://localhost:8080/
