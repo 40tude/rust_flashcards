@@ -93,6 +93,15 @@ async fn main() -> anyhow::Result<()> {
     let session_store = MemoryStore::default();
     let session_layer = SessionManagerLayer::new(session_store).with_secure(false).with_name("flashcards_session");
 
+    // Save port before moving config
+    let port = config.port;
+
+    // Create app state with config and pool
+    let app_state = routes::AppState {
+        pool,
+        config,
+    };
+
     // Build Axum router
     let app = Router::new()
         .route("/", get(routes::landing))
@@ -101,10 +110,10 @@ async fn main() -> anyhow::Result<()> {
         .route("/reset_session", get(routes::reset_session))
         .nest_service("/static", ServeDir::new("static"))
         .layer(session_layer)
-        .with_state(pool);
+        .with_state(app_state);
 
     // Bind to address
-    let addr = SocketAddr::from(([0, 0, 0, 0], config.port));
+    let addr = SocketAddr::from(([0, 0, 0, 0], port));
     tracing::info!("Server listening on http://{}", addr);
 
     // Start server

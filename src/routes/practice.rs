@@ -6,7 +6,8 @@ use axum::{
 };
 use tower_sessions::Session;
 
-use crate::db::{connection::DbPool, models::FilterCriteria, queries};
+use crate::db::{models::FilterCriteria, queries};
+use crate::routes::AppState;
 use crate::session::SessionData;
 
 /// Determines if flashcard is PNG-only (no question content).
@@ -38,9 +39,10 @@ struct PracticeTemplate {
 /// # Errors
 /// Returns error if database query fails. Redirects to landing page if no cards match filters.
 pub async fn practice(
-    State(pool): State<DbPool>,
+    State(state): State<AppState>,
     session: Session,
 ) -> Result<impl IntoResponse, String> {
+    let pool = &state.pool;
     let mut session_data: SessionData = session
         .get("data")
         .await

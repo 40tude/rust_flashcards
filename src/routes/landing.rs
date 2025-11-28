@@ -8,7 +8,8 @@ use axum::{
 // use serde::Deserialize;
 use tower_sessions::Session;
 
-use crate::db::{connection::DbPool, models::FilterCriteria, queries};
+use crate::db::{models::FilterCriteria, queries};
+use crate::routes::AppState;
 use crate::session::SessionData;
 
 /// Checks if any filters are active (non-default).
@@ -35,6 +36,7 @@ struct SubcategoryItem {
 #[derive(Template)]
 #[template(path = "landing.html")]
 struct LandingTemplate {
+    deck_name: String,
     categories: Vec<CategoryItem>,
     subcategories: Vec<SubcategoryItem>,
     total_count: i64,
@@ -67,7 +69,8 @@ pub struct FilterForm {
 ///
 /// # Errors
 /// Returns error if database query or session operation fails.
-pub async fn landing(State(pool): State<DbPool>, session: Session) -> Result<impl IntoResponse, String> {
+pub async fn landing(State(state): State<AppState>, session: Session) -> Result<impl IntoResponse, String> {
+    let pool = &state.pool;
     let mut session_data: SessionData = session.get("data").await.map_err(|e| format!("Session get error: {}", e))?.unwrap_or_default();
 
     // Get error message from session (if any) and clear it
@@ -120,6 +123,7 @@ pub async fn landing(State(pool): State<DbPool>, session: Session) -> Result<imp
     };
 
     let template = LandingTemplate {
+        deck_name: state.config.deck_name.clone(),
         categories,
         subcategories,
         total_count,

@@ -4,6 +4,7 @@ use std::env;
 pub struct Config {
     pub port: u16,
     pub database_url: String,
+    pub deck_name: String,
 }
 
 impl Config {
@@ -16,9 +17,13 @@ impl Config {
         let database_url = env::var("DATABASE_URL")
             .unwrap_or_else(|_| "./flashcards.db".to_string());
 
+        let deck_name = env::var("DECK_NAME")
+            .unwrap_or_else(|_| "Flashcards".to_string());
+
         Ok(Config {
             port,
             database_url,
+            deck_name,
         })
     }
 }
