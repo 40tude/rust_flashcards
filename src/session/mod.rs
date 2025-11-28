@@ -31,13 +31,6 @@ pub struct SessionData {
     pub error_message: Option<String>,
 }
 
-impl SessionData {
-    /// Creates new session with default values.
-    #[allow(dead_code)]
-    pub fn new() -> Self {
-        Self::default()
-    }
-}
 
 impl Default for SessionData {
     /// Returns session with filter defaults.

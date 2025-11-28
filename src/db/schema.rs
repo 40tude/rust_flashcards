@@ -29,27 +29,3 @@ pub fn init_database(pool: &DbPool) -> anyhow::Result<()> {
     Ok(())
 }
 
-#[allow(dead_code)]
-pub fn populate_fts_table(pool: &DbPool) -> anyhow::Result<()> {
-    let conn = pool.get()?;
-
-    // Clear existing FTS data
-    conn.execute("DELETE FROM flashcards_fts", [])?;
-
-    // Copy data from flashcards to flashcards_fts
-    conn.execute(
-        "INSERT INTO flashcards_fts(id, category, subcategory, question_html, answer_html)
-         SELECT id, category, subcategory, question_html, answer_html FROM flashcards",
-        [],
-    )?;
-
-    let count: i64 = conn.query_row(
-        "SELECT COUNT(*) FROM flashcards_fts",
-        [],
-        |row| row.get(0),
-    )?;
-
-    tracing::info!("Populated FTS table with {} entries", count);
-
-    Ok(())
-}

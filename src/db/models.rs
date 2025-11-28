@@ -13,25 +13,6 @@ pub struct Flashcard {
     pub answer_html: String,
 }
 
-impl Flashcard {
-    /// Creates a new flashcard instance.
-    #[allow(dead_code)]
-    pub fn new(
-        id: i64,
-        category: Option<String>,
-        subcategory: Option<String>,
-        question_html: String,
-        answer_html: String,
-    ) -> Self {
-        Self {
-            id,
-            category,
-            subcategory,
-            question_html,
-            answer_html,
-        }
-    }
-}
 
 /// Filter criteria for flashcard queries.
 ///
