@@ -1,3 +1,4 @@
+// Rust guideline compliant 2025-01
 use std::env;
 
 #[derive(Clone, Debug)]
