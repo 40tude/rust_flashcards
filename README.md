@@ -106,9 +106,12 @@ I installed and use [`ccusage`](https://ccusage.com/) (see `npx ccusage@latest`)
 * Fixed : Issues with the logic of category/subcategory check boxes
     * This one was touchy and took some time
 * Fixed issue rendering pictures on cell phone
-* Now support img in png and webp format and only these 2
+* Now in img/ we can drop images with  png or webp format (and only these 2)
+    * Ideal size 1200 pix wide
 
-More information about images
+
+
+## More information about images
 The problem stems from the interaction between:
 
 1. Viewport meta tag (practice.html:5):
@@ -124,23 +127,17 @@ What happens:
 - Bootstrap .container has responsive max-width, but on mobile it takes up ~100% of the width (minus margins)
   - Images that are 577px physically with width="433" CSS overflow because 433px CSS > container width on some mobile devices
 
-Possible solutions:
+Implemented solution:
 
-Option 1 - Responsive CSS for images (recommended):
+Responsive CSS for images
 Add to default.css:
+```css
+
 img {
     max-width: 100%;
     height: auto;
 }
-
-Option 2 - Limit image width in container:
-.container img {
-      max-width: 100%;
-      height: auto;
-  }
-
-Option 3 - Use Bootstrap classes in markdown:
-<img src="..." class="img-fluid" width="433"/>
+```
 
 
 
@@ -165,9 +162,10 @@ Option 3 - Use Bootstrap classes in markdown:
 
 
 ## TODO (this is for me)
-* Hide answers - Step 3
-* Landing page with search options - Step 4
+* ~~Hide answers - Step 3~~
+* ~~Landing page with search options - Step 4~~
 * Review math formula $ vs $$ - See `static\md\07_fs_deep_learning.md` for example.
+* Write a Readme for the new users
 
 
 

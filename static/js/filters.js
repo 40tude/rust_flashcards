@@ -43,8 +43,11 @@
 
     // Validates form before submission
     function validateForm(e) {
-        // If specific categories selected AND "All subcategories" unchecked
-        if (!allCatCb.checked && !allSubcatCb.checked) {
+        // Check if any category is selected
+        const anyCategorySelected = Array.from(categoryCbs).some(cb => cb.checked);
+
+        // If specific categories selected (not all, and at least one) AND "All subcategories" unchecked
+        if (!allCatCb.checked && anyCategorySelected && !allSubcatCb.checked) {
             // Check if at least one enabled subcategory is checked
             const anyEnabledSubcatChecked = Array.from(subcatCbs).some(cb => {
                 return cb.checked && !cb.disabled;
@@ -56,6 +59,7 @@
                 return false;
             }
         }
+        // Allow: no categories selected (images-only mode)
         return true;
     }
 
@@ -83,20 +87,11 @@
         updateVisibleSubcategories();
     });
 
-    // Category checkboxes change - ensure at least all or some selected
+    // Category checkboxes change
     categoryCbs.forEach(cb => {
         cb.addEventListener('change', function() {
-            const anySelected = Array.from(categoryCbs).some(c => c.checked);
-            if (!anySelected && !allCatCb.checked) {
-                // Auto-check "All categories" if nothing selected
-                allCatCb.checked = true;
-                catList.style.display = 'none';
-                categoryCbs.forEach(cb => cb.disabled = true);
-                allSubcatCb.disabled = true;
-                allSubcatCb.checked = true;
-                subcatList.style.display = 'none';
-                subcatCbs.forEach(cb => cb.disabled = true);
-            }
+            // Allow unchecking all categories (for images-only mode)
+            // No auto-check behavior - user can explicitly select nothing
             updateVisibleSubcategories();
         });
     });

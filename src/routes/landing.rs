@@ -226,32 +226,34 @@ pub async fn apply_filters(
         .map(String::from)
         .collect();
 
-    // Parse categories: None means "all categories"
+    // Parse categories: None means "all categories", Some(vec![]) means "no categories"
     session_data.filter_categories = if form.all_categories.is_some() {
         None // "All categories" checkbox was checked
-    } else if form.categories.is_empty() {
-        None // No individual categories selected, treat as all
     } else {
-        Some(form.categories) // Specific categories selected
+        Some(form.categories) // Specific categories selected (may be empty for images-only)
     };
 
     // Parse subcategories with server-side validation
     session_data.filter_subcategories = if form.all_subcategories.is_some() {
         None // "All subcategories" checkbox was checked
     } else if form.subcategories.is_empty() {
-        // Validation: if specific categories selected but NO subcategories, this is an error
-        // User must select at least one subcategory when categories are filtered
-        if session_data.filter_categories.is_some() {
-            session_data.error_message = Some(
-                "Please select at least one subcategory for the selected categories".to_string(),
-            );
-            session
-                .insert("data", &session_data)
-                .await
-                .map_err(|e| format!("Session insert error: {}", e))?;
-            return Ok(Redirect::to("/")); // Redirect back to form with error
+        // Validation: if specific categories selected (non-empty) but NO subcategories, error
+        // Exception: empty categories + images-only mode is allowed
+        if let Some(ref cats) = session_data.filter_categories {
+            if !cats.is_empty() {
+                session_data.error_message = Some(
+                    "Please select at least one subcategory for the selected categories".to_string(),
+                );
+                session
+                    .insert("data", &session_data)
+                    .await
+                    .map_err(|e| format!("Session insert error: {}", e))?;
+                return Ok(Redirect::to("/")); // Redirect back to form with error
+            } else {
+                None // Empty categories (images-only mode), no subcats needed
+            }
         } else {
-            None // No categories filtered, empty subcats is OK (means all)
+            None // All categories selected, empty subcats means all
         }
     } else {
         Some(form.subcategories) // Specific subcategories selected

@@ -262,7 +262,10 @@ pub fn count_filtered_flashcards(
 
     // Category filter
     if let Some(ref cats) = filters.categories {
-        if !cats.is_empty() {
+        if cats.is_empty() {
+            // Empty vec means "no categories" - only match image-only cards
+            query_parts.push("AND category IS NULL".to_string());
+        } else {
             let placeholders = cats.iter().map(|_| "?").collect::<Vec<_>>().join(",");
             query_parts.push(format!("AND category IN ({})", placeholders));
             for cat in cats {
@@ -326,7 +329,10 @@ pub fn get_filtered_random_flashcard(
 
     // Category filter
     if let Some(ref cats) = filters.categories {
-        if !cats.is_empty() {
+        if cats.is_empty() {
+            // Empty vec means "no categories" - only match image-only cards
+            query_parts.push("AND category IS NULL".to_string());
+        } else {
             let placeholders = cats.iter().map(|_| "?").collect::<Vec<_>>().join(",");
             query_parts.push(format!("AND category IN ({})", placeholders));
             for cat in cats {
