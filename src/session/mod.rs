@@ -33,6 +33,7 @@ pub struct SessionData {
 
 impl SessionData {
     /// Creates new session with default values.
+    #[allow(dead_code)]
     pub fn new() -> Self {
         Self::default()
     }

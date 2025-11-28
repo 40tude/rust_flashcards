@@ -15,6 +15,7 @@ pub struct Flashcard {
 
 impl Flashcard {
     /// Creates a new flashcard instance.
+    #[allow(dead_code)]
     pub fn new(
         id: i64,
         category: Option<String>,

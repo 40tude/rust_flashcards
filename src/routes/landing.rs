@@ -3,9 +3,9 @@ use askama::Template;
 use axum::{
     extract::State,
     response::{Html, IntoResponse, Redirect},
-    Form,
+    // Form,
 };
-use serde::Deserialize;
+// use serde::Deserialize;
 use tower_sessions::Session;
 
 use crate::db::{connection::DbPool, models::FilterCriteria, queries};
@@ -13,10 +13,7 @@ use crate::session::SessionData;
 
 /// Checks if any filters are active (non-default).
 fn has_active_filters(session: &SessionData) -> bool {
-    !session.filter_keywords.is_empty()
-        || session.filter_categories.is_some()
-        || session.filter_subcategories.is_some()
-        || !session.filter_include_images
+    !session.filter_keywords.is_empty() || session.filter_categories.is_some() || session.filter_subcategories.is_some() || !session.filter_include_images
 }
 
 /// Category with selection state.
@@ -70,64 +67,43 @@ pub struct FilterForm {
 ///
 /// # Errors
 /// Returns error if database query or session operation fails.
-pub async fn landing(
-    State(pool): State<DbPool>,
-    session: Session,
-) -> Result<impl IntoResponse, String> {
-    let mut session_data: SessionData = session
-        .get("data")
-        .await
-        .map_err(|e| format!("Session get error: {}", e))?
-        .unwrap_or_default();
+pub async fn landing(State(pool): State<DbPool>, session: Session) -> Result<impl IntoResponse, String> {
+    let mut session_data: SessionData = session.get("data").await.map_err(|e| format!("Session get error: {}", e))?.unwrap_or_default();
 
     // Get error message from session (if any) and clear it
     let error_message = session_data.error_message.clone();
     session_data.error_message = None;
-    session
-        .insert("data", &session_data)
-        .await
-        .map_err(|e| format!("Session insert error: {}", e))?;
+    session.insert("data", &session_data).await.map_err(|e| format!("Session insert error: {}", e))?;
 
     // Query available categories
-    let all_categories = queries::get_distinct_categories(&pool)
-        .map_err(|e| format!("Failed to get categories: {}", e))?;
+    let all_categories = queries::get_distinct_categories(&pool).map_err(|e| format!("Failed to get categories: {}", e))?;
 
     // Build category items with selection state
     let all_categories_checked = session_data.filter_categories.is_none();
     let categories: Vec<CategoryItem> = all_categories
         .into_iter()
         .map(|name| CategoryItem {
-            selected: session_data
-                .filter_categories
-                .as_ref()
-                .map(|cats| cats.contains(&name))
-                .unwrap_or(false),
+            selected: session_data.filter_categories.as_ref().map(|cats| cats.contains(&name)).unwrap_or(false),
             name,
         })
         .collect();
 
     // ALWAYS render ALL subcategories regardless of category filter
     // JavaScript will handle client-side filtering for visibility
-    let all_subcategories_list = queries::get_distinct_subcategories(&pool, None)
-        .map_err(|e| format!("Failed to get subcategories: {}", e))?;
+    let all_subcategories_list = queries::get_distinct_subcategories(&pool, None).map_err(|e| format!("Failed to get subcategories: {}", e))?;
 
     // Build subcategory items with selection state and parent category
     let all_subcategories_checked = session_data.filter_subcategories.is_none();
     let subcategories: Vec<SubcategoryItem> = all_subcategories_list
         .into_iter()
         .map(|(name, category)| SubcategoryItem {
-            selected: session_data
-                .filter_subcategories
-                .as_ref()
-                .map(|subcats| subcats.contains(&name))
-                .unwrap_or(false),
+            selected: session_data.filter_subcategories.as_ref().map(|subcats| subcats.contains(&name)).unwrap_or(false),
             name,
             category,
         })
         .collect();
 
-    let total_count = queries::get_total_count(&pool)
-        .map_err(|e| format!("Failed to get total count: {}", e))?;
+    let total_count = queries::get_total_count(&pool).map_err(|e| format!("Failed to get total count: {}", e))?;
 
     // Count filtered cards if filters active
     let filtered_count = if has_active_filters(&session_data) {
@@ -137,8 +113,7 @@ pub async fn landing(
             subcategories: session_data.filter_subcategories.clone(),
             include_images: session_data.filter_include_images,
         };
-        let count = queries::count_filtered_flashcards(&pool, &criteria)
-            .map_err(|e| format!("Failed to count filtered cards: {}", e))?;
+        let count = queries::count_filtered_flashcards(&pool, &criteria).map_err(|e| format!("Failed to count filtered cards: {}", e))?;
         Some(count)
     } else {
         None
@@ -156,9 +131,7 @@ pub async fn landing(
         error_message,
     };
 
-    let html = template
-        .render()
-        .map_err(|e| format!("Template render error: {}", e))?;
+    let html = template.render().map_err(|e| format!("Template render error: {}", e))?;
 
     Ok(Html(html))
 }
@@ -170,10 +143,7 @@ pub async fn landing(
 ///
 /// # Errors
 /// Returns error if session operation fails.
-pub async fn apply_filters(
-    session: Session,
-    body: String,
-) -> Result<impl IntoResponse, String> {
+pub async fn apply_filters(session: Session, body: String) -> Result<impl IntoResponse, String> {
     // Manual parsing of form data to handle repeated field names (categories[], subcategories[])
     // Standard serde_urlencoded has issues with untagged enums and repeated fields
     let mut form = FilterForm {
@@ -206,18 +176,10 @@ pub async fn apply_filters(
             }
         }
     }
-    let mut session_data: SessionData = session
-        .get("data")
-        .await
-        .map_err(|e| format!("Session get error: {}", e))?
-        .unwrap_or_default();
+    let mut session_data: SessionData = session.get("data").await.map_err(|e| format!("Session get error: {}", e))?.unwrap_or_default();
 
     // Parse keywords
-    session_data.filter_keywords = form
-        .keywords
-        .split_whitespace()
-        .map(String::from)
-        .collect();
+    session_data.filter_keywords = form.keywords.split_whitespace().map(String::from).collect();
 
     // Parse categories: None means "all categories", Some(vec![]) means "no categories"
     session_data.filter_categories = if form.all_categories.is_some() {
@@ -234,13 +196,8 @@ pub async fn apply_filters(
         // Exception: empty categories + images-only mode is allowed
         if let Some(ref cats) = session_data.filter_categories {
             if !cats.is_empty() {
-                session_data.error_message = Some(
-                    "Please select at least one subcategory for the selected categories".to_string(),
-                );
-                session
-                    .insert("data", &session_data)
-                    .await
-                    .map_err(|e| format!("Session insert error: {}", e))?;
+                session_data.error_message = Some("Please select at least one subcategory for the selected categories".to_string());
+                session.insert("data", &session_data).await.map_err(|e| format!("Session insert error: {}", e))?;
                 return Ok(Redirect::to("/")); // Redirect back to form with error
             } else {
                 None // Empty categories (images-only mode), no subcats needed
@@ -259,10 +216,7 @@ pub async fn apply_filters(
     session_data.seen_ids.clear();
     session_data.filtered_card_count = None;
 
-    session
-        .insert("data", &session_data)
-        .await
-        .map_err(|e| format!("Session insert error: {}", e))?;
+    session.insert("data", &session_data).await.map_err(|e| format!("Session insert error: {}", e))?;
 
     Ok(Redirect::to("/practice"))
 }

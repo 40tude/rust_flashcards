@@ -29,6 +29,7 @@ pub fn init_database(pool: &DbPool) -> anyhow::Result<()> {
     Ok(())
 }
 
+#[allow(dead_code)]
 pub fn populate_fts_table(pool: &DbPool) -> anyhow::Result<()> {
     let conn = pool.get()?;
 

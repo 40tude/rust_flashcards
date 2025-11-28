@@ -68,6 +68,7 @@ pub fn get_total_count(pool: &DbPool) -> Result<i64> {
 }
 
 /// Get a random flashcard, excluding specified IDs
+#[allow(dead_code)]
 pub fn get_random_flashcard(pool: &DbPool, exclude: &[i64]) -> Result<Option<Flashcard>> {
     let conn = pool.get().context("Failed to get DB connection")?;
 
@@ -107,6 +108,7 @@ pub fn get_random_flashcard(pool: &DbPool, exclude: &[i64]) -> Result<Option<Fla
 }
 
 /// Get a random flashcard from search results, excluding specified IDs
+#[allow(dead_code)]
 pub fn get_random_searched_flashcard(
     pool: &DbPool,
     exclude: &[i64],

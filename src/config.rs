@@ -2,6 +2,7 @@ use std::env;
 
 #[derive(Clone, Debug)]
 pub struct Config {
+    #[allow(dead_code)]
     pub secret_key: String,
     pub port: u16,
     pub database_url: String,
