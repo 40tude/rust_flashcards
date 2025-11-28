@@ -404,7 +404,7 @@ fn is_png_only_card(question_html: &str) -> bool {
                        class="form-check-input"
                        {% if filter_include_images %}checked{% endif %}>
                 <label class="form-check-label" for="all-images-cb">
-                    <strong>All images</strong> (include image-only cards)
+                    <strong>All images</strong>
                 </label>
             </div>
 

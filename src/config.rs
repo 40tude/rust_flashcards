@@ -9,21 +9,12 @@ pub struct Config {
 
 impl Config {
     pub fn from_env() -> anyhow::Result<Self> {
-        let port = env::var("PORT")
-            .unwrap_or_else(|_| "8080".to_string())
-            .parse()
-            .expect("PORT must be a valid u16");
+        let port = env::var("PORT").unwrap_or_else(|_| "8080".to_string()).parse().expect("PORT must be a valid u16");
 
-        let database_url = env::var("DATABASE_URL")
-            .unwrap_or_else(|_| "./flashcards.db".to_string());
+        let database_url = env::var("DATABASE_URL").unwrap_or_else(|_| "./flashcards.db".to_string());
 
-        let deck_name = env::var("DECK_NAME")
-            .unwrap_or_else(|_| "Flashcards".to_string());
+        let deck_name = env::var("DECK_NAME").unwrap_or_else(|_| "Data Science Flashcards".to_string());
 
-        Ok(Config {
-            port,
-            database_url,
-            deck_name,
-        })
+        Ok(Config { port, database_url, deck_name })
     }
 }
