@@ -71,15 +71,14 @@
                            name="all_subcategories"
                            id="all-subcategories-cb"
                            class="form-check-input"
-                           {% if all_subcategories_checked %}checked{% endif %}
-                           {% if subcategories_disabled %}disabled{% endif %}>
+                           {% if all_subcategories_checked %}checked{% endif %}>
                     <label class="form-check-label" for="all-subcategories-cb">
                         <strong>All subcategories</strong>
                     </label>
                 </div>
                 <div id="subcategory-list"
                      class="scrollable-list mt-2"
-                     style="{% if all_subcategories_checked || subcategories_disabled %}display:none{% endif %}">
+                     style="{% if all_subcategories_checked %}display:none{% endif %}">
                     {% for subcat in subcategories %}
                     <div class="form-check">
                         <!-- data-category enables JS dynamic filtering by parent category -->

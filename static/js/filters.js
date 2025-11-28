@@ -1,11 +1,9 @@
 // Filter form interaction handler
 //
-// Key features:
-// 1. Dynamic subcategory filtering: only show subcategories for selected categories
-// 2. Checkbox state management: disabled checkboxes are not submitted with form (prevents duplicate field errors)
-// 3. Client-side validation: ensures at least one subcategory is selected when categories are filtered
-// 4. Auto-check behavior: if no categories selected, auto-enable "All categories"
-(function() {
+// Architecture: Server renders ALL categories/subcategories
+// JavaScript handles ALL visibility and state logic
+// Session stores ONLY selection state (checked/unchecked)
+document.addEventListener('DOMContentLoaded', function() {
     const allCatCb = document.getElementById('all-categories-cb');
     const catList = document.getElementById('category-list');
     const categoryCbs = document.querySelectorAll('.category-cb');
@@ -22,31 +20,48 @@
             .filter(cb => cb.checked)
             .map(cb => cb.value);
 
-        // Show/hide subcategories based on their parent category
+        const allCategoriesMode = allCatCb.checked;
+        const noCategoriesSelected = !allCategoriesMode && checkedCategories.length === 0;
+
+        // Show/hide subcategories based on parent category selection
         subcatCbs.forEach(cb => {
             const parentCat = cb.dataset.category;
             const parentDiv = cb.parentElement;
 
-            if (allCatCb.checked || checkedCategories.includes(parentCat)) {
-                // Show subcategory
+            if (allCategoriesMode || checkedCategories.includes(parentCat)) {
+                // Show subcategory (parent category is selected)
                 parentDiv.style.display = 'block';
                 cb.disabled = false;
             } else {
-                // Hide, uncheck, and disable subcategory
-                // Disabled checkboxes are not submitted with form
+                // Hide subcategory (parent category not selected)
                 parentDiv.style.display = 'none';
-                cb.checked = false;
-                cb.disabled = true;
+                cb.checked = false;  // Uncheck hidden items
+                cb.disabled = true;  // Disable so they don't submit
             }
         });
+
+        // Auto-manage "All Subcategories" checkbox state
+        if (noCategoriesSelected) {
+            // Images-only mode: disable subcategory selection
+            allSubcatCb.disabled = true;
+            allSubcatCb.checked = true;
+            subcatList.style.display = 'none';
+        } else {
+            // Categories selected: enable subcategory selection
+            allSubcatCb.disabled = false;
+            if (allSubcatCb.checked) {
+                subcatList.style.display = 'none';
+            } else {
+                subcatList.style.display = 'block';
+            }
+        }
     }
 
     // Validates form before submission
     function validateForm(e) {
-        // Check if any category is selected
         const anyCategorySelected = Array.from(categoryCbs).some(cb => cb.checked);
 
-        // If specific categories selected (not all, and at least one) AND "All subcategories" unchecked
+        // If specific categories selected AND "All subcategories" unchecked
         if (!allCatCb.checked && anyCategorySelected && !allSubcatCb.checked) {
             // Check if at least one enabled subcategory is checked
             const anyEnabledSubcatChecked = Array.from(subcatCbs).some(cb => {
@@ -59,30 +74,25 @@
                 return false;
             }
         }
-        // Allow: no categories selected (images-only mode)
         return true;
     }
 
     // All categories checkbox toggle
     allCatCb.addEventListener('change', function() {
         if (this.checked) {
+            // Hide and disable individual category selection
             catList.style.display = 'none';
             categoryCbs.forEach(cb => {
                 cb.checked = false;
-                cb.disabled = true;  // Disable to prevent form submission
+                cb.disabled = true;
             });
-            // Disable and check all subcategories when all categories selected
-            allSubcatCb.disabled = true;
-            allSubcatCb.checked = true;
-            subcatList.style.display = 'none';
-            subcatCbs.forEach(cb => cb.disabled = true);
         } else {
+            // Show and enable individual category selection
             catList.style.display = 'block';
             categoryCbs.forEach(cb => {
-                cb.checked = true;
-                cb.disabled = false;  // Re-enable for form submission
+                cb.checked = true;  // Auto-check all when expanding
+                cb.disabled = false;
             });
-            allSubcatCb.disabled = false;
         }
         updateVisibleSubcategories();
     });
@@ -90,8 +100,6 @@
     // Category checkboxes change
     categoryCbs.forEach(cb => {
         cb.addEventListener('change', function() {
-            // Allow unchecking all categories (for images-only mode)
-            // No auto-check behavior - user can explicitly select nothing
             updateVisibleSubcategories();
         });
     });
@@ -102,7 +110,12 @@
             subcatList.style.display = 'none';
         } else {
             subcatList.style.display = 'block';
-            subcatCbs.forEach(cb => cb.checked = true);
+            // Only check ENABLED subcategories (visible ones)
+            subcatCbs.forEach(cb => {
+                if (!cb.disabled) {
+                    cb.checked = true;
+                }
+            });
         }
     });
 
@@ -121,4 +134,4 @@
 
     // Initialize subcategory visibility on page load
     updateVisibleSubcategories();
-})();
+});

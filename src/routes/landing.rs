@@ -45,7 +45,6 @@ struct LandingTemplate {
     filter_keywords: String,
     all_categories_checked: bool,
     all_subcategories_checked: bool,
-    subcategories_disabled: bool,
     filter_include_images: bool,
     error_message: Option<String>,
 }
@@ -107,18 +106,13 @@ pub async fn landing(
         })
         .collect();
 
-    // Get subcategories based on current filter state
-    let all_subcategories_list = if let Some(ref cats) = session_data.filter_categories {
-        queries::get_distinct_subcategories(&pool, Some(cats))
-            .map_err(|e| format!("Failed to get subcategories: {}", e))?
-    } else {
-        queries::get_distinct_subcategories(&pool, None)
-            .map_err(|e| format!("Failed to get subcategories: {}", e))?
-    };
+    // ALWAYS render ALL subcategories regardless of category filter
+    // JavaScript will handle client-side filtering for visibility
+    let all_subcategories_list = queries::get_distinct_subcategories(&pool, None)
+        .map_err(|e| format!("Failed to get subcategories: {}", e))?;
 
     // Build subcategory items with selection state and parent category
     let all_subcategories_checked = session_data.filter_subcategories.is_none();
-    let subcategories_disabled = session_data.filter_categories.is_none();
     let subcategories: Vec<SubcategoryItem> = all_subcategories_list
         .into_iter()
         .map(|(name, category)| SubcategoryItem {
@@ -158,7 +152,6 @@ pub async fn landing(
         filter_keywords: session_data.filter_keywords.join(" "),
         all_categories_checked,
         all_subcategories_checked,
-        subcategories_disabled,
         filter_include_images: session_data.filter_include_images,
         error_message,
     };
