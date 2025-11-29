@@ -19,17 +19,17 @@ Successfully upgraded the project to Rust edition 2024 and updated compatible cr
 ### 2. Dependencies Removed
 - **`serde_json = "1"`** - Removed (unused directly, only transitive dependency)
 
-### 3. Dependencies Updated (Compatible)
+### 3. Dependencies Updated (Compatible - Latest Versions)
 
 | Crate | Before | After | Notes |
 |-------|--------|-------|-------|
-| `rusqlite` | 0.31 | 0.32 | ✅ No breaking changes |
-| `r2d2_sqlite` | 0.24 | 0.25 | ✅ Compatible with rusqlite 0.32 |
-| `tower` | 0.4 | 0.5 | ✅ No breaking changes |
-| `tower-http` | 0.5 | 0.6 | ✅ No breaking changes |
-| `tower-sessions` | 0.12 | 0.13 | ✅ No breaking changes |
-| `pulldown-cmark` | 0.11 | 0.12 | ✅ No breaking changes |
-| `syntect` | 5.2 | 5.3 | ✅ Already resolved to 5.3 |
+| `rusqlite` | 0.31 | **0.37** | ✅ Latest - no breaking changes |
+| `r2d2_sqlite` | 0.24 | **0.31** | ✅ Latest - compatible with rusqlite 0.37 |
+| `tower` | 0.4 | **0.5** | ✅ Latest - no breaking changes |
+| `tower-http` | 0.5 | **0.6** | ✅ Latest - no breaking changes |
+| `tower-sessions` | 0.12 | **0.13** | ✅ Latest compatible (0.14 has breaking changes) |
+| `pulldown-cmark` | 0.11 | **0.13** | ✅ Latest - no breaking changes |
+| `syntect` | 5.2 | **5.3** | ✅ Latest - already resolved to 5.3 |
 
 ### 4. Dependencies NOT Updated (Breaking Changes)
 
@@ -37,6 +37,7 @@ Successfully upgraded the project to Rust edition 2024 and updated compatible cr
 |-------|---------|--------|------------------------|
 | `axum` | 0.7 | 0.8 | ⚠️ Major breaking changes (see below) |
 | `askama` | 0.12 | 0.13 | ⚠️ Removed `askama_axum` integration crate |
+| `tower-sessions` | 0.13 | 0.14 | ⚠️ Breaking changes in session API |
 
 ---
 
@@ -133,6 +134,7 @@ askama = "0.13"  # No with-axum feature
 
 ## Build Verification
 
+### Initial Update (Nov 29, 2025)
 ```bash
 cargo build
 ```
@@ -141,6 +143,21 @@ cargo build
 ```
    Compiling rust-flashcards v0.1.0
     Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.14s
+```
+
+✅ No warnings
+✅ No errors
+
+### Final Update - Latest Versions (Nov 29, 2025)
+Updated all crates to their latest compatible versions:
+- `rusqlite 0.32` → `0.37`
+- `r2d2_sqlite 0.25` → `0.31`
+- `pulldown-cmark 0.12` → `0.13`
+
+**Result:**
+```
+   Compiling rust-flashcards v0.1.0
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 5.32s
 ```
 
 ✅ No warnings
@@ -208,6 +225,10 @@ When axum 0.8 ecosystem matures:
 
 ## References
 
+- [rusqlite on crates.io](https://crates.io/crates/rusqlite) - Latest: 0.37.0
+- [r2d2_sqlite on crates.io](https://crates.io/crates/r2d2_sqlite) - Latest: 0.31.0
+- [tower-sessions on crates.io](https://crates.io/crates/tower-sessions) - Latest compatible: 0.13.0
+- [pulldown-cmark on crates.io](https://crates.io/crates/pulldown-cmark) - Latest: 0.13.0
 - [Announcing axum 0.8.0](https://tokio.rs/blog/2025-01-01-announcing-axum-0-8-0)
 - [Askama 0.13 Upgrade Guide](https://askama.readthedocs.io/en/v0.13.0/upgrading.html)
 - [Axum CHANGELOG](https://github.com/tokio-rs/axum/blob/main/axum/CHANGELOG.md)
@@ -215,4 +236,19 @@ When axum 0.8 ecosystem matures:
 
 ---
 
-**Conclusion:** Successful incremental update to edition 2024 with compatible dependency updates. Deferred axum 0.8 + askama 0.13 migration for future release when breaking changes can be properly addressed.
+**Conclusion:** Successful update to edition 2024 with **all crates updated to their latest compatible versions**. Deferred axum 0.8, askama 0.13, and tower-sessions 0.14 migrations for future release when breaking changes can be properly addressed.
+
+---
+
+## Update History
+
+### Phase 1: Initial Compatible Updates (Nov 29, 2025)
+- Edition 2024
+- Removed `serde_json`
+- Updated to compatible versions
+
+### Phase 2: Latest Version Updates (Nov 29, 2025)
+- `rusqlite` 0.32 → **0.37** (latest)
+- `r2d2_sqlite` 0.25 → **0.31** (latest)
+- `pulldown-cmark` 0.12 → **0.13** (latest)
+- Attempted `tower-sessions` 0.14 - reverted due to breaking changes

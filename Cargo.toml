@@ -11,9 +11,9 @@ tower = "0.5"
 tower-http = { version = "0.6", features = ["fs", "trace"] }
 
 # Database
-rusqlite = { version = "0.32", features = ["bundled"] }
+rusqlite = { version = "0.37", features = ["bundled"] }
 r2d2 = "0.8"
-r2d2_sqlite = "0.25"
+r2d2_sqlite = "0.31"
 
 # Session Management
 tower-sessions = "0.13"
@@ -23,7 +23,7 @@ askama = { version = "0.12", features = ["with-axum"] }
 askama_axum = "0.4"
 
 # Markdown Processing
-pulldown-cmark = "0.12"
+pulldown-cmark = "0.13"
 syntect = "5.3"
 
 # Content Scanning
