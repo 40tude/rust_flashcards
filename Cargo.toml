@@ -49,12 +49,9 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 rand = "0.8"
 
 
-[build]
-rustflags = ["-C", "target-cpu=native"]
-
 [profile.release]
-strip = true        # Remove debug symbols
-opt-level = "z"     # Optimize for size
-lto = true          # Link Time Optimization
-codegen-units = 1   # Better optimization (slower compile)
-panic = "abort"     # Reduce runtime size
+strip = true      # Remove debug symbols
+opt-level = "z"   # Optimize for size
+lto = true        # Link Time Optimization
+codegen-units = 1 # Better optimization (slower compile)
+panic = "abort"   # Reduce runtime size

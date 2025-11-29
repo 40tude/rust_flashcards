@@ -518,10 +518,8 @@ Answer  :
 * Donc elle parcourt $\frac{D}{2}$ en $\frac{D}{2\cdot40}$ heures (c'est une règle de 3, ça reste gérable...)
 * De la même façon elle parcourt $\frac{D}{2}$ en $\frac{D}{2\cdot60}$ heures
 * La distance totale c'est $D$
-* Le temps total du parcours c'est :
-$$t = \frac{D}{2\cdot40} + \frac{D}{2\cdot60}$$
-* Donc la vitesse moyenne c'est :
-$$V = \frac{d}{t} = \frac{D}{\frac{D}{2\cdot40} + \frac{D}{2\cdot60}} = \frac{2}{\frac{1}{40} + \frac{1}{60}}$$
+* Le temps total du parcours c'est : $t = \frac{D}{2\cdot40} + \frac{D}{2\cdot60}$
+* Donc la vitesse moyenne c'est : $V = \frac{d}{t} = \frac{D}{\frac{D}{2\cdot40} + \frac{D}{2\cdot60}} = \frac{2}{\frac{1}{40} + \frac{1}{60}}$
 
 
 <!--

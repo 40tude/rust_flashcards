@@ -1,0 +1,3 @@
+[build]
+# Use native CPU optimizations for all builds
+rustflags = ["-C", "target-cpu=native"]
