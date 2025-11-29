@@ -1,3 +1,4 @@
+mod cli;
 mod config;
 mod content;
 mod db;
@@ -8,12 +9,16 @@ use axum::{
     routing::{get, post},
     Router,
 };
+use cli::Cli;
 use std::net::SocketAddr;
 use tower_http::services::ServeDir;
 use tower_sessions::{MemoryStore, SessionManagerLayer};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
+    // Parse CLI arguments first
+    let cli_args = Cli::parse_args();
+
     // Load environment variables from .env
     dotenvy::dotenv().ok();
 
@@ -27,6 +32,22 @@ async fn main() -> anyhow::Result<()> {
     // Load configuration
     let config = config::Config::from_env()?;
     tracing::info!("Configuration loaded: port={}, database={}", config.port, config.database_url);
+
+    // Handle database rebuild if requested
+    if cli_args.rebuild_db {
+        let db_path = std::path::Path::new(&config.database_url);
+        if db_path.exists() {
+            tracing::info!("Deleting existing database: {}", config.database_url);
+            std::fs::remove_file(db_path)
+                .unwrap_or_else(|e| {
+                    tracing::error!("Failed to delete database: {}", e);
+                    std::process::exit(1);
+                });
+            tracing::info!("Database deleted, will rebuild from content");
+        } else {
+            tracing::warn!("Database file not found, nothing to delete");
+        }
+    }
 
     // Create database connection pool
     let pool = db::create_pool(&config.database_url)?;

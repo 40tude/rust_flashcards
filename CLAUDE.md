@@ -21,6 +21,16 @@ cargo build
 # Run locally (http://localhost:8080/)
 cargo run
 
+# Rebuild database from content files
+cargo run -- --rebuild-db
+cargo run -- -r
+
+# Show help
+cargo run -- --help
+
+# Show version
+cargo run -- --version
+
 # Build for production (Heroku deployment)
 cargo build --release
 
@@ -38,13 +48,15 @@ powershell -Command "Stop-Process -Name rust-flashcards -Force"
 ## Architecture Overview
 
 ### Application Startup Flow (src/main.rs)
-1. Load environment variables from `.env` (PORT, DATABASE_URL)
-2. Create SQLite connection pool (r2d2)
-3. Initialize database schema (flashcards + flashcards_fts tables)
-4. Check if database empty - only load content if needed (fast startup optimization)
+1. Parse CLI arguments (--rebuild-db, --help, --version)
+2. Load environment variables from `.env` (PORT, DATABASE_URL)
+3. Handle database rebuild if `--rebuild-db` flag present (delete existing DB file)
+4. Create SQLite connection pool (r2d2)
+5. Initialize database schema (flashcards + flashcards_fts tables)
+6. Check if database empty - only load content if needed (fast startup optimization)
    - Load content from `./static/md` (markdown) and `./static/png` (images)
    - Populate FTS5 search table
-5. Start Axum web server with session middleware
+7. Start Axum web server with session middleware
 
 ### Module Structure
 
@@ -66,6 +78,11 @@ powershell -Command "Stop-Process -Name rust-flashcards -Force"
 **session/** - Session management
 - Uses tower-sessions with in-memory store
 - Tracks: `seen_ids`, filter state (`filter_keywords`, `filter_categories`, `filter_subcategories`, `filter_include_images`), cached counts, error messages
+
+**cli.rs** - Command-line interface
+- Parses CLI arguments using clap with derive API
+- Currently supports: `--rebuild-db` / `-r`, `--help`, `--version`
+- Extensible structure ready for future args (--database, --port)
 
 ### Database Schema
 
@@ -101,6 +118,7 @@ Category/subcategory are parsed from YAML frontmatter or filename patterns like 
 - **askama 0.12**: HTML templating
 - **pulldown-cmark 0.11**: Markdown parsing
 - **syntect 5.2**: Syntax highlighting for code blocks
+- **clap 4.5**: CLI argument parsing with derive API
 
 ## Development Context
 

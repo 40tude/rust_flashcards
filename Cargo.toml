@@ -33,6 +33,9 @@ regex = "1"
 # Configuration
 dotenvy = "0.15"
 
+# CLI Arguments
+clap = { version = "4.5", features = ["derive"] }
+
 # Serialization
 serde = { version = "1", features = ["derive"] }
 
