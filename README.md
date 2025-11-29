@@ -2,9 +2,9 @@
 * Write a Readme for the new users
 * Add an option to force the rebuild the database
     * Available only locally NOT on Heroku
-* Add CI/CD?
-* Add tests?
-* Tokei?
+* Add CI/CD? => An issue have been created
+* Add tests? => An issue have been created
+* ~~Tokei?~~
 * ~~Hide answers - Step 3~~
 * ~~Landing page with search options - Step 4~~
 * ~~Review math formula $ vs $$ - See `static\md\07_fs_deep_learning.md` for example.~~
@@ -180,6 +180,28 @@ Why:
 
 
 
+## Code Statistics
+
+```powershell
+tokei --compact --exclude assets --exclude static --exclude flashcards_staging
+Get-ChildItem -Recurse *.md | Where-Object { $_.FullName -notmatch '\\(assets|static|flashcards_staging)\\' }
+```
+
+Last Update Date : 2025 11 29
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ Language              Files        Lines         Code     Comments       Blanks
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ HTML                      3          181          161            8           12
+ Markdown                  2          409            0          290          119
+ Rust                     16         1191          888          106          197
+ TOML                      1           59           33           13           13
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+ Total                    22         2013         1106          533          374
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
 
 
 
@@ -237,6 +259,9 @@ https://rust-flashcards-ae94334b8997.herokuapp.com/
 powershell -Command "Stop-Process -Name rust-flashcards -Force"
 
 heroku run bash -a rust-flashcards
+
+# Update single dependency - Read assets\14_cargo_version_specifiers.md
+cargo update -p tracing
 
 ```
 
