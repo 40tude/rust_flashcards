@@ -48,6 +48,10 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 # Random selection
 rand = "0.8"
 
+
+[build]
+rustflags = ["-C", "target-cpu=native"]
+
 [profile.release]
 strip = true        # Remove debug symbols
 opt-level = "z"     # Optimize for size
