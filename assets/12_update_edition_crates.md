@@ -31,6 +31,7 @@ Successfully upgraded the project to Rust edition 2024 and updated compatible cr
 | `pulldown-cmark` | 0.11 | **0.13** | ✅ Latest - no breaking changes |
 | `syntect` | 5.2 | **5.3** | ✅ Latest - already resolved to 5.3 |
 | `rand` | 0.8 | **0.9** | ✅ Latest - minor breaking changes, no code changes needed |
+| `thiserror` | 1.0 | **2.0** | ✅ Latest - not used directly, no code changes needed |
 
 ### 4. Dependencies NOT Updated (Breaking Changes)
 
@@ -192,10 +193,10 @@ When axum 0.8 ecosystem matures:
 
 **Duplications detected (acceptable):**
 - `rand` (0.8 + 0.9) - 0.9 used directly, 0.8 from tower-sessions-core (transitive)
-- `thiserror` (1.0 + 2.0) - from different deps
+- `thiserror` (1.0 + 2.0) - 2.0 used directly + by syntect, 1.0 from tower-sessions-core (transitive)
 - `hashbrown`, `memchr` versions - minor, no impact
 
-**All duplications are transitive** - no action required. Project uses rand 0.9 directly.
+**All duplications are transitive** - no action required. Project uses rand 0.9 and thiserror 2.0 directly.
 
 ---
 
@@ -252,4 +253,7 @@ When axum 0.8 ecosystem matures:
 - `r2d2_sqlite` 0.25 → **0.31** (latest)
 - `pulldown-cmark` 0.12 → **0.13** (latest)
 - `rand` 0.8 → **0.9** (latest)
+- `thiserror` 1.0 → **2.0** (latest)
 - Attempted `tower-sessions` 0.14 - reverted due to breaking changes
+
+**Note:** `thiserror` and `anyhow` are declared but not used in code. They remain for future error handling implementation.

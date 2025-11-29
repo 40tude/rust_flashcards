@@ -38,7 +38,7 @@ serde = { version = "1", features = ["derive"] }
 
 # Error Handling
 anyhow = "1"
-thiserror = "1"
+thiserror = "2"
 
 # Logging
 tracing = "0.1"
