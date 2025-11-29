@@ -1,3 +1,10 @@
+## TODO (this is for me)
+* ~~Hide answers - Step 3~~
+* ~~Landing page with search options - Step 4~~
+* Review math formula $ vs $$ - See `static\md\07_fs_deep_learning.md` for example.
+* Write a Readme for the new users
+
+
 ## Can Claude Code do 100% of the job?
 
 * The idea - Take an existing working Python project and let Claude Code translate it in Rust
@@ -161,11 +168,6 @@ img {
 
 
 
-## TODO (this is for me)
-* ~~Hide answers - Step 3~~
-* ~~Landing page with search options - Step 4~~
-* Review math formula $ vs $$ - See `static\md\07_fs_deep_learning.md` for example.
-* Write a Readme for the new users
 
 
 

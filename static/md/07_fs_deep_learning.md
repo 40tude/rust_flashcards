@@ -115,7 +115,7 @@ Answer  :
 
 * Un algorithme pour entraîner les réseaux de neurones.
 * Il consiste à calculer les gradients des poids du réseau par rapport à une fonction de coût, puis à ajuster ces poids en utilisant un algorithme d'optimisation tel que la descente de gradient, afin de minimiser la perte lors de la phase d'apprentissage.
-* La rétropropagation permet au réseau de s'ajuster progressivement en fonction des erreurs qu'il commet.
+* La rétro-propagation permet au réseau de s'ajuster progressivement en fonction des erreurs qu'il commet.
 
 
 <!--
@@ -147,7 +147,7 @@ Answer  :
 2. Itération : calculer le grad par rapport au paramètre à optimiser, prendre l'inverse, avancer d'un pas via learning_rate
 3. Condition d'arrêt (n_iter)
 
-* La formule : beta(t+1) = beta (t) - gamma * Grad( C )
+* La formule : $$\beta_{t+1} = \beta_t - \gamma * \nabla C$$
 * Influence de gamma :
     * Taille du saut d'un beta au suivant
     * Exploding gradient si trop grand
@@ -166,7 +166,7 @@ Answer  :
 * On trace la fonction de coût en fonction des itérations
 * C doit baisser sur le train set
 * Si C baisse puis augmente => exploding gradient
-* Sur le val set C va baisser puis augmenter => on trouve alors le bon nb d'itérations (overfiting)
+* Sur le val set C va baisser puis augmenter => on trouve alors le bon nb d'itérations (overfitting)
 
 
 <!--
@@ -262,20 +262,20 @@ Answer  :
 
 Question : Deep Learning - Gradient Descent - Peux tu m'expliquer point par point la back propagation ? Afin de simplifier les choses on se place dans le cas d'un réseau de neurones à 1 neurone et on fait les hypothèses suivantes :
 
-* Entrée $x_1 = 2$
-* Poids initial  $w_1 = 0.5 $
-* Biais initial $b = 0.0$
-* Sortie désirée  $y_{\text{réel}} = 1$
-* Fonction d'activation sigmoïde : $f(z) = \frac{1}{1 + e^{-z}} $
-* La fonction de coût est l'erreur quadratique : $ J = \frac{1}{2} (y_{\text{prévu}} - y_{\text{réel}})^2 $
-* Taux d'apprentissage $ \eta = 0.1$
+* Entrée $$x_1 = 2$$
+* Poids initial  $$w_1 = 0.5 $$
+* Biais initial $$b = 0.0$$
+* Sortie désirée  $$y_{\text{réel}} = 1$$
+* Fonction d'activation sigmoïde : $$f(z) = \frac{1}{1 + e^{-z}}$$
+* La fonction de coût est l'erreur quadratique : $$ J = \frac{1}{2} (y_{\text{prévu}} - y_{\text{réel}})^2 $$
+* Taux d'apprentissage $$ \eta = 0.1$$
 
 
 Answer   :
 
-#### Calcul de la sortie $ y_{\text{prévu}} $
+#### Calcul de la sortie $$ y_{\text{prévu}} $$
 
-* Somme pondérée : $ z = w_1 \cdot x_1 + b = 0.5 \cdot 2 + 0 = 1.0 $
+* Somme pondérée : $$ z = w_1 \cdot x_1 + b = 0.5 \cdot 2 + 0 = 1.0 $$
 * Sortie prévisible (à travers la fonction sigmoïde) :
   $$
   y_{\text{prévu}} = f(z) = \frac{1}{1 + e^{-1}} = 0.731
@@ -283,7 +283,7 @@ Answer   :
 
 #### Calcul de la fonction de coût
 
-On injecte $ y_{\text{prévu}} $ et $ y_{\text{réel}} $ dans la fonction de coût.
+On injecte $$ y_{\text{prévu}} $$ et $$ y_{\text{réel}} $$ dans la fonction de coût.
 
 $$
 J = \frac{1}{2} (y_{\text{prévu}} - y_{\text{réel}})^2 = \frac{1}{2} (0.731 - 1)^2 = 0.036
@@ -299,7 +299,7 @@ $$
 w_1 \leftarrow w_1 -\eta \cdot \frac{\partial J}{\partial w_1} = w_1-\eta \cdot \frac{\partial J}{\partial y_{\text{prévu}}} \cdot \frac{\partial y_{\text{prévu}}}{\partial z} \cdot \frac{\partial z}{\partial w_1}
 $$
 
-Il faut donc calculer les 3 dérivées partielles suivantes : $\frac{\partial J}{\partial y_{\text{prévu}}}$, $\frac{\partial y_{\text{prévu}}}{\partial z}$ et $\frac{\partial z}{\partial w_1}$
+Il faut donc calculer les 3 dérivées partielles suivantes : $$\frac{\partial J}{\partial y_{\text{prévu}}}$$, $$\frac{\partial y_{\text{prévu}}}{\partial z}$$ et $$\frac{\partial z}{\partial w_1}$$
 
 ##### Dérivée de la fonction de coût par rapport à la sortie prévisible $ y_{\text{prévu}} $ :
 
@@ -315,7 +315,7 @@ $$
 \frac{\partial J}{\partial y_{\text{prévu}}} = y_{\text{prévu}} - y_{\text{réel}} = 0.731 - 1 = -0.269
 $$
 
-##### Dérivée de la sortie prévisible $ y_{\text{prévu}} $ par rapport à $ z $ :
+##### Dérivée de la sortie prévisible $$ y_{\text{prévu}} $$ par rapport à $$z$$ :
 
 
 
@@ -334,7 +334,7 @@ $$ f(z) = \frac{1}{1 + e^{-z}} $$
 Alors
  $$ e^{-z} = \frac{1-f(z)}{f(z)} $$
 
-Si on réinjecte dans l'expression de $\frac{\partial f(z)}{\partial z}$ il vient :
+Si on réinjecte dans l'expression de $$\frac{\partial f(z)}{\partial z}$$ il vient :
 
 $$
 \frac{\partial f(z)}{\partial z} = \frac{e^{-z}}{(1 + e^{-z})^2} = \frac{1-f(z)}{f(z)} * \frac{1}{(1 + \frac{1-f(z)}{f(z)})^2}
@@ -349,7 +349,7 @@ $$
 \frac{\partial y_{\text{prévu}}}{\partial z} = y_{\text{prévu}} (1 - y_{\text{prévu}}) = 0.731 \cdot (1 - 0.731) = 0.196
 $$
 
-##### Dérivée de $z$ par rapport à $w_1$ et $b$ :
+##### Dérivée de $$z$$ par rapport à $$w_1$$ et $$b$$ :
 
 On avait :
 
@@ -357,14 +357,14 @@ $$ z = w_1 \cdot x_1 + b $$
 
 Donc :
 
-* $ \frac{\partial z}{\partial w_1} = x_1 = 2 $
-* $ \frac{\partial z}{\partial b} = 1 $
+* $$ \frac{\partial z}{\partial w_1} = x_1 = 2 $$
+* $$ \frac{\partial z}{\partial b} = 1 $$
 
 #### Mise à jour des poids et du biais
 
-Les mises à jour se font en tenant compte du taux d'apprentissage $ \eta = 0.1 $.
+Les mises à jour se font en tenant compte du taux d'apprentissage $$ \eta = 0.1 $$.
 
-##### Mise à jour du poids $ w_1 $ :
+##### Mise à jour du poids $$ w_1 $$ :
 
 La variation de poids c'est bien :
 
@@ -385,7 +385,7 @@ $$ w_1 \leftarrow w_1 + \Delta w_1 = 0.5 + 0.0105 = 0.5105 $$
 
 
 
-##### Mise à jour du biais $ b $
+##### Mise à jour du biais $$ b $$
 
 La variation du biais est :
 
@@ -398,6 +398,7 @@ $$
 $$
 
 Le nouveau biais devient :
+
 $$
 b \leftarrow b + \Delta b = 0 + 0.0052 = 0.0052
 $$
