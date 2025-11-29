@@ -45,7 +45,7 @@ tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
 # Random selection
-rand = "0.8"
+rand = "0.9"
 
 # See .cargo/config.toml
 [profile.release]

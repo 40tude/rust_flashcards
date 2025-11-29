@@ -30,6 +30,7 @@ Successfully upgraded the project to Rust edition 2024 and updated compatible cr
 | `tower-sessions` | 0.12 | **0.13** | ✅ Latest compatible (0.14 has breaking changes) |
 | `pulldown-cmark` | 0.11 | **0.13** | ✅ Latest - no breaking changes |
 | `syntect` | 5.2 | **5.3** | ✅ Latest - already resolved to 5.3 |
+| `rand` | 0.8 | **0.9** | ✅ Latest - minor breaking changes, no code changes needed |
 
 ### 4. Dependencies NOT Updated (Breaking Changes)
 
@@ -190,12 +191,11 @@ When axum 0.8 ecosystem matures:
 ## Dependency Tree Analysis
 
 **Duplications detected (acceptable):**
-- `rand` (0.8 + 0.9) - from different transitive deps
-- `tower` (0.4 + 0.5) - transitioning ecosystem
+- `rand` (0.8 + 0.9) - 0.9 used directly, 0.8 from tower-sessions-core (transitive)
 - `thiserror` (1.0 + 2.0) - from different deps
 - `hashbrown`, `memchr` versions - minor, no impact
 
-**All duplications are transitive** - no action required.
+**All duplications are transitive** - no action required. Project uses rand 0.9 directly.
 
 ---
 
@@ -251,4 +251,5 @@ When axum 0.8 ecosystem matures:
 - `rusqlite` 0.32 → **0.37** (latest)
 - `r2d2_sqlite` 0.25 → **0.31** (latest)
 - `pulldown-cmark` 0.12 → **0.13** (latest)
+- `rand` 0.8 → **0.9** (latest)
 - Attempted `tower-sessions` 0.14 - reverted due to breaking changes
