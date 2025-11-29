@@ -1,8 +1,13 @@
 ## TODO (this is for me)
+* Write a Readme for the new users
+* Add an option to force the rebuild the database
+    * Available only locally NOT on Heroku
+* Add CI/CD?
+* Add tests?
+* Tokei?
 * ~~Hide answers - Step 3~~
 * ~~Landing page with search options - Step 4~~
-* Review math formula $ vs $$ - See `static\md\07_fs_deep_learning.md` for example.
-* Write a Readme for the new users
+* ~~Review math formula $ vs $$ - See `static\md\07_fs_deep_learning.md` for example.~~
 
 
 ## Can Claude Code do 100% of the job?
@@ -19,7 +24,7 @@
     * Learn by experience
     * Discover what make sense, what does'nt...
 
-## Where are we (Claude and I)
+## Where are we (Claude and I)?
 It went so well that I decided to go forward and today, the master plan include 4 major steps.
 * [✅] **Step 1:** Translation and deployment at iso configuration
 * [✅] **Step 2:** Refactor the database so that it includes categories and subcategories (see Step 4)
@@ -66,9 +71,9 @@ It went so well that I decided to go forward and today, the master plan include 
 
 
 **Side Note**
-I installed and use [`ccusage`](https://ccusage.com/) (see `npx ccusage@latest`).
-
-
+* I installed and use [`ccusage`](https://ccusage.com/) (see `npx ccusage@latest`).
+* In my case it is not so useful because it does'nt report any information regarding Sonnet (used with Claude Code with my Pro Plan) but only Haiku.
+* I do not undertand
 
 
 
@@ -100,25 +105,27 @@ I installed and use [`ccusage`](https://ccusage.com/) (see `npx ccusage@latest`)
 ### For Step 4 - New landing page
 * Commit
 * Plan Mode first
-* I realized that the app was rebuilding the database on each start so I check and ask to change the behavior
-* I provided a drawing of what I want to see and explain the behavior
+* I realized that the app was rebuilding the database on each start so first I check and ask to change the behavior
+* Then I provided a drawing of what I want to see and explain the expected behavior of the new landing page
 * Double check few point : `/search` now removed, `landing page == index.html` etc.
 * Switch to Execution Mode
 * Save the plan : see `assets\landing_page_plan.md`
 * I let Claude do the job, write code etc.
 * One or 2 bugs
 * Let Claude create a commit and push on origin
-* Added feature : Tab support in the card so that we can use keyboard only
+* Added feature : Tab support in the card so that on PC, we can use keyboard only
 * Added feature : make sure md and png if missing the app quit and leave an explicit message
 * Fixed : Issues with the logic of category/subcategory check boxes
     * This one was touchy and took some time
-* Fixed issue rendering pictures on cell phone
+    * At the end, one morning I cleared Claude session and start from scratch and ask for more than one option (now everything is in javascript but it work)
+* Added feature : `.webp` & `.png` support. `png/` directory no longer exists. Replaced by an `img/` directory with `.webp` files
 * Now in img/ we can drop images with  png or webp format (and only these 2)
     * Ideal size 1200 pix wide
+* Fixed issue rendering pictures on cell phone
+* Make sure math formulas are displayed correctly
 
 
-
-## More information about images
+## About images 1/2
 The problem stems from the interaction between:
 
 1. Viewport meta tag (practice.html:5):
@@ -128,7 +135,7 @@ The problem stems from the interaction between:
 
 What happens:
 
-- Your Galaxy Note 20 has a physical resolution of 3088x1440, but a Device Pixel Ratio (DPR) of probably 3.5x (yes, verified)
+- The Galaxy Note 20 has a physical resolution of 3088x1440, but a Device Pixel Ratio (DPR) of probably 3.5x (yes, verified)
   - The effective CSS width is ~440px (1440/3.5 ≈ 411px or 3088/3.5 ≈ 882px in landscape)
   - The viewport causes the page to use the entire width of the virtual screen
 - Bootstrap .container has responsive max-width, but on mobile it takes up ~100% of the width (minus margins)
@@ -146,32 +153,7 @@ img {
 }
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Notes
-* I'm totally stressed with the time window. I use `/status` and `npx ccusage@latest` all the time
-* Claude Code loves Linux
-* **TODO:** Find a way to let it know it is in a Win/Powershell context
-
-
-
-
-
-
-
-## About images
+## About images 2/2
 
 Width in markdown (width attribute)
 * Recommendation: width="600"
@@ -192,11 +174,52 @@ Why:
 - Compression: 80-85% quality is sufficient for cover photos
 
 
-
-
 - With the added CSS (`max-width: 100%` see `static\css\default.css`), the width attribute becomes a suggestion in `.md` files
 - On Galaxy Note 20 (width ~411px CSS), the image will be reduced automatically
 - On desktop, it will display at 600px CSS (or less if the container is smaller)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Notes
+* I'm totally stressed with the time window. I use `/status` and `npx ccusage@latest` all the time
+* Claude Code loves Linux
+* ~~**TODO:** Find a way to let it know it is in a Win/Powershell context.~~ **DONE** see `%USERPROFILE%/.claude/CLAUDE.md`
+
+```
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working on any project.
+
+## Important Notes
+
+- In all interactions and commit messages, be extremely concise and sacrifice grammar for the sake of concision.
+- All documentation, code comments, commit messages, and project artifacts must be written in US English. When in doubt, ask for confirmation before writing in any other language.
+
+
+
+## Environment
+
+- ALWAYS assume Windows 11 with PowerShell unless explicitly told otherwise
+- Use PowerShell cmdlets and Windows-native commands; avoid Linux/Unix commands (no bash, grep, sed, etc.)
+
+```
+
+
+
+
 
 
 

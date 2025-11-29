@@ -2,7 +2,9 @@
   "permissions": {
     "allow": [
       "Skill(ms-rust)",
-      "Bash(cargo build:*)"
+      "Bash(cargo build:*)",
+      "Bash(Select-String -Pattern \"error\\[\" -Context 0,5)",
+      "WebSearch"
     ],
     "deny": [],
     "ask": []
