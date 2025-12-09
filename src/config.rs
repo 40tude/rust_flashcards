@@ -37,13 +37,24 @@ impl Config {
 
         // Priority: CLI > Env Var > Default
         let deck_id = cli_deck
+            .clone()
             .or_else(|| env::var("DECK_ID").ok())
             .unwrap_or_else(|| "deck".to_string());
 
-        let deck_display_name = cli_deck_name
-            .or_else(|| env::var("DECK_DISPLAY_NAME").ok())
-            .or_else(|| env::var("DECK_NAME").ok()) // Backward compatibility
-            .unwrap_or_else(|| deck_id.clone()); // Default to deck_id if nothing specified
+        // For display name: if deck_id came from CLI, ignore env vars and default to deck_id
+        // This ensures --deck-id test_42 shows "test_42", not env DECK_DISPLAY_NAME
+        let deck_display_name = if cli_deck_name.is_some() {
+            // Explicit CLI display name provided
+            cli_deck_name.unwrap()
+        } else if cli_deck.is_some() {
+            // CLI deck_id provided but no display name → use deck_id
+            deck_id.clone()
+        } else {
+            // No CLI args → use env vars or default to deck_id
+            env::var("DECK_DISPLAY_NAME")
+                .or_else(|_| env::var("DECK_NAME")) // Backward compatibility
+                .unwrap_or_else(|_| deck_id.clone())
+        };
 
         tracing::info!("Config resolution: deck_id={}, deck_display_name={}, DECK_DISPLAY_NAME={:?}, DECK_NAME={:?}",
             deck_id, deck_display_name, env::var("DECK_DISPLAY_NAME"), env::var("DECK_NAME"));
