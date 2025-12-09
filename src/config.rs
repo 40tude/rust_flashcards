@@ -40,7 +40,7 @@ impl Config {
             .or_else(|_| env::var("DECK_NAME")) // Backward compatibility
             .unwrap_or_else(|_| "Data Science Flashcards".to_string());
 
-        let database_url = env::var("DATABASE_URL").unwrap_or_else(|_| "./flashcards.db".to_string());
+        let database_url = env::var("DATABASE_URL").unwrap_or_else(|_| format!("./{}.db", deck_id));
 
         // Compute content paths based on deck_id
         let md_path = format!("./static/{}/md", deck_id);

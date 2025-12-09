@@ -3,6 +3,8 @@
 /.git
 /assets
 /flashcards_staging
+/static_backup
+/flashcards_backup.db
 .env
 .gitignore
 CLAUDE.md

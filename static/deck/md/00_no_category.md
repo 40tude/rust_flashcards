@@ -33,7 +33,7 @@ The attention mechanism that learns contextual relationships between words in a 
 
 
 <p align="center">
-<img src="../static/md/assets/img.png" alt="attention" width="577"/>
+<img src="/static/deck/md/assets/img.png" alt="attention" width="577"/>
 </p>
 
 $$ E = mc^2 $$
@@ -88,7 +88,7 @@ Answer  :
 Sur le site voilà comment MLflow organise les éléments :
 
 <p align="center">
-<img src="../static/md/assets/models_runs_mlflow.png" alt="mlflow" width="577"/>
+<img src="/static/deck/md/assets/models_runs_mlflow.png" alt="mlflow" width="577"/>
 </p>
 
 
@@ -232,7 +232,7 @@ L'équilibrage des classes se fait par sous ou sur-échantillonnage
     * SMOTE (Synthetic Minority Oversampling Technique, synthèse de points)
 
 <p align="center">
-<img src="../static/md/assets/smote.png" alt="smote" width="577"/>
+<img src="/static/deck/md/assets/smote.png" alt="smote" width="577"/>
 </p>
 
 * Sous échantillonnage
@@ -504,7 +504,7 @@ Answer  :
 * F1 : on cherche le compromis Recall & Precision
 
 <p align="center">
-<img src="../static/md/assets/harmonic.png" alt="harmonic" width="577"/>
+<img src="/static/deck/md/assets/harmonic.png" alt="harmonic" width="577"/>
 </p>
 
 * Ci-dessus il faut remarquer  qu'on ne dit pas que la voiture roule pendant une heure à 40 km/h puis pendant une heure à 60 km/h
