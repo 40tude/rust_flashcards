@@ -45,7 +45,12 @@ impl Config {
             .or_else(|| env::var("DECK_NAME").ok()) // Backward compatibility
             .unwrap_or_else(|| deck_id.clone()); // Default to deck_id if nothing specified
 
-        let database_url = env::var("DATABASE_URL").unwrap_or_else(|_| format!("./{}.db", deck_id));
+        // Use DATABASE_URL only if it's NOT a local .db file (e.g., Heroku Postgres URL)
+        // For local development with multiple decks, always use ./{deck_id}.db
+        let database_url = env::var("DATABASE_URL")
+            .ok()
+            .filter(|url| !url.ends_with(".db"))
+            .unwrap_or_else(|| format!("./{}.db", deck_id));
 
         // Compute content paths based on deck_id
         let md_path = format!("./static/{}/md", deck_id);

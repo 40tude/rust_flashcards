@@ -9,15 +9,15 @@ use clap::Parser;
 #[command(about = "Flashcard web application with full-text search and multi-deck support", long_about = None)]
 pub struct Cli {
     /// Rebuild deck by deleting existing DB file before startup
-    #[arg(short = 'r', long = "rebuild-deck", value_name = "DECK")]
+    #[arg(short = 'r', long = "rebuild-deck-id", value_name = "DECK_ID")]
     pub rebuild_deck: Option<String>,
 
     /// Deck to load (directory name under ./static/)
-    #[arg(short = 'd', long = "deck", value_name = "DECK")]
+    #[arg(short = 'd', long = "deck-id", value_name = "DECK_ID")]
     pub deck: Option<String>,
 
     /// Display name for deck in HTML (overrides deck directory name)
-    #[arg(short = 'n', long = "deck-name", value_name = "NAME")]
+    #[arg(short = 'n', long = "deck-display-name", value_name = "DECK_DISPLAY_NAME")]
     pub deck_name: Option<String>,
 }
 
