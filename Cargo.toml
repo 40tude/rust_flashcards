@@ -2,6 +2,10 @@
 name = "rust-flashcards"
 version = "0.1.0"
 edition = "2024"
+license = "MIT"
+authors = ["Philippe Baucour <philippe.baucour@gmail.com>"]
+repository = "https://github.com/pbaudin/rust-flashcards"
+description = "Web-based flashcard application with full-text search and multi-deck support"
 
 [dependencies]
 # Web Framework
