@@ -1,7 +1,7 @@
 ## TODO (this is for me)
 * Write a Readme for the new users
-* Add an option to force the rebuild the database
-    * Available only locally NOT on Heroku
+* ~~Add multi-deck support~~
+* ~~Add an option to force the rebuild the database~~
 * Add CI/CD? => An issue have been created
 * Add tests? => An issue have been created
 * ~~Tokei?~~
@@ -25,11 +25,43 @@
     * Discover what make sense, what does'nt...
 
 ## Where are we (Claude and I)?
-It went so well that I decided to go forward and today, the master plan include 4 major steps.
+It went so well that I decided to go forward and today, the master plan include 5 major steps.
 * [✅] **Step 1:** Translation and deployment at iso configuration
 * [✅] **Step 2:** Refactor the database so that it includes categories and subcategories (see Step 4)
 * [✅] **Step 3:** Refactor the Q&A cards so that they include a Reveal/Hide button
-* [✅] **Step 4:** Refactor the landing page so that the user can select to review only certain categories, subcategories or flash cards with certain keyword (this is already working but this is not great)
+* [✅] **Step 4:** Refactor the landing page so that the user can select to review only certain categories, subcategories or flash cards with certain keyword
+* [✅] **Step 5:** Add multi-deck support with CLI arguments and environment variables
+
+## Multi-Deck Support
+
+The application now supports multiple flashcard decks:
+
+```bash
+# Run with default deck
+cargo run
+
+# Rebuild specific deck
+cargo run -- --rebuild-deck test -r test
+
+# Load specific deck with custom name
+cargo run -- --deck rust --deck-name "Rust Flashcards"
+
+# Short form
+cargo run -- -r deck -d deck -n "My Deck"
+```
+
+**Directory structure:**
+```
+static/
+  deck/     # Default deck
+    md/
+    img/
+  rust/     # Example deck
+    md/
+    img/
+```
+
+See [CLAUDE.md](CLAUDE.md) for complete multi-deck documentation.
 
 
 

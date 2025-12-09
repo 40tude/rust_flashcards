@@ -21,9 +21,16 @@ cargo build
 # Run locally (http://localhost:8080/)
 cargo run
 
-# Rebuild database from content files
-cargo run -- --rebuild-db
-cargo run -- -r
+# Rebuild database from content files (default deck)
+cargo run -- --rebuild-deck deck
+cargo run -- -r deck
+
+# Load specific deck
+cargo run -- --deck rust --deck-name "Rust Flashcards"
+
+# Rebuild and load specific deck
+cargo run -- --rebuild-deck test --deck test --deck-name "Test Deck"
+cargo run -- -r test -d test -n "Test Deck"
 
 # Show help
 cargo run -- --help
@@ -45,18 +52,73 @@ powershell -Command "Stop-Process -Name rust-flashcards -Force"
 - **Procfile:** Runs `./target/release/rust-flashcards`
 - The `.slugignore` file controls which files are excluded from Heroku deployment
 
+### Multi-Deck Heroku Deployment
+
+To deploy multiple decks as separate apps:
+```bash
+# Create apps
+heroku create rust-flashcards-deck1
+heroku create rust-flashcards-deck2
+
+# Configure deck for each app
+heroku config:set DECK_ID=deck DECK_DISPLAY_NAME="Default Deck" -a rust-flashcards-deck1
+heroku config:set DECK_ID=rust DECK_DISPLAY_NAME="Rust Flashcards" -a rust-flashcards-deck2
+
+# Deploy same codebase to both
+git remote add heroku-deck1 https://git.heroku.com/rust-flashcards-deck1.git
+git remote add heroku-deck2 https://git.heroku.com/rust-flashcards-deck2.git
+git push heroku-deck1 main
+git push heroku-deck2 main
+```
+
 ## Architecture Overview
 
 ### Application Startup Flow (src/main.rs)
-1. Parse CLI arguments (--rebuild-db, --help, --version)
-2. Load environment variables from `.env` (PORT, DATABASE_URL)
-3. Handle database rebuild if `--rebuild-db` flag present (delete existing DB file)
-4. Create SQLite connection pool (r2d2)
-5. Initialize database schema (flashcards + flashcards_fts tables)
-6. Check if database empty - only load content if needed (fast startup optimization)
-   - Load content from `./static/md` (markdown) and `./static/png` (images)
+1. Parse CLI arguments (--rebuild-deck, --deck, --deck-name, --help, --version)
+2. Load environment variables from `.env` (PORT, DECK_ID, DECK_DISPLAY_NAME, DATABASE_URL)
+3. Resolve deck configuration (CLI args > Env vars > Defaults)
+4. Handle database rebuild if `--rebuild-deck` flag present (delete deck-specific DB file)
+5. Create SQLite connection pool (r2d2)
+6. Initialize database schema (flashcards + flashcards_fts tables)
+7. Check if database empty - only load content if needed (fast startup optimization)
+   - Load content from `./static/{deck_id}/md` and `./static/{deck_id}/img`
    - Populate FTS5 search table
-7. Start Axum web server with session middleware
+8. Start Axum web server with session middleware
+
+### Multi-Deck Support
+
+**Directory Structure (Option 2 - Shared Static Assets):**
+```
+static/
+    css/              # Shared across all decks
+    js/               # Shared across all decks
+    favicon.png       # Shared across all decks
+    deck/             # Default deck
+        md/           # Markdown flashcards
+        img/          # Image flashcards
+    rust/             # Example deck
+        md/
+        img/
+```
+
+**Deck Configuration Priority:**
+1. CLI Arguments (highest): `--deck <name>`, `--deck-name <display>`
+2. Environment Variables: `DECK_ID`, `DECK_DISPLAY_NAME`
+3. Default Values: `deck` (directory), deck ID (display name)
+
+**CLI Arguments:**
+- `--rebuild-deck <name>` / `-r <name>`: Delete and rebuild deck database
+- `--deck <name>` / `-d <name>`: Load specific deck
+- `--deck-name <display>` / `-n <display>`: Set HTML display name
+
+**Database Naming:**
+- Default deck: `./deck.db`
+- Named decks: `./{name}.db` (e.g., `./rust.db`)
+
+**Image Path Resolution:**
+- Markdown-embedded images: `/static/{deck_id}/md/assets/`
+- Image flashcards: `/static/{deck_id}/img/`
+- Generated dynamically based on loaded deck
 
 ### Module Structure
 
@@ -67,8 +129,12 @@ powershell -Command "Stop-Process -Name rust-flashcards -Force"
 - `queries.rs`: Database operations including FTS5 search, filtered queries (by category/subcategory/keywords/images)
 
 **content/** - Content loading and processing
-- `markdown.rs`: Scans `./static/md`, parses markdown with pulldown-cmark, extracts category/subcategory from YAML frontmatter, applies syntax highlighting with syntect
-- `images.rs`: Scans `./static/png` for image-only flashcards
+- `markdown.rs`: Scans `./static/{deck_id}/md`, parses markdown with pulldown-cmark, extracts category/subcategory from YAML frontmatter, applies syntax highlighting with syntect
+- `images.rs`: Scans `./static/{deck_id}/img` for image-only flashcards, generates deck-aware image URLs
+
+**cli.rs** - Command-line interface
+- Parses CLI arguments using clap with derive API
+- Supports: `--rebuild-deck` / `-r`, `--deck` / `-d`, `--deck-name` / `-n`, `--help`, `--version`
 
 **routes/** - Web handlers (Axum)
 - `landing.rs`: Filter form at `/` (keywords, categories, subcategories, images) + POST `/apply_filters`
