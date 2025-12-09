@@ -22,6 +22,7 @@ fn is_png_only_card(question_html: &str) -> bool {
 #[derive(Template)]
 #[template(path = "practice.html")]
 struct PracticeTemplate {
+    deck_name: String,
     category: Option<String>,
     subcategory: Option<String>,
     q_html: String,
@@ -99,6 +100,7 @@ pub async fn practice(
         .map_err(|e| format!("Session insert error: {}", e))?;
 
     let template = PracticeTemplate {
+        deck_name: state.config.deck_display_name.clone(),
         category: card.category.clone(),
         subcategory: card.subcategory.clone(),
         q_html: card.question_html.clone(),

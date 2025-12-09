@@ -48,6 +48,9 @@ cargo run -- --deck rust --deck-name "Rust Flashcards"
 
 # Short form
 cargo run -- -r deck -d deck -n "My Deck"
+
+# Heroku multi-app
+heroku config:set DECK_ID=deck DECK_DISPLAY_NAME="My Deck"
 ```
 
 **Directory structure:**
