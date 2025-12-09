@@ -19,19 +19,23 @@ async fn main() -> anyhow::Result<()> {
     // Parse CLI arguments first
     let cli_args = Cli::parse_args();
 
-    // Load environment variables from .env
-    dotenvy::dotenv().ok();
-
-    // Initialize tracing/logging
+    // Initialize tracing/logging BEFORE loading .env so we can log dotenvy result
     tracing_subscriber::fmt()
         .with_env_filter(tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(|_| tracing_subscriber::EnvFilter::new("info")))
         .init();
+
+    // Load environment variables from .env
+    match dotenvy::dotenv() {
+        Ok(path) => tracing::info!("Loaded .env from: {:?}", path),
+        Err(e) => tracing::warn!("Failed to load .env: {}", e),
+    }
 
     tracing::info!("Starting rust-flashcards application");
 
     // Load configuration (CLI args override env vars)
     let config = config::Config::from_env(cli_args.deck.clone(), cli_args.deck_name.clone())?;
-    tracing::info!("Configuration loaded: port={}, database={}, deck_id={}", config.port, config.database_url, config.deck_id);
+    tracing::info!("Configuration loaded: port={}, database={}, deck_id={}, deck_display_name={}, md_path={}, img_path={}",
+        config.port, config.database_url, config.deck_id, config.deck_display_name, config.md_path, config.img_path);
 
     // Handle database rebuild if requested
     if let Some(deck_id) = cli_args.rebuild_deck.as_ref() {

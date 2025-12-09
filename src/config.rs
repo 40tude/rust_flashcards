@@ -45,6 +45,9 @@ impl Config {
             .or_else(|| env::var("DECK_NAME").ok()) // Backward compatibility
             .unwrap_or_else(|| deck_id.clone()); // Default to deck_id if nothing specified
 
+        tracing::info!("Config resolution: deck_id={}, deck_display_name={}, DECK_DISPLAY_NAME={:?}, DECK_NAME={:?}",
+            deck_id, deck_display_name, env::var("DECK_DISPLAY_NAME"), env::var("DECK_NAME"));
+
         // Use DATABASE_URL only if it's NOT a local .db file (e.g., Heroku Postgres URL)
         // For local development with multiple decks, always use ./{deck_id}.db
         let database_url = env::var("DATABASE_URL")
