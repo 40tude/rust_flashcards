@@ -29,23 +29,33 @@ async fn main() -> anyhow::Result<()> {
 
     tracing::info!("Starting rust-flashcards application");
 
-    // Load configuration
-    let config = config::Config::from_env()?;
-    tracing::info!("Configuration loaded: port={}, database={}", config.port, config.database_url);
+    // Load configuration (CLI args override env vars)
+    let config = config::Config::from_env(cli_args.deck.clone(), cli_args.deck_name.clone())?;
+    tracing::info!("Configuration loaded: port={}, database={}, deck_id={}", config.port, config.database_url, config.deck_id);
 
     // Handle database rebuild if requested
-    if cli_args.rebuild_db {
-        let db_path = std::path::Path::new(&config.database_url);
-        if db_path.exists() {
-            tracing::info!("Deleting existing database: {}", config.database_url);
-            std::fs::remove_file(db_path)
-                .unwrap_or_else(|e| {
-                    tracing::error!("Failed to delete database: {}", e);
-                    std::process::exit(1);
-                });
+    if let Some(deck_id) = cli_args.rebuild_deck.as_ref() {
+        // Rebuild specified deck (may differ from loaded deck)
+        let db_path_to_rebuild = format!("./{}.db", deck_id);
+        let path = std::path::Path::new(&db_path_to_rebuild);
+
+        if path.exists() {
+            tracing::info!("Deleting existing database: {}", db_path_to_rebuild);
+            std::fs::remove_file(path).unwrap_or_else(|e| {
+                tracing::error!("Failed to delete database: {}", e);
+                std::process::exit(1);
+            });
             tracing::info!("Database deleted, will rebuild from content");
         } else {
-            tracing::warn!("Database file not found, nothing to delete");
+            tracing::warn!("Database file not found: {}, nothing to delete", db_path_to_rebuild);
+        }
+
+        // Warn if rebuilding different deck than loading
+        if deck_id != &config.deck_id {
+            tracing::warn!(
+                "Rebuilding deck '{}' but loading deck '{}'. Consider using --deck {} as well.",
+                deck_id, config.deck_id, deck_id
+            );
         }
     }
 

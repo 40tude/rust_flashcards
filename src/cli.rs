@@ -2,24 +2,23 @@
 
 use clap::Parser;
 
-/// Flashcard web application with full-text search
+/// Flashcard web application with multi-deck support
 #[derive(Parser, Debug)]
 #[command(name = "rust-flashcards")]
 #[command(version)]
-#[command(about = "Flashcard web application with full-text search", long_about = None)]
+#[command(about = "Flashcard web application with full-text search and multi-deck support", long_about = None)]
 pub struct Cli {
-    /// Rebuild database by deleting existing DB file before startup
-    #[arg(short = 'r', long = "rebuild-db")]
-    pub rebuild_db: bool,
+    /// Rebuild deck by deleting existing DB file before startup
+    #[arg(short = 'r', long = "rebuild-deck", value_name = "DECK")]
+    pub rebuild_deck: Option<String>,
 
-    // Future args (commented out for now):
-    // /// Database file path (overrides DATABASE_URL)
-    // #[arg(long, value_name = "PATH")]
-    // pub database: Option<String>,
-    //
-    // /// Server port (overrides PORT env var)
-    // #[arg(short, long, value_name = "PORT")]
-    // pub port: Option<u16>,
+    /// Deck to load (directory name under ./static/)
+    #[arg(short = 'd', long = "deck", value_name = "DECK")]
+    pub deck: Option<String>,
+
+    /// Display name for deck in HTML (overrides deck directory name)
+    #[arg(short = 'n', long = "deck-name", value_name = "NAME")]
+    pub deck_name: Option<String>,
 }
 
 impl Cli {

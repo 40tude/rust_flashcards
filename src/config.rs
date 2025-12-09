@@ -16,29 +16,34 @@ pub struct Config {
 }
 
 impl Config {
-    /// Loads configuration from environment variables.
+    /// Loads configuration from CLI arguments and environment variables.
     ///
     /// # Configuration Priority
-    /// 1. Environment variables (DECK_ID, DECK_DISPLAY_NAME, DATABASE_URL, PORT)
-    /// 2. Default values (deck, "Data Science Flashcards", "./flashcards.db", 8080)
+    /// 1. CLI arguments (highest priority)
+    /// 2. Environment variables (DECK_ID, DECK_DISPLAY_NAME, DATABASE_URL, PORT)
+    /// 3. Default values (deck, "Data Science Flashcards", "./deck.db", 8080)
     ///
     /// # Examples
     /// ```no_run
     /// use config::Config;
-    /// let config = Config::from_env().unwrap();
+    /// let config = Config::from_env(Some("rust".to_string()), None).unwrap();
     /// println!("Markdown path: {}", config.md_path);
     /// ```
     ///
     /// # Errors
     /// Returns error if PORT environment variable is invalid u16.
-    pub fn from_env() -> anyhow::Result<Self> {
+    pub fn from_env(cli_deck: Option<String>, cli_deck_name: Option<String>) -> anyhow::Result<Self> {
         let port = env::var("PORT").unwrap_or_else(|_| "8080".to_string()).parse().expect("PORT must be a valid u16");
 
-        let deck_id = env::var("DECK_ID").unwrap_or_else(|_| "deck".to_string());
+        // Priority: CLI > Env Var > Default
+        let deck_id = cli_deck
+            .or_else(|| env::var("DECK_ID").ok())
+            .unwrap_or_else(|| "deck".to_string());
 
-        let deck_display_name = env::var("DECK_DISPLAY_NAME")
-            .or_else(|_| env::var("DECK_NAME")) // Backward compatibility
-            .unwrap_or_else(|_| "Data Science Flashcards".to_string());
+        let deck_display_name = cli_deck_name
+            .or_else(|| env::var("DECK_DISPLAY_NAME").ok())
+            .or_else(|| env::var("DECK_NAME").ok()) // Backward compatibility
+            .unwrap_or_else(|| deck_id.clone()); // Default to deck_id if nothing specified
 
         let database_url = env::var("DATABASE_URL").unwrap_or_else(|_| format!("./{}.db", deck_id));
 
