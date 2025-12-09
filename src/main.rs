@@ -60,8 +60,8 @@ async fn main() -> anyhow::Result<()> {
         tracing::info!("No database in place, create it");
 
         // Validate content directories before attempting to load
-        let md_status = content::validate_content_directory("./static/md");
-        let img_status = content::validate_content_directory("./static/img");
+        let md_status = content::validate_content_directory(&config.md_path);
+        let img_status = content::validate_content_directory(&config.img_path);
 
         // Check if at least one directory is valid
         let has_valid_content = matches!(md_status, content::ContentDirStatus::Valid) || matches!(img_status, content::ContentDirStatus::Valid);
@@ -70,11 +70,11 @@ async fn main() -> anyhow::Result<()> {
             // Both directories are invalid - exit with error
             eprintln!("\nERROR: Cannot start application - no content directories found\n");
             eprintln!("The application requires at least one of the following directories:");
-            eprintln!("  - ./static/md/  (for markdown flashcards)");
-            eprintln!("  - ./static/img/ (for image-only flashcards)\n");
+            eprintln!("  - {}  (for markdown flashcards)", config.md_path);
+            eprintln!("  - {} (for image-only flashcards)\n", config.img_path);
             eprintln!("Current status:");
-            eprintln!("  ./static/md  -> {:?}", md_status);
-            eprintln!("  ./static/img -> {:?}\n", img_status);
+            eprintln!("  {}  -> {:?}", config.md_path, md_status);
+            eprintln!("  {} -> {:?}\n", config.img_path, img_status);
             eprintln!("Setup instructions:");
             eprintln!("  1. Create at least one directory:");
             eprintln!("     mkdir static/md");
@@ -89,16 +89,16 @@ async fn main() -> anyhow::Result<()> {
 
         // Load content from valid directories
         if matches!(md_status, content::ContentDirStatus::Valid) {
-            content::load_markdown(&pool, "./static/md")?;
+            content::load_markdown(&pool, &config.md_path)?;
         } else {
-            tracing::warn!("Content directory unavailable: ./static/md (reason: {:?})", md_status);
+            tracing::warn!("Content directory unavailable: {} (reason: {:?})", config.md_path, md_status);
             tracing::warn!("Continuing with image-only flashcards");
         }
 
         if matches!(img_status, content::ContentDirStatus::Valid) {
-            content::load_images(&pool, "./static/img")?;
+            content::load_images(&pool, &config.img_path)?;
         } else {
-            tracing::warn!("Content directory unavailable: ./static/img (reason: {:?})", img_status);
+            tracing::warn!("Content directory unavailable: {} (reason: {:?})", config.img_path, img_status);
             tracing::warn!("Continuing with markdown-only flashcards");
         }
 

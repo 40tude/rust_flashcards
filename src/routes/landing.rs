@@ -123,7 +123,7 @@ pub async fn landing(State(state): State<AppState>, session: Session) -> Result<
     };
 
     let template = LandingTemplate {
-        deck_name: state.config.deck_name.clone(),
+        deck_name: state.config.deck_display_name.clone(),
         categories,
         subcategories,
         total_count,
