@@ -6,14 +6,14 @@
 Question : My category - Maths - The F1 score is an harmonic mean. Why?
 Answer  :
 
-#### From Default Deck
+#### From deck test_42
 
 * Think of the “harmonious” average
 * It is highest when the values are identical
 * F1: we are looking for the compromise between Recall & Precision
 
 <p align="center">
-<img src="static/deck/md/assets/harmonic.png" alt="harmonic" width="600"/>
+<img src="/static/deck/md/assets/harmonic.png" alt="harmonic" width="577"/>
 </p>
 
 * Note that we are not saying that the car drives for one hour at 40 km/h and then for one hour at 60 km/h
@@ -40,6 +40,6 @@ Answer  :
 Question : Culture - Star Wars - I love you
 Answer  :
 
-#### From Default Deck
-
+#### From deck test_42
 I know
+

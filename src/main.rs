@@ -6,8 +6,8 @@ mod routes;
 mod session;
 
 use axum::{
-    routing::{get, post},
     Router,
+    routing::{get, post},
 };
 use cli::Cli;
 use std::net::SocketAddr;
@@ -34,8 +34,15 @@ async fn main() -> anyhow::Result<()> {
 
     // Load configuration (CLI args override env vars)
     let config = config::Config::from_env(cli_args.deck.clone(), cli_args.deck_name.clone())?;
-    tracing::info!("Configuration loaded: port={}, database={}, deck_id={}, deck_display_name={}, md_path={}, img_path={}",
-        config.port, config.database_url, config.deck_id, config.deck_display_name, config.md_path, config.img_path);
+    tracing::info!(
+        "Configuration loaded: port={}, database={}, deck_id={}, deck_display_name={}, md_path={}, img_path={}",
+        config.port,
+        config.database_url,
+        config.deck_id,
+        config.deck_display_name,
+        config.md_path,
+        config.img_path
+    );
 
     // Handle database rebuild if requested
     if let Some(deck_id) = cli_args.rebuild_deck.as_ref() {
@@ -56,10 +63,7 @@ async fn main() -> anyhow::Result<()> {
 
         // Warn if rebuilding different deck than loading
         if deck_id != &config.deck_id {
-            tracing::warn!(
-                "Rebuilding deck '{}' but loading deck '{}'. Consider using --deck {} as well.",
-                deck_id, config.deck_id, deck_id
-            );
+            tracing::warn!("Rebuilding deck '{}' but loading deck '{}'. Consider using --deck {} as well.", deck_id, config.deck_id, deck_id);
         }
     }
 
@@ -132,10 +136,7 @@ async fn main() -> anyhow::Result<()> {
     let port = config.port;
 
     // Create app state with config and pool
-    let app_state = routes::AppState {
-        pool,
-        config,
-    };
+    let app_state = routes::AppState { pool, config };
 
     // Build Axum router
     let app = Router::new()

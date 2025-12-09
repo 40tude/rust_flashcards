@@ -1,302 +1,243 @@
-## TODO (this is for me)
-* Write a Readme for the new users
-* ~~Add multi-deck support~~
-* ~~Add an option to force the rebuild the database~~
-* Add CI/CD? => An issue have been created
-* Add tests? => An issue have been created
-* ~~Tokei?~~
-* ~~Hide answers - Step 3~~
-* ~~Landing page with search options - Step 4~~
-* ~~Review math formula $ vs $$ - See `static\md\07_fs_deep_learning.md` for example.~~
+# Rust Flashcards
+
+A web-based flashcard application with full-text search and multi-deck support, built with Rust.
+
+## Features
+
+- **Markdown-based flashcards** with support for images, math formulas, and code syntax highlighting
+- **Full-text search** using SQLite FTS5
+- **Multi-deck support** with CLI arguments and environment variables
+- **Category and subcategory filtering**
+- **Image-only flashcards** support
+- **Session-based practice** with spaced repetition (avoids recently seen cards)
+- **Responsive design** with Bootstrap
+- **Heroku deployment ready**
 
 
-## Can Claude Code do 100% of the job?
 
-* The idea - Take an existing working Python project and let Claude Code translate it in Rust
-* The Python project acts like a flash cards server
-    * You write your cards in markdown. You can include links, images, maths formula, code fragments...
-    * You can create cards with image only
-    * You can run the app locally. This is a Web server and SQLite database
-    * The app is deployed on Heroku - Server, SQL database, application
-* This is an experiment. I want to:
-    * Learn more about Claude Code
-    * See how far I can go with Claude Code
-    * Learn by experience
-    * Discover what make sense, what does'nt...
+## Quick Start
 
-## Where are we (Claude and I)?
-It went so well that I decided to go forward and today, the master plan include 5 major steps.
-* [✅] **Step 1:** Translation and deployment at iso configuration
-* [✅] **Step 2:** Refactor the database so that it includes categories and subcategories (see Step 4)
-* [✅] **Step 3:** Refactor the Q&A cards so that they include a Reveal/Hide button
-* [✅] **Step 4:** Refactor the landing page so that the user can select to review only certain categories, subcategories or flash cards with certain keyword
-* [✅] **Step 5:** Add multi-deck support with CLI arguments and environment variables
+```powershell
+# Clone and run
+git clone https://github.com/40tude/rust_flashcards
+cd rust_flashcards
+```
+### Create `.env` file
 
-## Multi-Deck Support
+```
+# Server configuration
+PORT=8080
+# RUST_LOG=info
 
-The application now supports multiple flashcard decks:
+# Default Display Configuration
+DECK_DISPLAY_NAME="My Flashcards"
+
+# Secret key for session management (change this, you can use `New-Guid` in PowerShell)
+FLASHCARDS_SECRET_KEY=change-this-to-a-secure-random-key
+```
+
+```powershell
+cargo run
+# Access at http://localhost:8080
+# Press ENTER
+```
+
+
+
+
+
+
+
+## CLI Arguments
 
 ```bash
 # Run with default deck
 cargo run
 
-# Rebuild specific deck
-cargo run -- --rebuild-deck test -r test
+# Help
+cargo run -- --help
 
-# Load specific deck with custom name
-cargo run -- --deck rust --deck-name "Rust Flashcards"
+# Rebuild and load specific deck
+cargo run -- --rebuild-deck-id test --deck-id test
+
+# Load deck with custom display name
+cargo run -- --deck-id rust --deck-display-name "Rust Programming"
 
 # Short form
 cargo run -- -r deck -d deck -n "My Deck"
-
-# Heroku multi-app
-heroku config:set DECK_ID=deck DECK_DISPLAY_NAME="My Deck"
 ```
 
-**Directory structure:**
+
+### Priority Rules
+
+Configuration priority (highest to lowest):
+1. CLI arguments (`--deck-id`, `--deck-display-name`)
+2. Environment variables (`DECK_DISPLAY_NAME`)
+3. Default values (`deck`, uses deck_id as display name)
+
+**Note:** When `--deck-id` is provided without `--deck-display-name`, the display name defaults to the deck ID, **not** the environment variable but the value of `--deck-id`
+
+
+
+## Directory Structure
+* Decks are located under static/
+
 ```
-static/
-  deck/     # Default deck
-    md/
-    img/
-  rust/     # Example deck
-    md/
-    img/
-```
-
-See [CLAUDE.md](CLAUDE.md) for complete multi-deck documentation.
-
-
-
-
-## How To
-
-* I'm an happy user of Windows 11, Powershell and VSCode
-* I had forgotten how this Python project was made, how to it was running it etc.
-* I restarted it, review it quickly and redeploy it on Heroku (few things had changed there)
-* Then I use Cargo to create a directory for the Rust project
-* I make a copy of the Python directory (delete the `.git` directory) in the Rust project directory
-* I'm not 100% sure but at this stage I may have committed the project on Github
-* I invoke Claude Code in a VSCode integrated terminal from the root of the Rust project
-
-
-
-### /init
-* To let Claude create a `Claude.md` file
-    * I'm not sure I understand the purpose of this file
-    * I need to investigate
-* Claude Code reads all the files etc.
-
-
-### A preparation phase in Plan Mode
-* `Shift Tab` in the terminal to switch in **Plan Mode**. This is important.
-* Explain what I want to do
-* Iterate, iterate...
-* The key : ask Claude Code to create a **multi-phase plan** and to save this plan in a markdown document. See `assets/multi_phase_plan.md`
-* This is important because with this ressource on the side I can leave Claude Code and then come back and continue (think of time limit issues, number of tokens issues...)
-
-### Execution Mode
-* Once the multi-phase plan is OK and saved...
-* Check the remaining tokens with `/context`
-* If needed leave, come back, start a new instance (no tokens used) ask Claude to read the multi-phase markdown plan and to execute Phase 1 but and to stop at the end.
-* I let it ask permission for everything at the beginning because I want to read and follow what it does
-* At the end of Phase 1, I commit the changes and push them to GitHub.
-    * Later I let Claude commit the changes
-    * **TODO:** see how to give instructions regarding commit messages
-
-
-**Side Note**
-* I installed and use [`ccusage`](https://ccusage.com/) (see `npx ccusage@latest`).
-* In my case it is not so useful because it does'nt report any information regarding Sonnet (used with Claude Code with my Pro Plan) but only Haiku.
-* I do not undertand
-
-
-
-
-## What I had to do so far
-
-### For Step 1 - Translating and Deploying on Heroku
-* Step 8. Create the project on Heroku etc. Read more in `assets\multi_phase_plan.md`
-* Create `.slugignore` file
-
-### For Step 2 - Extract Categories and SubCategories
-* Step 1. Make sure all Cards with Q&A use the right template. It was easier and faster that way. Read more in `assets\multi_phase_plan_2.md`
-
-
-### For Step 3 - Implement Show answer
-
-* Yesterday night I read more about `Claude.md`
-* I made an important cleanup in directories, files etc.
-* I also `/init` to start Step 3 and 4 with a clean setup
-* Then I tuned the `Claude.md` (make sure it use the ms-rust skill, write in English US...)
-* I did nothing!
-    * I start in Planning Mode
-    * Then I switch to Execution Mode
-    * I make sure the plan is saved in `assets/` directory
-* Read more about Step 3 in `assets\hide_reveal_answer_plan.md`
-* In addition *we* fix a bug (double insertion in FTS table)
-* Claude wrote the commit message and pushed on origin
-
-### For Step 4 - New landing page
-* Commit
-* Plan Mode first
-* I realized that the app was rebuilding the database on each start so first I check and ask to change the behavior
-* Then I provided a drawing of what I want to see and explain the expected behavior of the new landing page
-* Double check few point : `/search` now removed, `landing page == index.html` etc.
-* Switch to Execution Mode
-* Save the plan : see `assets\landing_page_plan.md`
-* I let Claude do the job, write code etc.
-* One or 2 bugs
-* Let Claude create a commit and push on origin
-* Added feature : Tab support in the card so that on PC, we can use keyboard only
-* Added feature : make sure md and png if missing the app quit and leave an explicit message
-* Fixed : Issues with the logic of category/subcategory check boxes
-    * This one was touchy and took some time
-    * At the end, one morning I cleared Claude session and start from scratch and ask for more than one option (now everything is in javascript but it work)
-* Added feature : `.webp` & `.png` support. `png/` directory no longer exists. Replaced by an `img/` directory with `.webp` files
-* Now in img/ we can drop images with  png or webp format (and only these 2)
-    * Ideal size 1200 pix wide
-* Fixed issue rendering pictures on cell phone
-* Make sure math formulas are displayed correctly
-
-
-## About images 1/2
-The problem stems from the interaction between:
-
-1. Viewport meta tag (practice.html:5):
-    - `<meta name="viewport" content="width=device-width, initial-scale=1.0">`
-2. Galaxy Note 20 resolution: 3088x1440 pixels (very high density)
-3. Images with width="433" in the markdown
-
-What happens:
-
-- The Galaxy Note 20 has a physical resolution of 3088x1440, but a Device Pixel Ratio (DPR) of probably 3.5x (yes, verified)
-  - The effective CSS width is ~440px (1440/3.5 ≈ 411px or 3088/3.5 ≈ 882px in landscape)
-  - The viewport causes the page to use the entire width of the virtual screen
-- Bootstrap .container has responsive max-width, but on mobile it takes up ~100% of the width (minus margins)
-  - Images that are 577px physically with width="433" CSS overflow because 433px CSS > container width on some mobile devices
-
-Implemented solution:
-
-Responsive CSS for images
-Add to default.css:
-```css
-
-img {
-    max-width: 100%;
-    height: auto;
-}
+.
+├── static/
+│   ├── deck/          # Default deck
+│   │   ├── md/        # Markdown flashcards
+│   │   └── img/       # Images (PNG/WebP)
+│   ├── rust/          # Example: Rust deck
+│   │   ├── md/
+│   │   └── img/
+│   ├── css/           # Shared CSS
+│   ├── js/            # Shared JavaScript
+│   └── favicon.png    # Shared favicon
+├── templates/         # HTML templates (Askama)
+├── src/              # Rust source code
+└── .env              # Environment configuration
 ```
 
-## About images 2/2
+## Cards Format
+* Decks are made of cards
+* Cards can be either markdown files or images
 
-Width in markdown (width attribute)
-* Recommendation: width="600"
-* Practical example: `<img src="../static/md/book_covers/deep_learning_keras_tensorflow.webp" alt="dummy" width="600"/>`
+### Images: my_deck/img/
+* The `img/` directory is optional
+* If `img/` exists, it and its subdirectories are scanned to search for images.
+* Images are in `.png` or `.webp` format
+* We recommend `.webp` and width=600px
 
-Why:
-- Bootstrap .container on desktop: ~720px (tablet) to ~1140px (large screen)
-- On mobile: CSS max-width: 100% automatically limits
-- 600px CSS = good compromise between visibility and performance
+### Markdown: my_deck/md
+* The `md/` directory is optional
+* If `md/` exists, it and its subdirectories are scanned to search for markdown files.
+* Files use markdown format so they can include images, math formulas...
 
-Actual image file size
-* Recommendation: 1200px width
+```markdown
+<!--
+############################################################
+##
+############################################################
+-->
+Question : Category - Subcategory - Do you believe in life after love?
 
-Why:
-- Device Pixel Ratio: Galaxy Note and others has DPR ~3.5x
-- Calculation: 600px CSS × 2 = 1200px physical (for Retina/HiDPI screens)
-- Format: WebP (already used, excellent)
-- Compression: 80-85% quality is sufficient for cover photos
+Answer  :
+
+## May be
+Blablabla...
+
+## Insert maths
+<!-- ## Mathjax is supported -->
+$V = \frac{d}{t} = \frac{D}{\frac{D}{2\cdot40} + \frac{D}{2\cdot60}} = \frac{2}{\frac{1}{40} + \frac{1}{60}}$
+
+## Insert images
+* `.png` or `.webp`
+* We recommend to store the embedded images closed to the `.md` file or in a dedicated directory
+* Target the images as if you are at the root of the project.
+    * Below, in the deck `my_deck`, a directory `md/assets/` host the images.
+
+<p align="center">
+<img src="static/my_deck/md/assets/kitten.png" alt="harmonic" width="577"/>
+</p>
 
 
-- With the added CSS (`max-width: 100%` see `static\css\default.css`), the width attribute becomes a suggestion in `.md` files
-- On Galaxy Note 20 (width ~411px CSS), the image will be reduced automatically
-- On desktop, it will display at 600px CSS (or less if the container is smaller)
+```
 
 
 
-## Code Statistics
 
-```powershell
+
+
+
+
+
+
+## Heroku Deployment
+
+### Single Deck Deployment
+
+```bash
+# Set environment variables
+heroku config:set DECK_DISPLAY_NAME="My Flashcards"
+
+# Deploy
+git push heroku main
+```
+
+### Multi-Deck Deployment
+
+Deploy the same codebase to multiple Heroku apps:
+
+```bash
+# App 1: Data Science deck
+heroku config:set DECK_ID=datascience DECK_DISPLAY_NAME="Data Science" -a app-datascience
+git push heroku main -a app-datascience
+
+# App 2: Rust deck
+heroku config:set DECK_ID=rust DECK_DISPLAY_NAME="Rust Programming" -a app-rust
+git push heroku main -a app-rust
+```
+
+## Development
+
+### Build
+
+```bash
+# Debug build
+cargo build
+
+# Release build (optimized for size)
+cargo build --release
+```
+
+### Database Management
+
+```bash
+# Rebuild database (deletes and recreates)
+cargo run -- --rebuild-deck-id deck
+
+# The database is auto-created from content files on first run
+# Subsequent runs reuse the existing database for fast startup
+```
+
+### Code Statistics
+
+```bash
 tokei --compact --exclude assets --exclude static --exclude flashcards_staging
-Get-ChildItem -Recurse *.md | Where-Object { $_.FullName -notmatch '\\(assets|static|flashcards_staging)\\' }
 ```
 
-Last Update Date : 2025 11 29
+Last update: 2025-12-09
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  Language              Files        Lines         Code     Comments       Blanks
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  HTML                      3          181          161            8           12
- Markdown                  2          409            0          290          119
- Rust                     16         1191          888          106          197
- TOML                      1           59           33           13           13
+ Markdown                  2          347            0          241          106
+ Rust                     16         1256          942          110          204
+ TOML                      1           62           36           13           13
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- Total                    22         2013         1106          533          374
+ Total                    22         2126         1188          548          390
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
+## Technology Stack
+
+- **Web Framework:** Axum 0.7
+- **Database:** SQLite with FTS5 (full-text search)
+- **Templates:** Askama
+- **Markdown:** pulldown-cmark
+- **Syntax Highlighting:** syntect
+- **Session Management:** tower-sessions
+- **CLI:** clap
+
+## License
+
+MIT License - see [LICENSE](LICENSE) file for details.
 
 
+## Contributing
+This project is developed for personal and educational purposes. Feel free to explore and use it to enhance your own learning.
 
-
-
-
-
-
-
-
-
-
-
-## Notes
-* I'm totally stressed with the time window. I use `/status` and `npx ccusage@latest` all the time
-* Claude Code loves Linux
-* ~~**TODO:** Find a way to let it know it is in a Win/Powershell context.~~ **DONE** see `%USERPROFILE%/.claude/CLAUDE.md`
-
-```
-# CLAUDE.md
-
-This file provides guidance to Claude Code (claude.ai/code) when working on any project.
-
-## Important Notes
-
-- In all interactions and commit messages, be extremely concise and sacrifice grammar for the sake of concision.
-- All documentation, code comments, commit messages, and project artifacts must be written in US English. When in doubt, ask for confirmation before writing in any other language.
-
-
-
-## Environment
-
-- ALWAYS assume Windows 11 with PowerShell unless explicitly told otherwise
-- Use PowerShell cmdlets and Windows-native commands; avoid Linux/Unix commands (no bash, grep, sed, etc.)
-
-```
-
-
-
-
-
-
-
-
-## This is for me
-
-Release:
-* Win = 4.2 MB
-* Linux = 5.2 MB (by default debug info were not stripped)
-
-```
-git push heroku main
-http://localhost:8080/
-https://rust-flashcards-ae94334b8997.herokuapp.com/
-powershell -Command "Stop-Process -Name rust-flashcards -Force"
-
-heroku run bash -a rust-flashcards
-
-# Update single dependency - Read assets\14_cargo_version_specifiers.md
-cargo update -p tracing
-
-```
-
+Given the nature of the project, external contributions are not actively sought nor encouraged. However, constructive feedback aimed at improving the project (in terms of speed, accuracy, comprehensiveness, etc.) is welcome. Please note that this project is being created as a hobby and is unlikely to be maintained once my initial goal has been achieved.
