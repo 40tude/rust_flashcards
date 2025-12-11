@@ -23,7 +23,13 @@
       "Bash(ls:*)",
       "Bash(pkill:*)",
       "Bash(sqlite3:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(cargo check:*)",
+      "Bash(cargo test:*)",
+      "Bash(Get-Content \"C:\\Users\\phili\\OneDrive\\Documents\\Programmation\\rust\\15_rust_flashcards\\src\\config.rs\")",
+      "Bash(Select-String -Pattern \"    #\\[test\\]\")",
+      "Bash(Measure-Object)",
+      "Bash(Select-Object -Last 15)"
     ],
     "deny": [],
     "ask": []

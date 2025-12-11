@@ -17,30 +17,30 @@ A web-based flashcard application with full-text search and multi-deck support, 
 
 ## Quick Start
 
+### Clone
 ```powershell
-# Clone and run
 git clone https://github.com/40tude/rust_flashcards
 cd rust_flashcards
 ```
-### Create `.env` file
+### Rename `.env.sample` to `.env`
+* Open the file `.env`
+* Update the value of the key `FLASHCARDS_SECRET_KEY`
+* Save the file
 
 ```
-# Server configuration
-PORT=8080
-# RUST_LOG=info
-
-# Default Display Configuration
-DECK_DISPLAY_NAME="My Flashcards"
-
-# Secret key for session management (change this, you can use `New-Guid` in PowerShell)
-FLASHCARDS_SECRET_KEY=change-this-to-a-secure-random-key
+# Flashcards Secret Key for Session Management
+# For example, copy the output of
+#   Powershell: New-Guid
+#   Linux     : uuidgen
+FLASHCARDS_SECRET_KEY=ed0605f6-change-this-to-a-secure-random-key
 ```
 
+### Run
 ```powershell
 cargo run
-# Access at http://localhost:8080
-# Press ENTER
 ```
+* Access at http://localhost:8080
+* Press ENTER
 
 
 
@@ -203,7 +203,7 @@ cargo run -- --rebuild-deck-id deck
 
 ### Code Statistics
 
-```bash
+```powershell
 tokei --compact --exclude assets --exclude static --exclude flashcards_staging
 ```
 
@@ -214,11 +214,12 @@ Last update: 2025-12-09
  Language              Files        Lines         Code     Comments       Blanks
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  HTML                      3          181          161            8           12
- Markdown                  2          347            0          241          106
- Rust                     16         1256          942          110          204
- TOML                      1           62           36           13           13
+ Markdown                  2          358            0          241          117
+ Rust                     21         4719         3539          356          824
+ Plain Text                1            7            0            7            0
+ TOML                      1           84           44           20           20
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- Total                    22         2126         1188          548          390
+ Total                    28         5872         3793         1002         1077
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```
 
