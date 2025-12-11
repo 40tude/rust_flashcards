@@ -165,16 +165,30 @@ static/
 
 ### Markdown File Format
 
-Cards are extracted from markdown using regex pattern:
+Cards are extracted from markdown files using this format:
 ```
-### Q
-[question content]
-
-### A
-[answer content]
+Question : [Category - Subcategory -] Question text
+Answer : Answer text
 ```
 
-Category/subcategory are parsed from YAML frontmatter or filename patterns like `01_category_subcategory.md`.
+**Format Details:**
+- `Question :` and `Answer :` are required markers (case-insensitive, flexible spacing)
+- Category and Subcategory are optional, separated by ` - ` (space-hyphen-space)
+- Multiple Q&A pairs per file supported (separated by blank lines)
+- HTML comments are stripped before processing
+- Headers (`### Question :` / `### Answer :`) are added automatically during HTML conversion
+
+**Examples:**
+```markdown
+Question : Math - Algebra - What is 2+2?
+Answer : 4
+
+Question : What is the capital of France?
+Answer : Paris
+
+Question : Machine-Learning - Deep-Learning - What is backpropagation?
+Answer : Algorithm for training neural networks
+```
 
 ### Key Dependencies
 
@@ -206,10 +220,54 @@ Category/subcategory are parsed from YAML frontmatter or filename patterns like 
 6. User clicks "Back to Filters" → returns to `/` with filters preserved in session
 7. If no cards match filters → redirects to `/` with error message displayed
 
+## Testing
+
+**Test Suite:** 168 tests (~70% coverage, pragmatic approach)
+
+```bash
+# Run all tests
+cargo test
+
+# Run specific test suites
+cargo test --lib                           # Unit tests only
+cargo test --test integration_*            # Integration tests
+cargo test config::tests::proptests        # Property-based tests
+cargo test -- --nocapture --test-threads=1 # Sequential with output
+
+# Run with more property test cases
+$env:PROPTEST_CASES=1000; cargo test proptests
+```
+
+**Test Organization:**
+- **Unit tests** (143): Inline `#[cfg(test)]` modules in source files
+  - `src/config.rs`: 32 tests (26 unit + 6 proptest)
+  - `src/db/queries.rs`: 37 tests (32 unit + 5 proptest)
+  - `src/content/markdown.rs`: 24 tests
+  - `src/content/images.rs`: 17 tests (13 unit + 4 proptest)
+  - `src/routes/landing.rs`: 25 tests
+  - `src/session/mod.rs`: 8 tests
+- **Integration tests** (24): `tests/integration_*.rs`
+  - `tests/integration_content_loading.rs`: 11 tests (markdown→DB, images→DB, multi-deck)
+  - `tests/integration_routes.rs`: 13 tests (HTTP routes, session persistence)
+- **Test utilities**: `tests/common/` (fixtures, helpers, setup functions)
+
+**Key Test Dependencies:**
+- `rstest = "0.23"`: Parametrized tests
+- `proptest = "1.6"`: Property-based testing
+- `tempfile = "3"`: Temporary directories
+- `axum-test = "15"`: HTTP testing
+- `serial_test = "3"`: Sequential test execution (env var tests)
+
+**Property-Based Tests** verify invariants:
+- Config: CLI always overrides env, paths match deck_id
+- Queries: Filtered count ≤ total, exclude list respected
+- Images: No backslashes in HTML, deck_id extraction consistent
+
 ## Notes
 - Content loaded only on first startup (database empty check for fast subsequent starts)
 - FTS table must be repopulated after content changes via `db::queries::populate_fts_table()`
 - Session data is in-memory only (resets on server restart)
 - Filter state persists in session across page visits
-- Category/subcategory extraction uses regex: `(?i)category:\s*([^\n\r]+)` and `(?i)subcategory:\s*([^\n\r]+)`
-- Keyword search scoped to selected categories/subcategories (FTS5 with category/subcategory filtering)
+- Markdown parsing: Splits on `Question :` / `Answer :` markers (case-insensitive)
+- Category/subcategory extracted from question format: `Category - Subcategory - Question`
+- Keyword search scoped to selected categories/subcategories (FTS5 with filtering)
