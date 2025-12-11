@@ -1,9 +1,4 @@
-mod cli;
-mod config;
-mod content;
-mod db;
-mod routes;
-mod session;
+use rust_flashcards::{cli, config, content, db, routes};
 
 use axum::{
     Router,

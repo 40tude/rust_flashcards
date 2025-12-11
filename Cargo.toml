@@ -53,6 +53,28 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 # Random selection
 rand = "0.9"
 
+[dev-dependencies]
+# Parametrized testing framework
+rstest = "0.23"
+
+# Property-based testing framework
+proptest = "1.6"
+
+# Temporary directories for test isolation
+tempfile = "3"
+
+# Sequential test execution (for env var tests)
+serial_test = "3"
+
+# HTTP testing utilities for Axum
+axum-test = "15"
+
+# Async test utilities
+tokio-test = "0.4"
+
+# JSON serialization for session tests
+serde_json = "1"
+
 # See also .cargo/config.toml
 [profile.release]
 strip = true      # Remove debug symbols

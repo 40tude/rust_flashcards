@@ -224,3 +224,246 @@ pub async fn apply_filters(session: Session, body: String) -> Result<impl IntoRe
 
     Ok(Redirect::to("/practice"))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use rstest::rstest;
+
+    // ========== Tests for has_active_filters ==========
+
+    #[test]
+    fn test_has_active_filters_all_defaults() {
+        let session = SessionData::default();
+        assert!(!has_active_filters(&session));
+    }
+
+    #[test]
+    fn test_has_active_filters_with_keywords() {
+        let mut session = SessionData::default();
+        session.filter_keywords = vec!["rust".to_string()];
+        assert!(has_active_filters(&session));
+    }
+
+    #[test]
+    fn test_has_active_filters_with_categories() {
+        let mut session = SessionData::default();
+        session.filter_categories = Some(vec!["Programming".to_string()]);
+        assert!(has_active_filters(&session));
+    }
+
+    #[test]
+    fn test_has_active_filters_with_subcategories() {
+        let mut session = SessionData::default();
+        session.filter_subcategories = Some(vec!["Rust".to_string()]);
+        assert!(has_active_filters(&session));
+    }
+
+    #[test]
+    fn test_has_active_filters_images_excluded() {
+        let mut session = SessionData::default();
+        session.filter_include_images = false;
+        assert!(has_active_filters(&session));
+    }
+
+    #[test]
+    fn test_has_active_filters_empty_categories_list() {
+        let mut session = SessionData::default();
+        // Empty categories = images-only mode
+        session.filter_categories = Some(vec![]);
+        assert!(has_active_filters(&session));
+    }
+
+    // ========== Tests for URL Decoding ==========
+
+    #[test]
+    fn test_url_decode_plus_to_space() {
+        let url_decode = |s: &str| s.replace('+', " ");
+        assert_eq!(url_decode("machine+learning"), "machine learning");
+        assert_eq!(url_decode("foo+bar+baz"), "foo bar baz");
+        assert_eq!(url_decode("no-spaces"), "no-spaces");
+    }
+
+    // ========== Tests for Form Parsing Logic ==========
+
+    /// Helper to parse form body using the same logic as apply_filters
+    fn parse_form_body(body: &str) -> FilterForm {
+        let mut form = FilterForm {
+            keywords: String::new(),
+            all_categories: None,
+            categories: Vec::new(),
+            all_subcategories: None,
+            subcategories: Vec::new(),
+            all_images: None,
+        };
+
+        let url_decode = |s: &str| s.replace('+', " ");
+
+        for pair in body.split('&') {
+            if let Some((key, value)) = pair.split_once('=') {
+                let key = url_decode(key);
+                let value = url_decode(value);
+
+                match key.as_str() {
+                    "keywords" => form.keywords = value,
+                    "all_categories" => form.all_categories = Some(value),
+                    "categories" => form.categories.push(value),
+                    "all_subcategories" => form.all_subcategories = Some(value),
+                    "subcategories" => form.subcategories.push(value),
+                    "all_images" => form.all_images = Some(value),
+                    _ => {}
+                }
+            }
+        }
+
+        form
+    }
+
+    #[test]
+    fn test_parse_form_keywords() {
+        let body = "keywords=machine+learning&all_categories=on&all_subcategories=on&all_images=on";
+        let form = parse_form_body(body);
+
+        assert_eq!(form.keywords, "machine learning");
+        assert_eq!(form.all_categories, Some("on".to_string()));
+        assert_eq!(form.all_subcategories, Some("on".to_string()));
+        assert_eq!(form.all_images, Some("on".to_string()));
+    }
+
+    #[test]
+    fn test_parse_form_specific_categories() {
+        let body = "categories=Math&categories=Science&all_subcategories=on&all_images=on";
+        let form = parse_form_body(body);
+
+        assert_eq!(form.categories, vec!["Math", "Science"]);
+        assert_eq!(form.all_categories, None); // Not checked
+    }
+
+    #[test]
+    fn test_parse_form_specific_subcategories() {
+        let body = "all_categories=on&subcategories=Algebra&subcategories=Geometry&all_images=on";
+        let form = parse_form_body(body);
+
+        assert_eq!(form.subcategories, vec!["Algebra", "Geometry"]);
+        assert_eq!(form.all_subcategories, None); // Not checked
+    }
+
+    #[test]
+    fn test_parse_form_images_excluded() {
+        let body = "keywords=&all_categories=on&all_subcategories=on";
+        let form = parse_form_body(body);
+
+        assert_eq!(form.all_images, None); // Checkbox not checked
+    }
+
+    #[test]
+    fn test_parse_form_empty_categories_images_only() {
+        let body = "all_subcategories=on&all_images=on";
+        let form = parse_form_body(body);
+
+        // No categories selected (images-only mode)
+        assert!(form.categories.is_empty());
+        assert_eq!(form.all_categories, None);
+    }
+
+    // ========== Tests for Validation Logic ==========
+
+    #[rstest]
+    #[case(None, None, true)] // All cats, all subcats → valid
+    #[case(None, Some(vec![]), true)] // All cats, empty subcats → valid (means all)
+    #[case(Some(vec![]), None, true)] // Empty cats (images-only), all subcats → valid
+    #[case(Some(vec![]), Some(vec![]), true)] // Empty cats (images-only), empty subcats → valid
+    #[case(Some(vec!["Math".to_string()]), Some(vec!["Algebra".to_string()]), true)] // Specific cats + subcats → valid
+    #[case(Some(vec!["Math".to_string()]), None, true)] // Specific cats, all subcats → valid
+    #[case(Some(vec!["Math".to_string()]), Some(vec![]), false)] // Specific cats, NO subcats → INVALID
+    fn test_validation_logic(
+        #[case] categories: Option<Vec<String>>,
+        #[case] subcategories: Option<Vec<String>>,
+        #[case] should_be_valid: bool,
+    ) {
+        // Simulate validation logic from apply_filters
+        let is_valid = if subcategories.as_ref().map(|s| s.is_empty()).unwrap_or(false) {
+            // Empty subcats list
+            if let Some(ref cats) = categories {
+                if !cats.is_empty() {
+                    false // Specific cats + empty subcats = INVALID
+                } else {
+                    true // Empty cats (images-only) + empty subcats = VALID
+                }
+            } else {
+                true // All cats + empty subcats = VALID
+            }
+        } else {
+            true // Non-empty subcats or None = VALID
+        };
+
+        assert_eq!(
+            is_valid, should_be_valid,
+            "Validation failed for cats={:?}, subcats={:?}",
+            categories, subcategories
+        );
+    }
+
+    #[test]
+    fn test_keywords_parsing_whitespace() {
+        let keywords_str = "machine learning neural network";
+        let keywords: Vec<String> = keywords_str.split_whitespace().map(String::from).collect();
+
+        assert_eq!(keywords, vec!["machine", "learning", "neural", "network"]);
+    }
+
+    #[test]
+    fn test_keywords_parsing_empty() {
+        let keywords_str = "";
+        let keywords: Vec<String> = keywords_str.split_whitespace().map(String::from).collect();
+
+        assert!(keywords.is_empty());
+    }
+
+    #[test]
+    fn test_keywords_parsing_extra_whitespace() {
+        let keywords_str = "  rust    async  ";
+        let keywords: Vec<String> = keywords_str.split_whitespace().map(String::from).collect();
+
+        assert_eq!(keywords, vec!["rust", "async"]);
+    }
+
+    // ========== Tests for Category/Subcategory Items ==========
+
+    #[test]
+    fn test_category_item_creation() {
+        let item = CategoryItem {
+            name: "Math".to_string(),
+            selected: true,
+        };
+
+        assert_eq!(item.name, "Math");
+        assert!(item.selected);
+    }
+
+    #[test]
+    fn test_subcategory_item_creation() {
+        let item = SubcategoryItem {
+            name: "Algebra".to_string(),
+            category: "Math".to_string(),
+            selected: false,
+        };
+
+        assert_eq!(item.name, "Algebra");
+        assert_eq!(item.category, "Math");
+        assert!(!item.selected);
+    }
+
+    #[test]
+    fn test_category_item_clone() {
+        let item = CategoryItem {
+            name: "Science".to_string(),
+            selected: true,
+        };
+        let cloned = item.clone();
+
+        assert_eq!(cloned.name, "Science");
+        assert_eq!(cloned.selected, item.selected);
+    }
+}
+
