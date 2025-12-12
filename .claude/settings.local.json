@@ -29,7 +29,10 @@
       "Bash(Get-Content \"C:\\Users\\phili\\OneDrive\\Documents\\Programmation\\rust\\15_rust_flashcards\\src\\config.rs\")",
       "Bash(Select-String -Pattern \"    #\\[test\\]\")",
       "Bash(Measure-Object)",
-      "Bash(Select-Object -Last 15)"
+      "Bash(Select-Object -Last 15)",
+      "Bash(Select-String -Pattern \"Loaded|Culture|Hitchhiker|flashcards\")",
+      "Bash(Select-Object -First 10)",
+      "Bash(Stop-Process -Name rust-flashcards -Force -ErrorAction SilentlyContinue)"
     ],
     "deny": [],
     "ask": []
