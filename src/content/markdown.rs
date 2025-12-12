@@ -48,26 +48,37 @@ pub fn load_markdown(pool: &DbPool, md_dir: &str) -> Result<()> {
 fn process_markdown_file(pool: &DbPool, path: &Path) -> Result<usize> {
     let content = fs::read_to_string(path).with_context(|| format!("Failed to read file: {:?}", path))?;
 
+    // Compile all regex patterns once (performance optimization)
     // Strip HTML comments (with DOTALL for multiline comments)
     let comment_regex = Regex::new(r"(?s)<!--.*?-->").unwrap();
-    let cleaned = comment_regex.replace_all(&content, "");
 
-    // Split by "Question" keyword to get individual Q&A blocks
-    let parts: Vec<&str> = cleaned.split("Question").collect();
+    // Split by "Question :" at line start (case-insensitive, multiline mode)
+    // (?m) enables multiline mode where ^ matches line start
+    // (?i) enables case-insensitive matching
+    // ^\s* allows optional leading whitespace before Question
+    let question_regex = Regex::new(r"(?mi)^\s*Question\s+:").unwrap();
 
-    let mut count = 0;
+    // Find where Answer starts (case-insensitive, multiline mode, line-anchored)
+    let answer_regex = Regex::new(r"(?mi)^\s*Answer\s+:").unwrap();
 
     // Regex to extract CATEGORY - SUBCATEGORY - QUESTION
     // Use lookahead to match " - " (space-dash-space) to allow hyphens in category names
-    let category_regex = Regex::new(r"^\s*:\s*(.+?)\s-\s(.+?)\s-\s(.+)").unwrap();
+    // Note: No leading ":" since question_regex.split() removes "Question :" entirely
+    let category_regex = Regex::new(r"^\s*(.+?)\s-\s(.+?)\s-\s(.+)").unwrap();
+
+    let cleaned = comment_regex.replace_all(&content, "");
+
+    // Split by "Question :" keyword to get individual Q&A blocks
+    let parts: Vec<&str> = question_regex.split(&cleaned).collect();
+
+    let mut count = 0;
 
     for part in parts.iter().skip(1) {
         // Each part should start with " : " followed by question text,
         // then contain "Answer  :" (with variable spaces) followed by answer text
 
         // Find where Answer starts
-        let answer_re = Regex::new(r"\nAnswer\s+:").unwrap();
-        if let Some(answer_match) = answer_re.find(part) {
+        if let Some(answer_match) = answer_regex.find(part) {
             let question_part = part[..answer_match.start()].trim();
             let answer_md = part[answer_match.end()..].trim();
 
@@ -377,9 +388,9 @@ fn main() {
         fs::write(&file_path, content).unwrap();
 
         let count = process_markdown_file(&pool, &file_path).unwrap();
-        // Both are processed - the first one creates a card with empty question
-        // This is actually correct behavior - we only skip if BOTH are empty after trimming
-        assert_eq!(count, 2);
+        // First Q&A has both question and answer empty (after trim), so it's skipped
+        // Second Q&A is valid, so only 1 card is created
+        assert_eq!(count, 1);
     }
 
     #[test]
@@ -448,6 +459,161 @@ Answer : A"#;
 
         assert_eq!(cat.as_deref(), Some("Machine-Learning"));
         assert_eq!(subcat.as_deref(), Some("Deep-Learning"));
+    }
+
+    // ========== Tests for Keywords in Text (Bug Fix) ==========
+
+    #[rstest]
+    #[case(
+        "Question : Culture - Hitchhiker - The Answer to Life is?\nAnswer : 42",
+        1,
+        Some("Culture"),
+        "Answer word in question"
+    )]
+    #[case(
+        "Question : Meta - Testing - This Question contains Question\nAnswer : Parsed",
+        1,
+        Some("Meta"),
+        "Question word in question"
+    )]
+    #[case(
+        "Question : Grammar - Usage - Define\nAnswer : An answer is a response to a question",
+        1,
+        Some("Grammar"),
+        "answer/question words in answer text"
+    )]
+    #[case(
+        "question : Test - Case - Lowercase\nanswer : Works",
+        1,
+        Some("Test"),
+        "Lowercase keywords"
+    )]
+    #[case(
+        "QUESTION : Test - Case - Uppercase\nANSWER : Works",
+        1,
+        Some("Test"),
+        "Uppercase keywords"
+    )]
+    #[case(
+        "Question : Test - Multi - Line\nAnswer this\nAnswer : Correct",
+        1,
+        Some("Test"),
+        "Answer at line start in question"
+    )]
+    #[case(
+        "   Question : Test - Space - Indented\n   Answer : Works",
+        1,
+        Some("Test"),
+        "Leading whitespace before keywords"
+    )]
+    #[case(
+        "Not a Question : fake\nQuestion : Real - Start - Q\nAnswer : A",
+        1,
+        Some("Real"),
+        "Keywords mid-line ignored"
+    )]
+    fn test_process_markdown_file_keywords_in_text(
+        #[case] content: &str,
+        #[case] expected_count: usize,
+        #[case] expected_category: Option<&str>,
+        #[case] description: &str,
+    ) {
+        let pool = setup_test_db();
+        let temp_dir = setup_test_dir();
+        let file_path = temp_dir.path().join("test.md");
+
+        fs::write(&file_path, content).unwrap();
+
+        let count = process_markdown_file(&pool, &file_path).unwrap();
+        assert_eq!(count, expected_count, "Failed for case: {}", description);
+
+        if expected_count > 0 {
+            let conn = pool.get().unwrap();
+            let cat: Option<String> = conn
+                .query_row(
+                    "SELECT category FROM flashcards WHERE id = 1",
+                    [],
+                    |row| row.get(0),
+                )
+                .unwrap();
+
+            assert_eq!(
+                cat.as_deref(),
+                expected_category,
+                "Category mismatch for: {}",
+                description
+            );
+        }
+    }
+
+    #[test]
+    fn test_exact_hitchhiker_case() {
+        // Test the EXACT failing case from user's markdown
+        let pool = setup_test_db();
+        let temp_dir = setup_test_dir();
+        let file_path = temp_dir.path().join("hitchhiker.md");
+
+        let content = r#"Question : Culture - The Hitchhiker's Guide to the Galaxy - The Answer to the Ultimate Question of Life, the Universe, and Everything is?
+Answer  :
+
+42"#;
+
+        fs::write(&file_path, content).unwrap();
+
+        let count = process_markdown_file(&pool, &file_path).unwrap();
+        assert_eq!(count, 1, "Should parse Hitchhiker's Guide question");
+
+        let conn = pool.get().unwrap();
+        let (cat, subcat, q_html): (Option<String>, Option<String>, String) = conn
+            .query_row(
+                "SELECT category, subcategory, question_html FROM flashcards WHERE id = 1",
+                [],
+                |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?)),
+            )
+            .unwrap();
+
+        assert_eq!(cat, Some("Culture".to_string()));
+        assert_eq!(
+            subcat,
+            Some("The Hitchhiker's Guide to the Galaxy".to_string())
+        );
+        // Question should contain "The Answer to" phrase
+        assert!(
+            q_html.contains("The Answer to"),
+            "Question text should be preserved"
+        );
+    }
+
+    #[test]
+    fn test_question_regex_pattern() {
+        let question_regex = Regex::new(r"(?mi)^\s*Question\s+:").unwrap();
+
+        // Should match
+        assert!(question_regex.is_match("Question : text"));
+        assert!(question_regex.is_match("question : text"));
+        assert!(question_regex.is_match("QUESTION : text"));
+        assert!(question_regex.is_match("  Question : text"));
+        assert!(question_regex.is_match("\nQuestion : text"));
+
+        // Should NOT match
+        assert!(!question_regex.is_match("Not Question : text"));
+        assert!(!question_regex.is_match("The Question : text"));
+    }
+
+    #[test]
+    fn test_answer_regex_pattern() {
+        let answer_regex = Regex::new(r"(?mi)^\s*Answer\s+:").unwrap();
+
+        // Should match
+        assert!(answer_regex.is_match("Answer : text"));
+        assert!(answer_regex.is_match("answer : text"));
+        assert!(answer_regex.is_match("ANSWER : text"));
+        assert!(answer_regex.is_match("  Answer : text"));
+        assert!(answer_regex.is_match("\nAnswer : text"));
+
+        // Should NOT match
+        assert!(!answer_regex.is_match("The Answer : text"));
+        assert!(!answer_regex.is_match("Not Answer : text"));
     }
 
     #[test]

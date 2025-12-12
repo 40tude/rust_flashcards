@@ -43,3 +43,14 @@ Answer  :
 #### From Default Deck
 
 I know
+
+
+<!--
+############################################################
+##
+############################################################
+-->
+Question : Culture - The Hitchhiker's Guide to the Galaxy - The Answer to the Ultimate Question of Life, the Universe, and Everything is?
+Answer  :
+
+42
