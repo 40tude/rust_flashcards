@@ -190,7 +190,7 @@ pub fn count_filtered_flashcards(
 
     // Image filter
     if !filters.include_images {
-        query_parts.push("AND question_html != '<h3>Question :</h3>'".to_string());
+        query_parts.push("AND question_html != '<h3>Question:</h3>'".to_string());
     }
 
     let query = query_parts.join(" ");
@@ -257,7 +257,7 @@ pub fn get_filtered_random_flashcard(
 
     // Image filter
     if !filters.include_images {
-        query_parts.push("AND question_html != '<h3>Question :</h3>'".to_string());
+        query_parts.push("AND question_html != '<h3>Question:</h3>'".to_string());
     }
 
     // Exclude seen cards
@@ -345,8 +345,8 @@ mod tests {
             &pool,
             Some("Math"),
             Some("Algebra"),
-            "<h3>Question :</h3><p>What is 2+2?</p>",
-            "<h3>Answer :</h3><p>4</p>",
+            "<h3>Question:</h3><p>What is 2+2?</p>",
+            "<h3>Answer:</h3><p>4</p>",
         )
         .unwrap();
 
@@ -354,8 +354,8 @@ mod tests {
             &pool,
             Some("Math"),
             Some("Algebra"),
-            "<h3>Question :</h3><p>What is 3+3?</p>",
-            "<h3>Answer :</h3><p>6</p>",
+            "<h3>Question:</h3><p>What is 3+3?</p>",
+            "<h3>Answer:</h3><p>6</p>",
         )
         .unwrap();
 
@@ -364,8 +364,8 @@ mod tests {
             &pool,
             Some("Math"),
             Some("Geometry"),
-            "<h3>Question :</h3><p>What is pi?</p>",
-            "<h3>Answer :</h3><p>Approximately 3.14159</p>",
+            "<h3>Question:</h3><p>What is pi?</p>",
+            "<h3>Answer:</h3><p>Approximately 3.14159</p>",
         )
         .unwrap();
 
@@ -374,8 +374,8 @@ mod tests {
             &pool,
             Some("Science"),
             Some("Physics"),
-            "<h3>Question :</h3><p>What is gravity?</p>",
-            "<h3>Answer :</h3><p>Force of attraction</p>",
+            "<h3>Question:</h3><p>What is gravity?</p>",
+            "<h3>Answer:</h3><p>Force of attraction</p>",
         )
         .unwrap();
 
@@ -383,8 +383,8 @@ mod tests {
             &pool,
             Some("Science"),
             Some("Physics"),
-            "<h3>Question :</h3><p>Speed of light?</p>",
-            "<h3>Answer :</h3><p>299,792,458 m/s</p>",
+            "<h3>Question:</h3><p>Speed of light?</p>",
+            "<h3>Answer:</h3><p>299,792,458 m/s</p>",
         )
         .unwrap();
 
@@ -393,8 +393,8 @@ mod tests {
             &pool,
             Some("Science"),
             Some("Chemistry"),
-            "<h3>Question :</h3><p>Water formula?</p>",
-            "<h3>Answer :</h3><p>H2O</p>",
+            "<h3>Question:</h3><p>Water formula?</p>",
+            "<h3>Answer:</h3><p>H2O</p>",
         )
         .unwrap();
 
@@ -403,8 +403,8 @@ mod tests {
             &pool,
             Some("Programming"),
             Some("Rust"),
-            "<h3>Question :</h3><p>What is ownership?</p>",
-            "<h3>Answer :</h3><p>Memory safety guarantee</p>",
+            "<h3>Question:</h3><p>What is ownership?</p>",
+            "<h3>Answer:</h3><p>Memory safety guarantee</p>",
         )
         .unwrap();
 
@@ -413,8 +413,8 @@ mod tests {
             &pool,
             Some("Programming"),
             Some("Python"),
-            "<h3>Question :</h3><p>List comprehension?</p>",
-            "<h3>Answer :</h3><p>Concise way to create lists</p>",
+            "<h3>Question:</h3><p>List comprehension?</p>",
+            "<h3>Answer:</h3><p>Concise way to create lists</p>",
         )
         .unwrap();
 
@@ -423,8 +423,8 @@ mod tests {
             &pool,
             None,
             None,
-            "<h3>Question :</h3>",
-            "<h3>Answer :</h3><img src='/static/deck/img/diagram.png'>",
+            "<h3>Question:</h3>",
+            "<h3>Answer:</h3><img src='/static/deck/img/diagram.png'>",
         )
         .unwrap();
 
@@ -432,8 +432,8 @@ mod tests {
             &pool,
             None,
             None,
-            "<h3>Question :</h3>",
-            "<h3>Answer :</h3><img src='/static/deck/img/chart.webp'>",
+            "<h3>Question:</h3>",
+            "<h3>Answer:</h3><img src='/static/deck/img/chart.webp'>",
         )
         .unwrap();
 
@@ -754,7 +754,7 @@ mod tests {
 
         // Should be image-only card (no category)
         assert!(card.category.is_none());
-        assert_eq!(card.question_html, "<h3>Question :</h3>");
+        assert_eq!(card.question_html, "<h3>Question:</h3>");
     }
 
     // ========== Property-Based Tests ==========

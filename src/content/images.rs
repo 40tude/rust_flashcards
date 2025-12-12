@@ -11,16 +11,21 @@ pub fn load_images(pool: &DbPool, png_dir: &str) -> Result<()> {
     let mut count = 0;
 
     // Walk through all .png and .webp files recursively
-    for entry in WalkDir::new(png_dir).follow_links(true).into_iter().filter_map(|e| e.ok()).filter(|e| {
-        e.path()
-            .extension()
-            .and_then(|ext| ext.to_str())
-            .map(|ext| {
-                let ext_lower = ext.to_ascii_lowercase();
-                ext_lower == "png" || ext_lower == "webp"
-            })
-            .unwrap_or(false)
-    }) {
+    for entry in WalkDir::new(png_dir)
+        .follow_links(true)
+        .into_iter()
+        .filter_map(|e| e.ok())
+        .filter(|e| {
+            e.path()
+                .extension()
+                .and_then(|ext| ext.to_str())
+                .map(|ext| {
+                    let ext_lower = ext.to_ascii_lowercase();
+                    ext_lower == "png" || ext_lower == "webp"
+                })
+                .unwrap_or(false)
+        })
+    {
         let path = entry.path();
         tracing::debug!("Processing image file: {:?}", path);
 
@@ -41,7 +46,11 @@ pub fn load_images(pool: &DbPool, png_dir: &str) -> Result<()> {
 
 fn process_image_file(pool: &DbPool, path: &Path, base_dir: &str) -> Result<()> {
     // Convert absolute path to relative path from base_dir
-    let relative_path = path.strip_prefix(base_dir).unwrap_or(path).to_string_lossy().replace('\\', "/");
+    let relative_path = path
+        .strip_prefix(base_dir)
+        .unwrap_or(path)
+        .to_string_lossy()
+        .replace('\\', "/");
 
     // Extract deck_id from base_dir path (e.g., "./static/deck/img" -> "deck")
     let deck_id = Path::new(base_dir)
@@ -51,11 +60,11 @@ fn process_image_file(pool: &DbPool, path: &Path, base_dir: &str) -> Result<()> 
         .unwrap_or("deck");
 
     // Question is empty (just the header as HTML)
-    let question_html = "<h3>Question :</h3>\n".to_string();
+    let question_html = "<h3>Question:</h3>\n".to_string();
 
     // Answer contains the image with deck-aware path, Bootstrap class, centered
     let answer_html = format!(
-        "<h3>Answer :</h3>\n<p align=\"center\"><img src='/static/{}/img/{}' class='img-fluid'></p>",
+        "<h3>Answer:</h3>\n<p align=\"center\"><img src='/static/{}/img/{}' class='img-fluid'></p>",
         deck_id, relative_path
     );
 
@@ -98,8 +107,18 @@ mod tests {
     #[rstest]
     #[case("./static/deck/img", "test.png", "deck", "/static/deck/img/test.png")]
     #[case("./static/rust/img", "test.webp", "rust", "/static/rust/img/test.webp")]
-    #[case("./static/py_deck/img", "subdir/image.png", "py_deck", "/static/py_deck/img/subdir/image.png")]
-    #[case("./static/test_42/img", "foo/bar/baz.webp", "test_42", "/static/test_42/img/foo/bar/baz.webp")]
+    #[case(
+        "./static/py_deck/img",
+        "subdir/image.png",
+        "py_deck",
+        "/static/py_deck/img/subdir/image.png"
+    )]
+    #[case(
+        "./static/test_42/img",
+        "foo/bar/baz.webp",
+        "test_42",
+        "/static/test_42/img/foo/bar/baz.webp"
+    )]
     fn test_process_image_file_path_generation(
         #[case] base_dir: &str,
         #[case] relative_file: &str,
@@ -136,7 +155,7 @@ mod tests {
         assert_eq!(subcat, None);
 
         // Question is just the header
-        assert_eq!(q_html, "<h3>Question :</h3>\n");
+        assert_eq!(q_html, "<h3>Question:</h3>\n");
 
         // Answer contains the image with correct deck-aware path
         assert!(a_html.contains(&format!("/static/{}/img/", expected_deck_id)));
@@ -242,7 +261,7 @@ mod tests {
             .unwrap();
 
         // Question should be exactly the header
-        assert_eq!(q_html, "<h3>Question :</h3>\n");
+        assert_eq!(q_html, "<h3>Question:</h3>\n");
     }
 
     #[test]
@@ -268,7 +287,7 @@ mod tests {
             .unwrap();
 
         // Answer should contain required elements
-        assert!(a_html.contains("<h3>Answer :</h3>"));
+        assert!(a_html.contains("<h3>Answer:</h3>"));
         assert!(a_html.contains("<p align=\"center\">"));
         assert!(a_html.contains("<img src='/static/deck/img/test.png'"));
         assert!(a_html.contains("class='img-fluid'"));
@@ -482,7 +501,7 @@ mod tests {
 
         /// Tests that question HTML format is always consistent.
         ///
-        /// Invariant: Question HTML must always be "<h3>Question :</h3>"
+        /// Invariant: Question HTML must always be "<h3>Question:</h3>"
         /// for image-only flashcards.
         #[test]
         fn prop_question_html_format_consistent() {
@@ -506,7 +525,7 @@ mod tests {
                     .unwrap();
 
                 // Must always be this exact format (with trailing newline)
-                prop_assert_eq!(&question_html, "<h3>Question :</h3>\n");
+                prop_assert_eq!(&question_html, "<h3>Question:</h3>\n");
             });
         }
 
@@ -543,4 +562,3 @@ mod tests {
         }
     }
 }
-

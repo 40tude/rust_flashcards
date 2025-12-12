@@ -1,5 +1,5 @@
 use anyhow::{Context, Result};
-use pulldown_cmark::{html, Options, Parser};
+use pulldown_cmark::{Options, Parser, html};
 use regex::Regex;
 use std::fs;
 use std::path::Path;
@@ -46,7 +46,8 @@ pub fn load_markdown(pool: &DbPool, md_dir: &str) -> Result<()> {
 }
 
 fn process_markdown_file(pool: &DbPool, path: &Path) -> Result<usize> {
-    let content = fs::read_to_string(path).with_context(|| format!("Failed to read file: {:?}", path))?;
+    let content =
+        fs::read_to_string(path).with_context(|| format!("Failed to read file: {:?}", path))?;
 
     // Compile all regex patterns once (performance optimization)
     // Strip HTML comments (with DOTALL for multiline comments)
@@ -56,19 +57,19 @@ fn process_markdown_file(pool: &DbPool, path: &Path) -> Result<usize> {
     // (?m) enables multiline mode where ^ matches line start
     // (?i) enables case-insensitive matching
     // ^\s* allows optional leading whitespace before Question
-    let question_regex = Regex::new(r"(?mi)^\s*Question\s+:").unwrap();
+    let question_regex = Regex::new(r"(?mi)^\s*Question\s*:").unwrap();
 
     // Find where Answer starts (case-insensitive, multiline mode, line-anchored)
-    let answer_regex = Regex::new(r"(?mi)^\s*Answer\s+:").unwrap();
+    let answer_regex = Regex::new(r"(?mi)^\s*Answer\s*:").unwrap();
 
     // Regex to extract CATEGORY - SUBCATEGORY - QUESTION
     // Use lookahead to match " - " (space-dash-space) to allow hyphens in category names
-    // Note: No leading ":" since question_regex.split() removes "Question :" entirely
+    // Note: No leading ":" since question_regex.split() removes "Question:" entirely
     let category_regex = Regex::new(r"^\s*(.+?)\s-\s(.+?)\s-\s(.+)").unwrap();
 
     let cleaned = comment_regex.replace_all(&content, "");
 
-    // Split by "Question :" keyword to get individual Q&A blocks
+    // Split by "Question:" keyword to get individual Q&A blocks
     let parts: Vec<&str> = question_regex.split(&cleaned).collect();
 
     let mut count = 0;
@@ -83,17 +84,22 @@ fn process_markdown_file(pool: &DbPool, path: &Path) -> Result<usize> {
             let answer_md = part[answer_match.end()..].trim();
 
             // Extract category, subcategory, and question
-            let (category, subcategory, question_md) = if let Some(caps) = category_regex.captures(question_part) {
-                (
-                    Some(caps.get(1).unwrap().as_str().trim().to_string()),
-                    Some(caps.get(2).unwrap().as_str().trim().to_string()),
-                    caps.get(3).unwrap().as_str().trim(),
-                )
-            } else {
-                // Question non-conforme: catégorie = None
-                tracing::warn!("Non-compliant question format in {:?}: {}", path, question_part);
-                (None, None, question_part)
-            };
+            let (category, subcategory, question_md) =
+                if let Some(caps) = category_regex.captures(question_part) {
+                    (
+                        Some(caps.get(1).unwrap().as_str().trim().to_string()),
+                        Some(caps.get(2).unwrap().as_str().trim().to_string()),
+                        caps.get(3).unwrap().as_str().trim(),
+                    )
+                } else {
+                    // Question non-conforme: catégorie = None
+                    tracing::warn!(
+                        "Non-compliant question format in {:?}: {}",
+                        path,
+                        question_part
+                    );
+                    (None, None, question_part)
+                };
 
             // Skip empty Q&A pairs
             if question_md.is_empty() && answer_md.is_empty() {
@@ -101,15 +107,21 @@ fn process_markdown_file(pool: &DbPool, path: &Path) -> Result<usize> {
             }
 
             // Prepend headers to markdown BEFORE conversion
-            let question_with_header = format!("### Question :\n{}", question_md);
-            let answer_with_header = format!("### Answer :\n{}", answer_md);
+            let question_with_header = format!("### Question:\n{}", question_md);
+            let answer_with_header = format!("### Answer:\n{}", answer_md);
 
             // Convert markdown to HTML with syntax highlighting
             let q_html = markdown_to_html(&question_with_header)?;
             let a_html = markdown_to_html(&answer_with_header)?;
 
             // Insert into database with category and subcategory
-            queries::insert_flashcard(pool, category.as_deref(), subcategory.as_deref(), &q_html, &a_html)?;
+            queries::insert_flashcard(
+                pool,
+                category.as_deref(),
+                subcategory.as_deref(),
+                &q_html,
+                &a_html,
+            )?;
             count += 1;
         }
     }
@@ -139,7 +151,9 @@ fn markdown_to_html(markdown: &str) -> Result<String> {
 
     for event in parser {
         match event {
-            pulldown_cmark::Event::Start(pulldown_cmark::Tag::CodeBlock(pulldown_cmark::CodeBlockKind::Fenced(lang))) => {
+            pulldown_cmark::Event::Start(pulldown_cmark::Tag::CodeBlock(
+                pulldown_cmark::CodeBlockKind::Fenced(lang),
+            )) => {
                 in_code_block = true;
                 code_block_lang = lang.to_string();
                 code_block_content.clear();
@@ -147,7 +161,8 @@ fn markdown_to_html(markdown: &str) -> Result<String> {
             pulldown_cmark::Event::End(pulldown_cmark::TagEnd::CodeBlock) => {
                 if in_code_block {
                     // Apply syntax highlighting
-                    let highlighted = highlight_code(&code_block_content, &code_block_lang, &ss, theme);
+                    let highlighted =
+                        highlight_code(&code_block_content, &code_block_lang, &ss, theme);
                     events.push(pulldown_cmark::Event::Html(highlighted.into()));
                     in_code_block = false;
                 }
@@ -174,15 +189,26 @@ fn markdown_to_html(markdown: &str) -> Result<String> {
     Ok(html_output)
 }
 
-fn highlight_code(code: &str, lang: &str, ss: &SyntaxSet, theme: &syntect::highlighting::Theme) -> String {
-    let syntax = ss.find_syntax_by_token(lang).unwrap_or_else(|| ss.find_syntax_plain_text());
+fn highlight_code(
+    code: &str,
+    lang: &str,
+    ss: &SyntaxSet,
+    theme: &syntect::highlighting::Theme,
+) -> String {
+    let syntax = ss
+        .find_syntax_by_token(lang)
+        .unwrap_or_else(|| ss.find_syntax_plain_text());
 
     let mut highlighter = HighlightLines::new(syntax, theme);
     let mut html = String::from("<pre><code>");
 
     for line in LinesWithEndings::from(code) {
         let ranges = highlighter.highlight_line(line, ss).unwrap_or_default();
-        let escaped = syntect::html::styled_line_to_highlighted_html(&ranges, syntect::html::IncludeBackground::No).unwrap_or_default();
+        let escaped = syntect::html::styled_line_to_highlighted_html(
+            &ranges,
+            syntect::html::IncludeBackground::No,
+        )
+        .unwrap_or_default();
         html.push_str(&escaped);
     }
 
@@ -311,7 +337,7 @@ fn main() {
 
     #[rstest]
     #[case(
-        "Question : Math - Algebra - What is 2+2?\nAnswer : 4",
+        "Question: Math - Algebra - What is 2+2?\nAnswer : 4",
         1,
         Some("Math"),
         Some("Algebra")
@@ -322,12 +348,7 @@ fn main() {
         Some("Science"),
         Some("Physics")
     )]
-    #[case(
-        "Question : What is the capital?\nAnswer : Paris",
-        1,
-        None,
-        None
-    )]
+    #[case("Question : What is the capital?\nAnswer : Paris", 1, None, None)]
     #[case(
         "Question : Machine-Learning - Supervised - What is a neural network?\nAnswer : Computational model",
         1,
@@ -530,11 +551,9 @@ Answer : A"#;
         if expected_count > 0 {
             let conn = pool.get().unwrap();
             let cat: Option<String> = conn
-                .query_row(
-                    "SELECT category FROM flashcards WHERE id = 1",
-                    [],
-                    |row| row.get(0),
-                )
+                .query_row("SELECT category FROM flashcards WHERE id = 1", [], |row| {
+                    row.get(0)
+                })
                 .unwrap();
 
             assert_eq!(
@@ -586,7 +605,7 @@ Answer  :
 
     #[test]
     fn test_question_regex_pattern() {
-        let question_regex = Regex::new(r"(?mi)^\s*Question\s+:").unwrap();
+        let question_regex = Regex::new(r"(?mi)^\s*Question\s*:").unwrap();
 
         // Should match
         assert!(question_regex.is_match("Question : text"));
@@ -595,14 +614,23 @@ Answer  :
         assert!(question_regex.is_match("  Question : text"));
         assert!(question_regex.is_match("\nQuestion : text"));
 
+        assert!(question_regex.is_match("Question: text"));
+        assert!(question_regex.is_match("question: text"));
+        assert!(question_regex.is_match("QUESTION: text"));
+        assert!(question_regex.is_match("  Question: text"));
+        assert!(question_regex.is_match("\nQuestion: text"));
+
         // Should NOT match
         assert!(!question_regex.is_match("Not Question : text"));
         assert!(!question_regex.is_match("The Question : text"));
+
+        assert!(!question_regex.is_match("Not Question: text"));
+        assert!(!question_regex.is_match("The Question: text"));
     }
 
     #[test]
     fn test_answer_regex_pattern() {
-        let answer_regex = Regex::new(r"(?mi)^\s*Answer\s+:").unwrap();
+        let answer_regex = Regex::new(r"(?mi)^\s*Answer\s*:").unwrap();
 
         // Should match
         assert!(answer_regex.is_match("Answer : text"));
@@ -611,9 +639,18 @@ Answer  :
         assert!(answer_regex.is_match("  Answer : text"));
         assert!(answer_regex.is_match("\nAnswer : text"));
 
+        assert!(answer_regex.is_match("Answer: text"));
+        assert!(answer_regex.is_match("answer: text"));
+        assert!(answer_regex.is_match("ANSWER: text"));
+        assert!(answer_regex.is_match("  Answer: text"));
+        assert!(answer_regex.is_match("\nAnswer: text"));
+
         // Should NOT match
         assert!(!answer_regex.is_match("The Answer : text"));
         assert!(!answer_regex.is_match("Not Answer : text"));
+
+        assert!(!answer_regex.is_match("The Answer: text"));
+        assert!(!answer_regex.is_match("Not Answer: text"));
     }
 
     #[test]
@@ -637,8 +674,8 @@ Answer  :
             .unwrap();
 
         // Should contain "Question :" and "Answer :" headers
-        assert!(q_html.contains("Question :"));
-        assert!(a_html.contains("Answer :"));
+        assert!(q_html.contains("Question:"));
+        assert!(a_html.contains("Answer:"));
     }
 
     // ========== Tests for load_markdown ==========
@@ -731,8 +768,7 @@ Answer  :
         )
         .unwrap();
 
-        fs::write(temp_dir.path().join("readme.txt"), "This is a text file")
-            .unwrap();
+        fs::write(temp_dir.path().join("readme.txt"), "This is a text file").unwrap();
 
         load_markdown(&pool, temp_dir.path().to_str().unwrap()).unwrap();
 
@@ -820,4 +856,3 @@ Answer  :
         assert!(count >= 1);
     }
 }
-

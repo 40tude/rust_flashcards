@@ -18,9 +18,11 @@ A web-based flashcard application with full-text search and multi-deck support, 
 ## Quick Start
 
 ### Clone
+
 ```powershell
 git clone https://github.com/40tude/rust_flashcards
 cd rust_flashcards
+
 ```
 ### Rename `.env.example` to `.env`
 * Save the `.env` file
@@ -32,6 +34,11 @@ cargo run
 * Open at http://localhost:8080
 * Press ENTER
 
+
+<div align="center">
+<img src="./assets/img00.webp" alt="" width="600" loading="lazy"/><br/>
+<!-- <span>Optional comment</span> -->
+</div>
 
 
 
@@ -48,13 +55,15 @@ cargo run
 cargo run -- --help
 
 # Rebuild and load specific deck
-cargo run -- --rebuild-deck-id test --deck-id test
+cargo run -- --rebuild-deck-id deck --deck-id deck
+cargo run -- -r deck --d deck
 
 # Load deck with custom display name
-cargo run -- --deck-id rust --deck-display-name "Rust Programming"
+cargo run -- --deck-id py_deck --deck-display-name "My Python Deck"
+cargo run -- -d py_deck -n "My Python Deck"
 
 # Short form
-cargo run -- -r deck -d deck -n "My Deck"
+cargo run -- -r py_deck -d py_deck -n "My Deck"
 ```
 
 

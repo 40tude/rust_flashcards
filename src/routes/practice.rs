@@ -15,7 +15,7 @@ use crate::session::SessionData;
 /// PNG-only cards have minimal question HTML from image loading.
 /// These cards display answer immediately without hide/reveal logic.
 fn is_png_only_card(question_html: &str) -> bool {
-    question_html.trim() == "<h3>Question :</h3>"
+    question_html.trim() == "<h3>Question:</h3>"
 }
 
 /// Template for practice session flashcard display.
@@ -70,9 +70,8 @@ pub async fn practice(
 
     if nb_cards == 0 {
         // Store error message in session and redirect to landing page
-        session_data.error_message = Some(
-            "No cards match your filters. Please adjust your selection.".to_string()
-        );
+        session_data.error_message =
+            Some("No cards match your filters. Please adjust your selection.".to_string());
         session
             .insert("data", &session_data)
             .await

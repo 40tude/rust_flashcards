@@ -29,41 +29,6 @@ Answer : Gravity is a force of attraction."#;
 pub const MARKDOWN_HYPHENATED_CATEGORY: &str = r#"Question : Machine-Learning - Supervised - What is a neural network?
 Answer : A neural network is a computational model."#;
 
-/// Markdown with multiple spaces in "Answer  :" pattern.
-pub const MARKDOWN_MULTIPLE_SPACES: &str = r#"Question : Programming - Rust - What is ownership?
-Answer  : Ownership is Rust's memory safety guarantee."#;
-
-/// Markdown with code block for syntax highlighting tests.
-pub const MARKDOWN_WITH_CODE: &str = r#"Question : Programming - Rust - How to print in Rust?
-Answer : Use the println! macro:
-
-```rust
-fn main() {
-    println!("Hello, world!");
-}
-```
-"#;
-
-/// Multiple Q&A pairs in single markdown file.
-pub const MARKDOWN_MULTIPLE_CARDS: &str = r#"Question : Math - Algebra - What is 2+2?
-Answer : 4
-
-Question : Math - Geometry - What is pi?
-Answer : Pi is approximately 3.14159.
-
-Question : Science - Chemistry - What is water's formula?
-Answer : H2O"#;
-
-/// Empty Q&A that should be skipped during parsing.
-pub const MARKDOWN_EMPTY_QA: &str = r#"Question :
-Answer :
-
-Question : Math - Algebra - Valid question
-Answer : Valid answer"#;
-
-/// Malformed markdown with missing answer section.
-pub const MARKDOWN_MISSING_ANSWER: &str = r#"Question : Math - Algebra - What is 2+2?"#;
-
 /// Creates sample flashcards for testing database operations.
 ///
 /// Returns vector of TestCard with various categories, subcategories,
@@ -229,39 +194,6 @@ pub fn sample_filter_criteria() -> Vec<(
             true,
             1, // 1 Science card with "formula"
         ),
-    ]
-}
-
-/// Expected HTML patterns for markdown conversion tests.
-///
-/// Returns vector of tuples: (markdown_input, expected_html_fragment)
-pub fn expected_html_patterns() -> Vec<(&'static str, &'static str)> {
-    vec![
-        // Basic markdown to HTML
-        ("**bold**", "<strong>bold</strong>"),
-        ("*italic*", "<em>italic</em>"),
-        ("~~strikethrough~~", "<del>strikethrough</del>"),
-        // Code inline
-        ("`code`", "<code>code</code>"),
-        // Headers
-        ("### Header", "<h3>Header</h3>"),
-        // Links
-        (
-            "[link](http://example.com)",
-            r#"<a href="http://example.com">link</a>"#,
-        ),
-    ]
-}
-
-/// Sample markdown files for integration tests.
-///
-/// Returns vector of tuples: (filename, content)
-pub fn sample_markdown_files() -> Vec<(&'static str, &'static str)> {
-    vec![
-        ("01_math.md", VALID_MARKDOWN),
-        ("02_science.md", MARKDOWN_WITH_CODE),
-        ("03_no_category.md", MARKDOWN_NO_CATEGORY),
-        ("04_multiple.md", MARKDOWN_MULTIPLE_CARDS),
     ]
 }
 

@@ -4,7 +4,7 @@
 ############################################################
 -->
 Question : My category - Maths - The F1 score is an harmonic mean. Why?
-Answer  :
+Answer   :
 
 #### From Default Deck
 
@@ -38,7 +38,7 @@ Answer  :
 ############################################################
 -->
 Question : Culture - Star Wars - I love you
-Answer  :
+Answer   :
 
 #### From Default Deck
 
@@ -50,7 +50,23 @@ I know
 ##
 ############################################################
 -->
-Question : Culture - The Hitchhiker's Guide to the Galaxy - The Answer to the Ultimate Question of Life, the Universe, and Everything is?
+Question: Culture - The Hitchhiker's Guide to the Galaxy - The Answer to the Ultimate Question of Life, the Universe, and Everything is?
 Answer  :
 
 42
+
+
+<!--
+############################################################
+##
+############################################################
+-->
+Question: Frequentist or Bayesian?
+Answer  :
+
+Bayesian!
+
+<!--
+Above, category and subcategory are missing.
+A WARN is displayed be the database is rebuilt. The card is displayed with no category/subcategory
+-->
