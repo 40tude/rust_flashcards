@@ -23,17 +23,7 @@ git clone https://github.com/40tude/rust_flashcards
 cd rust_flashcards
 ```
 ### Rename `.env.example` to `.env`
-* Open the file `.env`
-* Update the value of the key `FLASHCARDS_SECRET_KEY`
-
-    ```
-    # Flashcards Secret Key for Session Management
-    # For example, copy the output of
-    #   Powershell: New-Guid
-    #   Linux     : uuidgen
-    FLASHCARDS_SECRET_KEY=ed0605f6-change-this-to-a-secure-random-key
-    ```
-* Save the file
+* Save the `.env` file
 
 ### Run
 ```powershell
@@ -170,10 +160,11 @@ git remote -v # check the 2 lines heroku  https://git.heroku.com/rust-flashcards
 heroku auth:token # copy the generated token
 
 # Set environment variables
-heroku config:set FLASHCARDS_SECRET_KEY=THE_KEY_OF_THE_ENV_FILE
 heroku config:set DECK_DISPLAY_NAME="My Flashcards"
 
 git push heroku main # When the dialog box popup, enter ANY name and paste the token.
+
+# Open the URL displayed (https://rust-flashcards-XXXX.herokuapp.com/)
 ```
 
 ### Single Deck Deployment

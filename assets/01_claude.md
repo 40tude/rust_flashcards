@@ -41,7 +41,6 @@ cargo test
 
 Create a `.env` file in project root with:
 ```
-FLASHCARDS_SECRET_KEY=<your-secret>
 PORT=8080
 DATABASE_URL=./flashcards.db
 RUST_LOG=info
@@ -185,7 +184,7 @@ rand = "0.8"
 heroku create rust-flashcards --buildpack emk/rust
 
 # Set environment variable
-heroku config:set FLASHCARDS_SECRET_KEY=$(New-Guid)
+# heroku config:set FLASHCARDS_SECRET_KEY=$(New-Guid)
 
 # Deploy
 git push heroku main
