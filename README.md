@@ -22,24 +22,24 @@ A web-based flashcard application with full-text search and multi-deck support, 
 git clone https://github.com/40tude/rust_flashcards
 cd rust_flashcards
 ```
-### Rename `.env.sample` to `.env`
+### Rename `.env.example` to `.env`
 * Open the file `.env`
 * Update the value of the key `FLASHCARDS_SECRET_KEY`
-* Save the file
 
-```
-# Flashcards Secret Key for Session Management
-# For example, copy the output of
-#   Powershell: New-Guid
-#   Linux     : uuidgen
-FLASHCARDS_SECRET_KEY=ed0605f6-change-this-to-a-secure-random-key
-```
+    ```
+    # Flashcards Secret Key for Session Management
+    # For example, copy the output of
+    #   Powershell: New-Guid
+    #   Linux     : uuidgen
+    FLASHCARDS_SECRET_KEY=ed0605f6-change-this-to-a-secure-random-key
+    ```
+* Save the file
 
 ### Run
 ```powershell
 cargo run
 ```
-* Access at http://localhost:8080
+* Open at http://localhost:8080
 * Press ENTER
 
 
@@ -138,7 +138,7 @@ $V = \frac{d}{t} = \frac{D}{\frac{D}{2\cdot40} + \frac{D}{2\cdot60}} = \frac{2}{
     * Below, in the deck `my_deck`, a directory `md/assets/` host the images.
 
 <p align="center">
-<img src="static/my_deck/md/assets/kitten.png" alt="harmonic" width="577"/>
+<img src="static/my_deck/md/assets/kitten.png" alt="harmonic" width="600"/>
 </p>
 
 
@@ -155,11 +155,31 @@ $V = \frac{d}{t} = \frac{D}{\frac{D}{2\cdot40} + \frac{D}{2\cdot60}} = \frac{2}{
 
 ## Heroku Deployment
 
+### Setup Heroku
+* Create a free account on [Heroku](https://www.heroku.com/)
+* Install [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli).
+* Z! IMPORTANT
+    * Heroku does not allow "_" in project name. Use "-" instead.
+
+Go in the project directory
+* Optionally open the project in VSCode
+
+```powershell
+heroku create rust-flashcards --buildpack emk/rust
+git remote -v # check the 2 lines heroku  https://git.heroku.com/rust-flashcards.git (fetch and push)
+heroku auth:token # copy the generated token
+
+# Set environment variables
+heroku config:set FLASHCARDS_SECRET_KEY=THE_KEY_OF_THE_ENV_FILE
+heroku config:set DECK_DISPLAY_NAME="My Flashcards"
+
+git push heroku main # When the dialog box popup, enter ANY name and paste the token.
+```
+
 ### Single Deck Deployment
 
-```bash
-# Set environment variables
-heroku config:set DECK_DISPLAY_NAME="My Flashcards"
+```powershell
+
 
 # Deploy
 git push heroku main

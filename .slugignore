@@ -1,10 +1,11 @@
 /.claude
-/target
 /.git
 /assets
 /flashcards_staging
+/proptest-regressions
+/target
+/tests
 /static_backup
-/flashcards_backup.db
 .env
 .gitignore
 CLAUDE.md
