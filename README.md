@@ -145,19 +145,20 @@ $V = \frac{d}{t} = \frac{D}{\frac{D}{2\cdot40} + \frac{D}{2\cdot60}} = \frac{2}{
 
 ## Heroku Deployment
 
-### Single Deck Deployment
+### Deploy the default deck
 
-**Setup Heroku**
+**1. Setup Heroku**
 * Create a free account on [Heroku](https://www.heroku.com/)
 * Install [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli).
 * Z! IMPORTANT
     * Heroku does not allow "_" in project names, use "-" instead.
 
-Go in the project directory
-* Optionally open the project in VSCode
+**2. Deploy the deck**
+Go into the project directory
+* Optionally open the project with VSCode
 
 ```powershell
-heroku create rust-flashcards --buildpack emk/rust # # Create Heroku app with Rust buildpack
+heroku create rust-flashcards --buildpack emk/rust # # Create Heroku app `rust-flashcards` with Rust buildpack
 git remote -v # Check the 2 lines heroku  https://git.heroku.com/rust-flashcards.git (fetch and push)
 heroku auth:token # Copy the generated token
 
@@ -172,21 +173,23 @@ git push heroku main # When the dialog box popup, enter ANY name and paste the t
 
 ### Multi-Deck Deployment
 
-Deploy the same codebase to multiple Heroku apps:
 
-```bash
-heroku create py-deck42 --buildpack emk/rust # # Create app py-deck42 with Rust buildpack
+```powershell
+heroku create py-deck42 --buildpack emk/rust # # Create Heroku app `py-deck42` with Rust buildpack
 # Keep aside : https://py-deck42-1885ac61ad10.herokuapp.com/ | https://git.heroku.com/py-deck42.git
+
+# Set environment variables
+heroku config:set DECK_ID=py_deck DECK_DISPLAY_NAME="Python Data Science" -a py-deck42
+
 git remote add py-deck42 https://git.heroku.com/py-deck42.git
 git remote -v # Check the 2 lines https://git.heroku.com/py-deck42.git (fetch and push)
 git push py-deck42 main
-heroku config:set DECK_ID=py_deck DECK_DISPLAY_NAME="Python Data Science" -a py-deck42
-git push heroku main -a py-deck42
 
-# App 2: Rust deck
-# heroku config:set DECK_ID=rust DECK_DISPLAY_NAME="Rust Programming" -a app-rust
-# git push heroku main -a app-rust
+# Open the URL displayed (https://py-deck42-1885ac61ad10.herokuapp.com/)
 ```
+
+
+
 
 ## Development
 
