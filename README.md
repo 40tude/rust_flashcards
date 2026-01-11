@@ -63,7 +63,7 @@ cargo run -- --deck-id py_deck --deck-display-name "My Python Deck"
 cargo run -- -d py_deck -n "My Python Deck"
 
 # Short form
-cargo run -- -r py_deck -d py_deck -n "My Deck"
+cargo run -- -r rust_deck -d rust_deck -n "My Rust Deck"
 ```
 
 
