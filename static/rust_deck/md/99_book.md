@@ -15,10 +15,11 @@
 ##
 ###############################################################################
 -->
-Question : Non-technical - Book - Did you read?
+Question : Beginner - Book - Did you read?
 Answer   :
 
 * I ordered mine in April 2025
+
 <p align="center">
 <img src="/static/rust_deck/md/book_covers/TRPL.webp" alt="dummy" width="600"/>
 </p>

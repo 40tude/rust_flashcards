@@ -197,6 +197,22 @@ git push py-deck42 main
 # Open the URL displayed (https://py-deck42-1885ac61ad10.herokuapp.com/)
 ```
 
+```powershell
+heroku create rust-deck --buildpack emk/rust
+# https://rust-deck-befcc06ba7fa.herokuapp.com/ | https://git.heroku.com/rust-deck.git
+
+# Set environment variables
+heroku config:set DECK_ID=rust_deck DECK_DISPLAY_NAME="My Rust Deck" -a rust-deck
+
+git remote add rust-deck https://git.heroku.com/rust-deck.git
+git remote -v
+git push rust-deck main
+
+# Open the URL displayed (https://py-deck42-1885ac61ad10.herokuapp.com/)
+```
+
+
+
 
 
 
