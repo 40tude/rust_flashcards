@@ -192,23 +192,23 @@ heroku config:set DECK_ID=py_deck DECK_DISPLAY_NAME="Python Data Science" -a py-
 
 git remote add py-deck42 https://git.heroku.com/py-deck42.git
 git remote -v # Check the 2 lines https://git.heroku.com/py-deck42.git (fetch and push)
+heroku auth:token
 git push py-deck42 main
 
 # Open the URL displayed (https://py-deck42-1885ac61ad10.herokuapp.com/)
 ```
 
+Below this is how the checklist to deploy the Rust Deck on Heroku
 ```powershell
-heroku create rust-deck --buildpack emk/rust
-# https://rust-deck-befcc06ba7fa.herokuapp.com/ | https://git.heroku.com/rust-deck.git
-
-# Set environment variables
+heroku create rust-deck --buildpack emk/rust # https://rust-deck-befcc06ba7fa.herokuapp.com/ | https://git.heroku.com/rust-deck.git
 heroku config:set DECK_ID=rust_deck DECK_DISPLAY_NAME="My Rust Deck" -a rust-deck
 
 git remote add rust-deck https://git.heroku.com/rust-deck.git
 git remote -v
+heroku auth:token
 git push rust-deck main
 
-# Open the URL displayed (https://py-deck42-1885ac61ad10.herokuapp.com/)
+# Open the URL: https://rust-deck-befcc06ba7fa.herokuapp.com/
 ```
 
 
