@@ -62,8 +62,8 @@ cargo run -- -r deck --d deck
 cargo run -- --deck-id py_deck --deck-display-name "My Python Deck"
 cargo run -- -d py_deck -n "My Python Deck"
 
-# Short form
-cargo run -- -r rust_deck -d rust_deck -n "My Rust Deck"
+# Release version and short form
+cargo run --release -- -r rust_deck -d rust_deck -n "My Rust Deck"
 ```
 
 

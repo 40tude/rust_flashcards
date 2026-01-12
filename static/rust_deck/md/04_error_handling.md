@@ -4,7 +4,7 @@
 ## Option - Definition
 ###############################################################################
 -->
-Question : Beginner - Error Handling - What is Option<T> and when do you use it?
+Question : Beginner - Error Handling - What is `Option<T>` and when do you use it?
 Answer   :
 
 ```rust
@@ -37,6 +37,8 @@ Copy, paste and run the code above in <a href="https://play.rust-lang.org/" targ
 
 `Option<T>` represents a value that may or may not exist: `Some(value)` or `None`. It replaces null pointers and forces explicit handling of the "no value" case.
 
+Read this <a href="https://www.40tude.fr/docs/06_programmation/rust/020_some/some_00.html" target="_blank">post </a> on <a href="https://www.40tude.fr/docs/06_programmation/rust/" target="_blank">40tude.fr</a>.
+
 Read more in <a href="https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html#the-option-enum-and-its-advantages-over-null-values" target="_blank">TRPL - The Option Enum</a>.
 
 
@@ -46,7 +48,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch06-01-defining-an-enum.ht
 ## Option - unwrap and expect
 ###############################################################################
 -->
-Question : Beginner - Error Handling - What do unwrap() and expect() do on Option?
+Question : Beginner - Error Handling - What do `.unwrap()` and `.expect()` do on `Option<T>`?
 Answer   :
 
 ```rust
@@ -74,7 +76,9 @@ fn main() {
 ---
 Copy, paste and run the code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>.
 
-`unwrap()` extracts the value or panics. `expect()` does the same but with a custom panic message. Use `unwrap_or()` or `unwrap_or_else()` for safe defaults.
+`.unwrap()` extracts the value or panics. `.expect()` does the same but with a custom panic message. Use `.unwrap_or()` or `.unwrap_or_else()` for safe defaults.
+
+Read this <a href="https://www.40tude.fr/docs/06_programmation/rust/020_some/some_01.html" target="_blank">post </a> on <a href="https://www.40tude.fr/docs/06_programmation/rust/" target="_blank">40tude.fr</a>.
 
 Read more in <a href="https://doc.rust-lang.org/std/option/enum.Option.html#method.unwrap" target="_blank">std::option::Option::unwrap</a>.
 
@@ -85,7 +89,7 @@ Read more in <a href="https://doc.rust-lang.org/std/option/enum.Option.html#meth
 ## Option - map and and_then
 ###############################################################################
 -->
-Question : Beginner - Error Handling - How do you transform Option values with map and and_then?
+Question : Beginner - Error Handling - How do you transform `Option<T>` values with `.map()` and `.and_then()`?
 Answer   :
 
 ```rust
@@ -100,7 +104,7 @@ fn main() {
     let none_length: Option<usize> = none_string.map(|s| s.len());
     println!("None length: {:?}", none_length);  // None
 
-    // and_then (flatMap): when the transform returns an Option
+    // and_then (flatMap): when the transform returns an Option<T>
     let parsed: Option<i32> = some_string.and_then(|s| s.parse().ok());
     println!("Parsed: {:?}", parsed);  // Some(42)
 
@@ -111,7 +115,9 @@ fn main() {
 ---
 Copy, paste and run the code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>.
 
-`map()` transforms `Some(x)` to `Some(f(x))`, leaving `None` unchanged. `and_then()` (aka flatMap) is for when your function also returns an `Option`.
+`.map()` transforms `Some(x)` to `Some(f(x))`, leaving `None` unchanged. `.and_then()` (aka flatMap) is for when your function also returns an `Option<T>`.
+
+Read this <a href="https://www.40tude.fr/docs/06_programmation/rust/020_some/some_02.html" target="_blank">post </a> on <a href="https://www.40tude.fr/docs/06_programmation/rust/" target="_blank">40tude.fr</a>.
 
 Read more in <a href="https://doc.rust-lang.org/std/option/enum.Option.html#method.map" target="_blank">std::option::Option::map</a>.
 
@@ -122,7 +128,7 @@ Read more in <a href="https://doc.rust-lang.org/std/option/enum.Option.html#meth
 ## Result - Definition
 ###############################################################################
 -->
-Question : Beginner - Error Handling - What is Result<T, E> and when do you use it?
+Question : Beginner - Error Handling - What is `Result<T, E>` and when do you use it?
 Answer   :
 
 ```rust
@@ -152,6 +158,8 @@ Copy, paste and run the code above in <a href="https://play.rust-lang.org/" targ
 
 `Result<T, E>` represents success (`Ok(value)`) or failure (`Err(error)`). Use it for operations that can fail with meaningful error information.
 
+Read this <a href="https://www.40tude.fr/docs/06_programmation/rust/016_errors/errors_00.html#the-resultt-e-type-handling-recoverable-errors" target="_blank">post </a> on <a href="https://www.40tude.fr/docs/06_programmation/rust/" target="_blank">40tude.fr</a>.
+
 Read more in <a href="https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html" target="_blank">TRPL - Recoverable Errors with Result</a>.
 
 
@@ -161,7 +169,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch09-02-recoverable-errors-
 ## Result - unwrap and expect
 ###############################################################################
 -->
-Question : Beginner - Error Handling - How do unwrap() and expect() work on Result?
+Question : Beginner - Error Handling - How do `.unwrap()` and `.expect()` work on `Result<T, E>`?
 Answer   :
 
 ```rust
@@ -187,7 +195,9 @@ fn main() {
 ---
 Copy, paste and run the code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>.
 
-Like `Option`, `Result` has `unwrap()`, `expect()`, `unwrap_or()`, and `unwrap_or_else()`. There's also `unwrap_or_default()` for types implementing `Default`.
+Like `Option`, `Result` has `.unwrap()`, `.expect()`, `.unwrap_or()`, and `.unwrap_or_else()`. There's also `.unwrap_or_default()` for types implementing `Default`.
+
+Read this <a href="https://www.40tude.fr/docs/06_programmation/rust/016_errors/errors_00.html" target="_blank">post </a> on <a href="https://www.40tude.fr/docs/06_programmation/rust/" target="_blank">40tude.fr</a>.
 
 Read more in <a href="https://doc.rust-lang.org/std/result/enum.Result.html#method.unwrap" target="_blank">std::result::Result::unwrap</a>.
 
@@ -198,7 +208,7 @@ Read more in <a href="https://doc.rust-lang.org/std/result/enum.Result.html#meth
 ## The ? Operator
 ###############################################################################
 -->
-Question : Beginner - Error Handling - How does the ? operator work?
+Question : Beginner - Error Handling - How does the `?` operator work?
 Answer   :
 
 ```rust
@@ -237,6 +247,8 @@ Copy, paste and run the code above in <a href="https://play.rust-lang.org/" targ
 
 The `?` operator unwraps `Ok` or returns `Err` early. It's shorthand for match + early return. The function must return a compatible `Result` type.
 
+Read this <a href="https://www.40tude.fr/docs/06_programmation/rust/016_errors/errors_00.html#propagating-errors-with--operator" target="_blank">post </a> on <a href="https://www.40tude.fr/docs/06_programmation/rust/" target="_blank">40tude.fr</a>.
+
 Read more in <a href="https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html#a-shortcut-for-propagating-errors-the--operator" target="_blank">TRPL - The ? Operator</a>.
 
 
@@ -246,7 +258,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch09-02-recoverable-errors-
 ## ? with Option
 ###############################################################################
 -->
-Question : Beginner - Error Handling - Can you use ? with Option?
+Question : Beginner - Error Handling - Can you use `?` with `Option<T>`?
 Answer   :
 
 ```rust
@@ -282,7 +294,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch09-02-recoverable-errors-
 ## panic! Macro
 ###############################################################################
 -->
-Question : Beginner - Error Handling - When should you use panic!?
+Question : Beginner - Error Handling - When should you use `panic!()`?
 Answer   :
 
 ```rust
@@ -308,9 +320,12 @@ fn main() {
 ---
 Copy, paste and run the code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>.
 
-`panic!` crashes the program immediately. Use it for **unrecoverable** errors or programming bugs. For recoverable errors, use `Result` instead.
+`panic!()` crashes the program immediately. Use it for **unrecoverable** errors or programming bugs. For recoverable errors, use `Result` instead.
 
 Related macros: `unreachable!()`, `unimplemented!()`, `todo!()`.
+
+Read this <a href="https://www.40tude.fr/docs/06_programmation/rust/016_errors/errors_01.html#to-panic-or-not-to-panic" target="_blank">post </a> on <a href="https://www.40tude.fr/docs/06_programmation/rust/" target="_blank">40tude.fr</a>.
+
 
 Read more in <a href="https://doc.rust-lang.org/book/ch09-01-unrecoverable-errors-with-panic.html" target="_blank">TRPL - Unrecoverable Errors with panic!</a>.
 
@@ -321,7 +336,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch09-01-unrecoverable-error
 ## Converting Between Option and Result
 ###############################################################################
 -->
-Question : Beginner - Error Handling - How do you convert between Option and Result?
+Question : Beginner - Error Handling - How do you convert between `Option<T>` and `Result<T, E>`?
 Answer   :
 
 ```rust
@@ -365,7 +380,7 @@ Read more in <a href="https://doc.rust-lang.org/std/option/enum.Option.html#meth
 ## The Main Function with Result
 ###############################################################################
 -->
-Question : Beginner - Error Handling - Can main() return a Result?
+Question : Beginner - Error Handling - Can `main()` return a `Result<T, E>`?
 Answer   :
 
 ```rust
@@ -385,11 +400,22 @@ fn main() -> Result<(), io::Error> {
 //     // Can use ? with any error type
 //     Ok(())
 // }
+
+// Or even better if you plan to transition from experimentation to production
+// pub type Error = Box<dyn std::error::Error>;
+// pub type Result<T> = std::result::Result<T, Error>;
+
+// fn main() -> Result<()> {
+//     println!("Hello, world!");
+//     Ok(())
+// }
 ```
 ---
 Copy, paste and run the code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>.
 
 **Yes!** `main()` can return `Result<(), E>`. If it returns `Err`, Rust prints the error and exits with a non-zero code. Use `Box<dyn Error>` for flexibility.
+
+Read this <a href="https://www.40tude.fr/docs/06_programmation/rust/016_errors/errors_01.html#custom-error-types-and-error-handling-in-larger-programs" target="_blank">post </a> on <a href="https://www.40tude.fr/docs/06_programmation/rust/" target="_blank">40tude.fr</a>.
 
 Read more in <a href="https://doc.rust-lang.org/book/ch09-02-recoverable-errors-with-result.html#recoverable-errors-with-result" target="_blank">TRPL - Recoverable Errors with Result</a>.
 
@@ -401,7 +427,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch09-02-recoverable-errors-
 ##
 ###############################################################################
 -->
-Question : Beginner - Error Handling - What could be the bare minimal code?
+Question : Beginner - Error Handling - What could be the bare minimal code with rock solid error handling?
 Answer   :
 
 

@@ -3,10 +3,49 @@
 ## Cargo - Basic Commands
 ###############################################################################
 -->
+Question : Beginner - Cargo & Tooling - How do you setup your Rust dev environment?
+Answer   :
+
+Here I suppose Windows 11, VSCode and Git are correctly installed.
+
+```powershell
+cd $env:USERPROFILE/downloads
+
+# Download the official Rust installer
+Invoke-WebRequest -Uri https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-msvc/rustup-init.exe -OutFile rustup-init.exe
+
+# Run the Rust installer
+./rustup-init.exe
+
+rustc --version # Check Rust compiler version
+rustup update   # Later if a new version is available (every 6 weeks)
+
+```
+
+```powershell
+code --install-extension rust-lang.rust-analyzer  # rust analyzer
+code --install-extension vadimcn.vscode-lldb      # CodeLLDB for debug
+code --install-extension fill-labs.dependi        # Optional: Indicates if project's dependencies are up to date (or not)
+code --install-extension tamasfe.even-better-toml # Optional: Nicer `.toml` files
+
+code --list-extensions # check
+```
+
+Read this <a href="https://www.40tude.fr/docs/06_programmation/rust/005_my_rust_setup_win11/my_rust_setup_win11.html" target="_blank">post </a> on <a href="https://www.40tude.fr/docs/06_programmation/rust/" target="_blank">40tude.fr</a>.
+
+
+
+
+
+<!--
+###############################################################################
+## Cargo - Basic Commands
+###############################################################################
+-->
 Question : Beginner - Cargo & Tooling - What are the essential Cargo commands?
 Answer   :
 
-```bash
+```powershell
 # Create a new project
 cargo new my_project        # Binary (default)
 cargo new my_lib --lib      # Library
@@ -64,8 +103,8 @@ Answer   :
 [package]
 name = "my_project"
 version = "0.1.0"
-edition = "2021"           # Rust edition (2015, 2018, 2021, 2024)
-authors = ["Your Name <you@example.com>"]
+edition = "2024"           # Rust edition (2015, 2018, 2021, 2024)
+authors = ["Obi-Wan Kenobi <you@example.com>"]
 description = "A short description"
 license = "MIT"
 
@@ -90,7 +129,7 @@ fn main() {
 }
 ```
 ---
-Copy, paste and run the code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>.
+<!-- Copy, paste and run the code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>. -->
 
 `Cargo.toml` is the manifest file. Key sections:
 - `[package]`: metadata
@@ -148,9 +187,8 @@ fn main() {
 }
 ```
 ---
-Copy, paste and run the code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>.
-
-Add dependencies with `cargo add crate_name` or edit `Cargo.toml`. Use `Cargo.lock` for reproducible builds (commit it for binaries).
+<!-- Copy, paste and run the code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>. -->
+<!-- Add dependencies with `cargo add crate_name` or edit `Cargo.toml`. Use `Cargo.lock` for reproducible builds (commit it for binaries). -->
 
 Read more in <a href="https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html" target="_blank">Cargo Book - Specifying Dependencies</a>.
 
@@ -164,7 +202,9 @@ Read more in <a href="https://doc.rust-lang.org/cargo/reference/specifying-depen
 Question : Beginner - Cargo & Tooling - How do you format Rust code with rustfmt?
 Answer   :
 
-```bash
+**In the console:**
+
+```powershell
 # Format entire project
 cargo fmt
 
@@ -175,11 +215,14 @@ cargo fmt -- --check
 rustfmt src/main.rs
 ```
 
-```rust
-// Before rustfmt:
-fn main(){let x=5;let y=10;if x<y{println!("x is less");}else{println!("x is greater or equal");}}
 
-// After rustfmt:
+**Before rustfmt:**
+```rust
+fn main(){let x=5;let y=10;if x<y{println!("x is less");}else{println!("x is greater or equal");}}
+```
+
+**After rustfmt:**
+```rust
 fn main() {
     let x = 5;
     let y = 10;
@@ -191,9 +234,12 @@ fn main() {
 }
 ```
 ---
-Copy, paste and run the code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>.
+Copy, paste and run the "before" code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>.
 
-`cargo fmt` formats code according to Rust style guidelines. Configure with `rustfmt.toml` in project root. Use `--check` in CI to verify formatting.
+* `cargo fmt` is available on the right hand side in the `TOOLS` menu. Formats code according to Rust style guidelines.
+* In your local project, configure with `rustfmt.toml` in project root.
+* Read this [page](https://rust-lang.github.io/rustfmt/?version=main&search=)
+* Use `--check` in CI to verify formatting.
 
 Read more in <a href="https://github.com/rust-lang/rustfmt" target="_blank">rustfmt GitHub</a>.
 
@@ -207,7 +253,7 @@ Read more in <a href="https://github.com/rust-lang/rustfmt" target="_blank">rust
 Question : Beginner - Cargo & Tooling - What is Clippy and how do you use it?
 Answer   :
 
-```bash
+```powershell
 # Run clippy
 cargo clippy
 
@@ -252,7 +298,9 @@ fn main() {
 }
 ```
 ---
+
 Copy, paste and run the code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>.
+* `clippy` is available on the right hand side, in the `TOOLS` menu.
 
 **Clippy** is a linter with hundreds of checks for correctness, performance, style, and more. Run it regularly!
 
@@ -278,7 +326,7 @@ Answer   :
 /// # Examples
 ///
 /// ```
-/// let result = my_crate::add(2, 3);
+/// let result = add(2, 3);
 /// assert_eq!(result, 5);
 /// ```
 ///
@@ -290,11 +338,6 @@ pub fn add(a: i32, b: i32) -> i32 {
 }
 
 /// A point in 2D space.
-///
-/// # Fields
-///
-/// * `x` - The x coordinate
-/// * `y` - The y coordinate
 pub struct Point {
     /// The x coordinate
     pub x: f64,
@@ -303,17 +346,21 @@ pub struct Point {
 }
 
 fn main() {
-    println!("Run: cargo doc --open");
-    println!("Doc tests run with: cargo test");
-}
+    // This code demonstrates doc comments syntax
+    // Doc tests only run with `cargo test` in a real project
 
-// Commands:
-// cargo doc              # Generate documentation
-// cargo doc --open       # Generate and open in browser
-// cargo test             # Also runs doc examples as tests
+    let result = add(2, 3);
+    assert_eq!(result, 5);
+    println!("2 + 3 = {}", result);
+
+    let p = Point { x: 1.0, y: 2.0 };
+    println!("Point: ({}, {})", p.x, p.y);
+}
 ```
 ---
 Copy, paste and run the code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>.
+
+**Note:** Doc tests only work in a real Cargo project, not in Rust Playground.
 
 Use `///` for item docs, `//!` for module/crate docs. Code in doc comments runs as tests! Common sections: Examples, Panics, Errors, Safety.
 
@@ -329,7 +376,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch14-02-publishing-to-crate
 Question : Beginner - Cargo & Tooling - What are other useful Cargo commands?
 Answer   :
 
-```bash
+```powershell
 # Dependency management
 cargo update              # Update dependencies (within semver)
 cargo tree                # Show dependency tree
@@ -364,12 +411,12 @@ fn main() {
 ---
 Copy, paste and run the code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>.
 
-| Command | Purpose |
-|---------|---------|
-| `cargo tree` | Visualize dependencies |
-| `cargo update` | Update Cargo.lock |
+| Command            | Purpose |
+|--------------------|---------|
+| `cargo tree`       | Visualize dependencies |
+| `cargo update`     | Update Cargo.lock |
 | `cargo add/remove` | Manage dependencies |
-| `cargo bench` | Run benchmarks |
-| `rustup update` | Update Rust toolchain |
+| `cargo bench`      | Run benchmarks |
+| `rustup update`    | Update Rust toolchain |
 
 Read more in <a href="https://doc.rust-lang.org/cargo/commands/index.html" target="_blank">Cargo Commands</a>.

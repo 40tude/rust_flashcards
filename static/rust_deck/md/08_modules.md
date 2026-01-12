@@ -38,6 +38,8 @@ Copy, paste and run the code above in <a href="https://play.rust-lang.org/" targ
 
 Use `mod name { ... }` to define a module inline. Items are **private by default**. Use `pub` to make them accessible outside the module.
 
+Read this <a href="https://www.40tude.fr/docs/06_programmation/rust/013_no_more_mod_rs/no_more_mod_rs.html" target="_blank">post </a> on <a href="https://www.40tude.fr/docs/06_programmation/rust/" target="_blank">40tude.fr</a>.
+
 Read more in <a href="https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html" target="_blank">TRPL - Defining Modules</a>.
 
 
@@ -87,6 +89,8 @@ fn main() {
 Copy, paste and run the code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>.
 
 Modules can be nested. Each level needs `pub` to be accessible from outside. Use `::` to navigate the module path.
+
+Read this <a href="https://www.40tude.fr/docs/06_programmation/rust/013_no_more_mod_rs/no_more_mod_rs.html" target="_blank">post </a> on <a href="https://www.40tude.fr/docs/06_programmation/rust/" target="_blank">40tude.fr</a>.
 
 Read more in <a href="https://doc.rust-lang.org/book/ch07-02-defining-modules-to-control-scope-and-privacy.html" target="_blank">TRPL - Defining Modules</a>.
 
@@ -197,7 +201,7 @@ Copy, paste and run the code above in <a href="https://play.rust-lang.org/" targ
 
 | Keyword | Meaning |
 |---------|---------|
-| `self` | Current module |
+| `self`  | Current module |
 | `super` | Parent module |
 | `crate` | Root of current crate |
 
@@ -261,12 +265,12 @@ fn main() {
 ---
 Copy, paste and run the code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>.
 
-| Visibility | Accessible from |
-|------------|-----------------|
-| (none) | Same module only |
-| `pub` | Everywhere |
-| `pub(crate)` | Current crate |
-| `pub(super)` | Parent module |
+| Visibility     | Accessible from |
+|----------------|-----------------|
+| (none)         | Same module only |
+| `pub`          | Everywhere |
+| `pub(crate)`   | Current crate |
+| `pub(super)`   | Parent module |
 | `pub(in path)` | Specified path |
 
 Read more in <a href="https://doc.rust-lang.org/reference/visibility-and-privacy.html" target="_blank">Rust Reference - Visibility and Privacy</a>.
@@ -446,5 +450,7 @@ Modules map to files:
 - Submodules go in a folder: `foo/bar.rs`
 
 Modern style prefers `foo.rs` + `foo/` folder over `foo/mod.rs`.
+
+Read this <a href="https://www.40tude.fr/docs/06_programmation/rust/013_no_more_mod_rs/no_more_mod_rs.html" target="_blank">post </a> on <a href="https://www.40tude.fr/docs/06_programmation/rust/" target="_blank">40tude.fr</a>.
 
 Read more in <a href="https://doc.rust-lang.org/book/ch07-05-separating-modules-into-different-files.html" target="_blank">TRPL - Separating Modules into Different Files</a>.

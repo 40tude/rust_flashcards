@@ -45,7 +45,7 @@ In show_addresses:
 
 ---
 
-* The String struct itself (which contains a pointer, length, and capacity: 24 bytes on 64-bit) gets copied to the new stack frame.
+* The `String` struct itself (which contains a pointer, length, and capacity: 24 bytes on 64-bit) gets copied to the new stack frame.
 * However, the heap data (the actual "Philippe" bytes) doesn't move at all.
 * We can check the heap address is identical in both functions: proving the actual string data never moved.
 * Only ownership (and the stack metadata) transferred.
@@ -152,6 +152,8 @@ Copy, paste and run the code above in <a href="https://play.rust-lang.org/" targ
 
 **Stack**: Fixed-size data, fast allocation, values are copied.
 **Heap**: Dynamic-size data, requires allocation, ownership is moved.
+
+Read this <a href="https://www.40tude.fr/docs/06_programmation/rust/004_mutability/mutability_us.html#a-first-detour-to-understand-what-happens-in-memory" target="_blank">post </a> on <a href="https://www.40tude.fr/docs/06_programmation/rust/" target="_blank">40tude.fr</a>.
 
 Read more in <a href="https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html#the-stack-and-the-heap" target="_blank">TRPL - The Stack and the Heap</a>.
 
@@ -509,7 +511,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch04-02-references-and-borr
 ## Slices - String Slices
 ###############################################################################
 -->
-Question : Beginner - Ownership and Borrowing - What is a string slice (&str)?
+Question : Beginner - Ownership and Borrowing - What is a string slice (`&str`)?
 Answer   :
 
 ```rust
@@ -541,7 +543,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch04-03-slices.html#string-
 ## Slices - &str vs String
 ###############################################################################
 -->
-Question : Beginner - Ownership and Borrowing - What is the difference between String and &str?
+Question : Beginner - Ownership and Borrowing - What is the difference between `String` and `&str`?
 Answer   :
 
 ```rust
@@ -594,11 +596,11 @@ fn main() {
     let vec = vec![10, 20, 30, 40, 50];
 
     // Slice of array
-    let arr_slice = &arr[1..4];  // [2, 3, 4]
+    let arr_slice = &arr[1..4];  // [2, 3, 4] from index 1 included to 4 excluded, aka [1, 4)
     println!("arr_slice: {:?}, sum: {}", arr_slice, sum(arr_slice));
 
     // Slice of vector
-    let vec_slice = &vec[..3];   // [10, 20, 30]
+    let vec_slice = &vec[..3];   // [10, 20, 30], try []..=3]
     println!("vec_slice: {:?}, sum: {}", vec_slice, sum(vec_slice));
 
     // Entire array/vec as slice

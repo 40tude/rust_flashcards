@@ -52,6 +52,8 @@ Copy, paste and run the code above in <a href="https://play.rust-lang.org/" targ
 
 A **trait** defines shared behavior. Use `trait Name { fn method(&self); }` to define, and `impl Trait for Type` to implement. Each type can have its own implementation.
 
+Read this <a href="https://www.40tude.fr/docs/06_programmation/rust/015_traits/traits_00.html" target="_blank">post </a> on <a href="https://www.40tude.fr/docs/06_programmation/rust/" target="_blank">40tude.fr</a>.
+
 Read more in <a href="https://doc.rust-lang.org/book/ch10-02-traits.html" target="_blank">TRPL - Traits: Defining Shared Behavior</a>.
 
 
@@ -165,13 +167,13 @@ Copy, paste and run the code above in <a href="https://play.rust-lang.org/" targ
 
 `#[derive(...)]` auto-generates trait implementations. Common derivable traits:
 
-| Trait | Purpose |
-|-------|---------|
-| `Debug` | `{:?}` formatting |
-| `Clone` | `.clone()` method |
-| `Copy` | Implicit copy instead of move |
+| Trait       | Purpose |
+|-------------|---------|
+| `Debug`     | `{:?}` formatting |
+| `Clone`     | `.clone()` method |
+| `Copy`      | Implicit copy instead of move |
 | `PartialEq` | `==` and `!=` |
-| `Default` | `Default::default()` |
+| `Default`   | `Default::default()` |
 
 Read more in <a href="https://doc.rust-lang.org/book/appendix-03-derivable-traits.html" target="_blank">TRPL - Appendix C: Derivable Traits</a>.
 
@@ -273,12 +275,13 @@ fn main() {
 ---
 Copy, paste and run the code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>.
 
-| Trait | When | Cost | Types |
-|-------|------|------|-------|
-| `Copy` | Implicit on assignment | Cheap (bitwise) | Simple stack types |
-| `Clone` | Explicit `.clone()` | Can be expensive | Any type |
+| Trait   | When                   | Cost             | Types |
+|---------|------------------------|------------------|-------|
+| `Copy`  | Implicit on assignment | Cheap (bitwise)  | Simple stack types |
+| `Clone` | Explicit `.clone()`    | Can be expensive | Any type |
 
-`Copy` requires `Clone`. Types with heap data can't be `Copy`.
+
+Any type that implements `Copy` must also implement `Clone`, but not vice versa. `Copy` requires `Clone`. `Copy` is a marker trait - it's a promise to the compiler that bitwise copying is safe.Types with heap data can't be `Copy`.
 
 Read more in <a href="https://doc.rust-lang.org/std/marker/trait.Copy.html" target="_blank">std::marker::Copy</a>.
 

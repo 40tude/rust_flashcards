@@ -3,7 +3,7 @@
 ## Structs - Definition
 ###############################################################################
 -->
-Question : Beginner - Structs & Enums - How do you define and instantiate a struct?
+Question : Beginner - Structs & Enums - How do you define and instantiate a `struct`?
 Answer   :
 
 ```rust
@@ -28,7 +28,7 @@ fn main() {
 ---
 Copy, paste and run the code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>.
 
-A **struct** groups related data together. Define with `struct` keyword, instantiate with `StructName { field: value }` syntax. All fields must be initialized.
+A **struct** groups related data together. Define with `struct` keyword, instantiate with `StructName { field: value }` syntax. All fields must be initialized. Among the algebraic data types `struct` is a product type (field_1 and field_2 and ...) versus `enum` which is a sum type (field_1 or field_2 or ...).
 
 Read more in <a href="https://doc.rust-lang.org/book/ch05-01-defining-structs.html" target="_blank">TRPL - Defining and Instantiating Structs</a>.
 
@@ -39,7 +39,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch05-01-defining-structs.ht
 ## Structs - Mutable Instances
 ###############################################################################
 -->
-Question : Beginner - Structs & Enums - How do you modify struct fields?
+Question : Beginner - Structs & Enums - How do you modify `struct` fields?
 Answer   :
 
 ```rust
@@ -117,7 +117,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch05-01-defining-structs.ht
 ## Structs - Update Syntax
 ###############################################################################
 -->
-Question : Beginner - Structs & Enums - How do you create a struct from another struct's values?
+Question : Beginner - Structs & Enums - How do you create a `struct` from another `struct`'s values?
 Answer   :
 
 ```rust
@@ -161,31 +161,121 @@ Read more in <a href="https://doc.rust-lang.org/book/ch05-01-defining-structs.ht
 ## Structs - Tuple Structs
 ###############################################################################
 -->
-Question : Beginner - Structs & Enums - What is a tuple struct?
+Question : Beginner - Structs & Enums - What is a `tuple struct`?
 Answer   :
 
+**Ex 01:**
 ```rust
-struct Color(u8, u8, u8);
-struct Point(f64, f64, f64);
+struct Weight(f64);
+struct Height(f64);
+
+fn display_weight(w: &Weight) {
+    println!("Weight: {} kg", w.0);
+}
+
+fn display_height(h: &Height) {
+    println!("Height: {} m", h.0);
+}
+
+fn calculate_bmi(weight: &Weight, height: &Height) -> f64 {
+    let Weight(w) = weight;
+    let Height(h) = height;
+    w / (h * h)
+}
 
 fn main() {
-    let black = Color(0, 0, 0);
-    let origin = Point(0.0, 0.0, 0.0);
+    let my_weight = Weight(72.5);
+    let my_height = Height(1.78);
+
+    display_weight(&my_weight); // Borrow
+    display_height(&my_height);
+
+    let bmi = calculate_bmi(&my_weight, &my_height); // Borrow
+    println!("Calculated BMI: {:.2}", bmi);
+
+    //let bmi = calculate_bmi(&my_height, &my_weight); // won't compile
+    println!("Calculated BMI: {:.2}", bmi);
+}
+
+```
+
+**Ex 02:**
+```rust
+#[derive(Copy, Clone)]
+struct Weight(f64);
+
+#[derive(Copy, Clone)]
+struct Height(f64);
+
+fn display_weight(w: Weight) {
+    println!("Weight: {} kg", w.0);
+}
+
+fn display_height(h: Height) {
+    println!("Height: {} m", h.0);
+}
+
+fn calculate_bmi(weight: &Weight, height: &Height) -> f64 {
+    let Weight(w) = weight;
+    let Height(h) = height;
+    w / (h * h)
+}
+
+fn main() {
+    let my_weight = Weight(72.5);
+    let my_height = Height(1.78);
+
+    display_weight(my_weight); // This copies my_weight because Weight is Copy
+    display_height(my_height);
+
+    let bmi = calculate_bmi(&my_weight, &my_height); // If not Copy, does not compile
+    println!("Calculated BMI: {:.2}", bmi);
+}
+```
+
+
+**Ex 03**
+```rust
+mod physics{
+    pub struct Weight(pub f64); // // public struct, public field
+}
+
+fn main() {
+    let my_weight = physics::Weight(72.5);
+    let value = my_weight.0;
+    println!("{value}");
+}
+
+```
+
+
+
+
+
+**Ex 04:**
+
+```rust
+struct Color(u32, u32, u32, u32); // RGBA
+struct Point(u32, u32, u32, u32); // x, y, z, t all positives (don't ask why)
+
+fn main() {
+    let black = Color(0, 0, 0, 0);
+    let origin = Point(0, 0, 0, 0);
 
     // Access by index
     println!("Red component: {}", black.0);
     println!("X coordinate: {}", origin.0);
 
     // Destructuring
-    let Color(r, g, b) = black;
-    println!("RGB: {}, {}, {}", r, g, b);
+    let Color(r, g, b, a) = black;
+    println!("RGB: {}, {}, {}, {}", r, g, b, a);
 
     // Color and Point are different types even with same field types
     // let p: Point = black;  // Error: mismatched types
 }
 ```
 ---
-Copy, paste and run the code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>.
+Copy, paste and run the snippets above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>.
 
 **Tuple structs** have named types but unnamed fields. Useful when you want a distinct type without field names. Access fields by index.
 
@@ -198,7 +288,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch05-01-defining-structs.ht
 ## Structs - Unit-Like Structs
 ###############################################################################
 -->
-Question : Beginner - Structs & Enums - What is a unit-like struct?
+Question : Beginner - Structs & Enums - What is a `unit-like struct`?
 Answer   :
 
 ```rust
@@ -321,7 +411,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch05-03-method-syntax.html"
 ## Structs - Associated Functions
 ###############################################################################
 -->
-Question : Beginner - Structs & Enums - What is an associated function (constructor)?
+Question : Beginner - Structs & Enums - What is an associated function?
 Answer   :
 
 ```rust
@@ -333,6 +423,8 @@ struct Rectangle {
 
 impl Rectangle {
     // Associated function (no self) - often used as constructor
+    // Double check the return type. It is `Self` not `self`.
+    // The type on which the method is called
     fn new(width: u32, height: u32) -> Self {
         Self { width, height }
     }
@@ -360,7 +452,7 @@ fn main() {
 ---
 Copy, paste and run the code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>.
 
-**Associated functions** don't take `self`: they're called with `::` syntax (like `String::from`). `Self` is an alias for the type. Commonly used for constructors.
+**Associated functions** don't take `self`: they're called with `::` syntax (like `String::from`). `Self` is an alias for the type. Commonly used for constructors. See `static` member in C++.
 
 Read more in <a href="https://doc.rust-lang.org/book/ch05-03-method-syntax.html#associated-functions" target="_blank">TRPL - Associated Functions</a>.
 
@@ -371,7 +463,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch05-03-method-syntax.html#
 ## Enums - Definition
 ###############################################################################
 -->
-Question : Beginner - Structs & Enums - How do you define and use an enum?
+Question : Beginner - Structs & Enums - How do you define and use an `enum`?
 Answer   :
 
 ```rust
@@ -402,7 +494,7 @@ fn main() {
 ---
 Copy, paste and run the code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>.
 
-An **enum** defines a type with a fixed set of variants. Each variant is accessed with `EnumName::Variant` syntax.
+An `enum` defines a type with a fixed set of variants. Each variant is accessed with `EnumName::Variant` syntax. The variable is in one of its variant. Among the algebraic data types, `enum` is a sum type (field_1 or field_2 or ...) versus `struct` which is a product type (field_1 and field_2 and ...).
 
 Read more in <a href="https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html" target="_blank">TRPL - Defining an Enum</a>.
 
@@ -413,7 +505,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch06-01-defining-an-enum.ht
 ## Enums - With Data
 ###############################################################################
 -->
-Question : Beginner - Structs & Enums - How do you attach data to enum variants?
+Question : Beginner - Structs & Enums - How do you attach data to `enum` variants?
 Answer   :
 
 ```rust
@@ -442,6 +534,8 @@ Copy, paste and run the code above in <a href="https://play.rust-lang.org/" targ
 
 Enum variants can hold data: nothing, named fields, single values, or tuples. Each variant can have different data types.
 
+Install [Rustlings](https://rustlings.rust-lang.org/), check `rustlings/08_enums/enums2.rs` and have fun.
+
 Read more in <a href="https://doc.rust-lang.org/book/ch06-01-defining-an-enum.html#enum-values" target="_blank">TRPL - Enum Values</a>.
 
 
@@ -451,7 +545,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch06-01-defining-an-enum.ht
 ## Enums - Methods
 ###############################################################################
 -->
-Question : Beginner - Structs & Enums - Can enums have methods?
+Question : Beginner - Structs & Enums - Can `enums` have methods?
 Answer   :
 
 ```rust

@@ -459,11 +459,11 @@ fn main() {
 ---
 Copy, paste and run the code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>.
 
-| Method | Returns |
-|--------|---------|
+| Method               | Returns |
+|----------------------|---------|
 | `for (k, v) in &map` | Key-value pairs |
-| `.keys()` | Iterator over keys |
-| `.values()` | Iterator over values |
-| `.values_mut()` | Mutable iterator over values |
+| `.keys()`            | Iterator over keys |
+| `.values()`          | Iterator over values |
+| `.values_mut()`      | Mutable iterator over values |
 
 Read more in <a href="https://doc.rust-lang.org/book/ch08-03-hash-maps.html#iterating-over-a-hash-map" target="_blank">TRPL - Iterating Over a Hash Map</a>.

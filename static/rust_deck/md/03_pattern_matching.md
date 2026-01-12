@@ -110,6 +110,8 @@ Copy, paste and run the code above in <a href="https://play.rust-lang.org/" targ
 
 Patterns can **bind** to parts of matched values. The bound variables are available in that arm's code block.
 
+Install [Rustlings](https://rustlings.rust-lang.org/), check `rustlings/08_enums/enums2.rs` and have fun.
+
 Read more in <a href="https://doc.rust-lang.org/book/ch06-02-match.html#patterns-that-bind-to-values" target="_blank">TRPL - Patterns That Bind to Values</a>.
 
 
@@ -187,7 +189,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch18-03-pattern-syntax.html
 ## Match - @ Bindings
 ###############################################################################
 -->
-Question : Beginner - Pattern Matching - How do you bind a value while also testing it with @?
+Question : Beginner - Pattern Matching - How do you bind a value while also testing it with `@`?
 Answer   :
 
 ```rust
@@ -228,7 +230,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch18-03-pattern-syntax.html
 ## if let - Syntax
 ###############################################################################
 -->
-Question : Beginner - Pattern Matching - When should you use if let instead of match?
+Question : Beginner - Pattern Matching - When should you use `if let` instead of `match`?
 Answer   :
 
 ```rust
@@ -269,7 +271,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch06-03-if-let.html" target
 ## while let
 ###############################################################################
 -->
-Question : Beginner - Pattern Matching - How does while let work?
+Question : Beginner - Pattern Matching - How does `while let` work?
 Answer   :
 
 ```rust
@@ -298,7 +300,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch18-01-all-the-places-for-
 ## let else
 ###############################################################################
 -->
-Question : Beginner - Pattern Matching - What is let-else and when do you use it?
+Question : Beginner - Pattern Matching - What is `let-else` and when do you use it?
 Answer   :
 
 ```rust

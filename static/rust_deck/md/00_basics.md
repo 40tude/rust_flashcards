@@ -15,7 +15,9 @@ fn main() {
 ---
 Copy, paste and run the code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>.
 
-By default, variables in Rust are **immutable**. The `let` keyword declares a variable binding.
+By default, variables in Rust are **immutable**. The `let` keyword declares a **variable binding**.
+
+Read this <a href="https://www.40tude.fr/docs/06_programmation/rust/004_mutability/mutability_us.html" target="_blank">post </a> on <a href="https://www.40tude.fr/docs/06_programmation/rust/" target="_blank">40tude.fr</a>.
 
 Read more in <a href="https://doc.rust-lang.org/book/ch03-01-variables-and-mutability.html" target="_blank">TRPL - Variables and Mutability</a>.
 
@@ -84,7 +86,7 @@ Question : Beginner - Basics - How do you declare a constant in Rust?
 Answer   :
 
 ```rust
-const MAX_POINTS: u32 = 100_000;
+const MAX_POINTS: u32 = 100_000; // constants are typed
 
 fn main() {
     println!("Max points: {}", MAX_POINTS);
@@ -224,7 +226,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch03-02-data-types.html#the
 ## Compound Types - Tuples
 ###############################################################################
 -->
-Question : Beginner - Basics - How do you create and use tuples in Rust?
+Question : Beginner - Basics - How do you create and use `tuples` in Rust?
 Answer   :
 
 ```rust
@@ -242,7 +244,7 @@ fn main() {
 ---
 Copy, paste and run the code above in <a href="https://play.rust-lang.org/" target="_blank">Rust Playground</a>.
 
-Tuples group values of different types. They have a fixed length. Access elements via destructuring or dot notation with index.
+`tuple` groups values of different types. They have a fixed length. Access elements via destructuring or dot notation with index.
 
 Read more in <a href="https://doc.rust-lang.org/book/ch03-02-data-types.html#the-tuple-type" target="_blank">TRPL - The Tuple Type</a>.
 
@@ -253,14 +255,14 @@ Read more in <a href="https://doc.rust-lang.org/book/ch03-02-data-types.html#the
 ## Compound Types - Arrays
 ###############################################################################
 -->
-Question : Beginner - Basics - How do you create and use arrays in Rust?
+Question : Beginner - Basics - How do you create and use `array`s in Rust?
 Answer   :
 
 ```rust
 fn main() {
     let arr = [1, 2, 3, 4, 5];
     let arr2: [i32; 5] = [1, 2, 3, 4, 5];  // With type annotation
-    let arr3 = [3; 5];                      // [3, 3, 3, 3, 3]
+    let arr3 = [3; 5];                     // [3, 3, 3, 3, 3]
 
     println!("First: {}", arr[0]);
     println!("Length: {}", arr.len());
@@ -340,7 +342,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch03-03-how-functions-work.
 ## Control Flow - if/else
 ###############################################################################
 -->
-Question : Beginner - Basics - How does if/else work in Rust?
+Question : Beginner - Basics - How does `if/else` work in Rust?
 Answer   :
 
 ```rust
@@ -405,7 +407,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch03-05-control-flow.html#r
 ## Control Flow - while
 ###############################################################################
 -->
-Question : Beginner - Basics - How do you use a while loop in Rust?
+Question : Beginner - Basics - How do you use a `while` loop in Rust?
 Answer   :
 
 ```rust
@@ -434,7 +436,7 @@ Read more in <a href="https://doc.rust-lang.org/book/ch03-05-control-flow.html#c
 ## Control Flow - for
 ###############################################################################
 -->
-Question : Beginner - Basics - How do you use a for loop in Rust?
+Question : Beginner - Basics - How do you use a `for` loop in Rust?
 Answer   :
 
 ```rust
